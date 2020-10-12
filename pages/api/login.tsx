@@ -1,7 +1,7 @@
-import { useMongo } from '../../utils/database'
+import { useContext } from '../../utils/database'
 import { User } from '../../utils/user'
 
-const handler = useMongo(async (db, req, res) => {
+const handler = useContext(async ({ db }, req, res) => {
     //await promise, if resolves, return that, if rejects, throw error -> try catch
     if (req.method == "POST") {
         res.statusCode = 200
