@@ -1,25 +1,23 @@
-import React, {useState} from 'react'
+import React from 'react'
 
-export const AuthForm = () => {
-    const [username,setUsername] = useState('')
-    const [password,setPassword] = useState('')
-
-    const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        console.log(`${username} and ${password}`)
-    }
+export const AuthForm = (props: { onSubmit: ((event: React.FormEvent<HTMLFormElement>) => void), 
+    setUser: React.Dispatch<React.SetStateAction<string>>, 
+    setPass:React.Dispatch<React.SetStateAction<string>>,
+    buttonText: string}) => {
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>Username
-                <input type="text" value={username} onChange={(event:React.ChangeEvent<HTMLInputElement>) => setUsername(event.currentTarget.value)} />
-            </label>
-            <br/>
-            <label>Password
-                <input type="text"  value={password} onChange={(event:React.ChangeEvent<HTMLInputElement>) => setPassword(event.currentTarget.value)}/>
-            </label>
-            <br/>
-            <button type="submit">Login</button>
-        </form>
+        <>
+            <form onSubmit={props.onSubmit}>
+                <label>Username
+                    <input type="text" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setUser(event.currentTarget.value)}} />
+                </label>
+                <br/>
+                <label>Password
+                    <input type="text" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setPass(event.currentTarget.value)}}/>
+                </label>
+                <br/>
+                <button type="submit">{props.buttonText}</button>
+            </form>
+        </>
     )
 }
