@@ -5,6 +5,7 @@ const handler = useContext(async ({ db }, req, res) => {
     //await promise, if resolves, return that, if rejects, throw error -> try catch
     if (req.method == "POST") {
         res.statusCode = 200
+        //do this stuff within user util?
         const users = db.collection('journal_app')
 
         let user: User | null

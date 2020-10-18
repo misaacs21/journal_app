@@ -3,6 +3,7 @@ export interface User {
     password: String
 }
 
+//What does this file even do now?
 export const checkAuthentication = async (username: string, password: string): Promise<User | null> => {
     const response = await fetch('/api/login', {
         method: 'POST',

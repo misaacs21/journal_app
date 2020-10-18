@@ -15,11 +15,10 @@ const Login = () => {
             const user = await checkAuthentication(username,password)
     
             if (user === null) {
-                console.log("here!")
                 setattemptFail(true)
                 return
             }
-            //Router.replace('/')
+            Router.replace('/')
         }
         catch (error) {
             console.log(error)
