@@ -16,7 +16,7 @@ export const checkAuthentication = async (username: string, password: string): P
     })
     let user: Promise<User | null>
     let temp = await response.clone().text()
-    console.log('~~~ response.body', temp)
+    console.log('~~~ response.text', temp)
 
     if (!temp)
     {
