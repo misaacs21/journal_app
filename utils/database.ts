@@ -1,38 +1,44 @@
-import {Db, MongoClient} from 'mongodb'
+import { Db, MongoClient } from 'mongodb'
+import { NextApiRequest, NextApiResponse } from 'next'
 
 const url = 'mongodb+srv://admin:admin@journal-app.hcmph.mongodb.net/journal_app?retryWrites=true&w=majority'
 const dbName = 'users'
 let appClient: MongoClient | null
 
-export const connect = (): Promise<Db> => new Promise((resolve,reject) => {
-    if (appClient) {
-        return resolve(appClient.db(dbName))
+interface AppContext {
+    db: Db
+}
+
+type NextMiddlewareWithDb = (context: AppContext, req: NextApiRequest, res: NextApiResponse) => Promise<void>
+type NextMiddleware = (req: NextApiRequest, res: NextApiResponse) => Promise<void>
+
+export const useContext = (middleware: NextMiddlewareWithDb): NextMiddleware => async (req, res): Promise<void> => {
+    let client: MongoClient
+
+    try {
+        client = await MongoClient.connect(url)
+    }
+    catch (error) {
+        console.error('Unable to connecto to MongoDB database', error)
+        throw error
     }
 
-    MongoClient.connect(url,function(err,client) {
-        if (err) {
-            console.error("Unable to connect to MongoDB database", err)
-            return reject(err)
-        }
-        appClient = client
-        const db = appClient.db(dbName)
-        console.log("Connected to MongoDB database")
-        return resolve(db)
-    })
-})
+    const db = client.db(dbName)
+    console.log('Connected to MongoDB datbase.')
 
-export const close = (): Promise<void> => new Promise((resolve,reject) => {
-    if (!appClient) {
-        return resolve()
+    // You can expand this to manage all of the resources that you need for a request lifecycle
+    const appContext: AppContext = {
+        db,
     }
 
-    appClient.close((err) => {
-        if (err) {
-            console.error("Unable to close MongoDB database", err)
-            return reject(err)
-        }
-        console.log("Database connection closed")
-        appClient = null
-        return resolve()
-    })
-})
+    try {
+        await middleware(appContext, req, res)
+    }
+    catch (error) {
+        console.error('Error while calling Next middleware', error)
+        await client.close()
+
+        throw error
+    }
+    await client.close()
+}
