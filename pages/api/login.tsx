@@ -7,6 +7,7 @@ const handler = useContext(async ({ db }, req, res) => {
     console.log("in api")
     if (req.method == "POST") {
         res.statusCode = 200
+        //do this stuff within user util?
         const users = db.collection('journal_app')
 
         let user: User | null
