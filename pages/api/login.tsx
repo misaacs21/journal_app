@@ -1,5 +1,6 @@
 import { useContext } from '../../utils/database'
 import { User } from '../../utils/user'
+<<<<<<< HEAD
 
 const handler = useContext(async ({ db }, req, res) => {
     //await promise, if resolves, return that, if rejects, throw error -> try catch
@@ -29,40 +30,38 @@ import { Db } from "mongodb"
 import { NextApiRequest,NextApiResponse } from "next"
 import {connect,close} from "../../utils/database"
 import {User} from "../../utils/user"
+=======
+>>>>>>> 94fe3577b8a8ec80e881fbe307e725aa55e9bb02
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = useContext(async ({ db }, req, res) => {
     //await promise, if resolves, return that, if rejects, throw error -> try catch
     if (req.method == "POST") {
-        let db: Db
-        try {
-            db = await connect()
-        } 
-        catch (error) {
-            console.error(error)
-            res.status(500)
-            res.send(`Database connection error: ${ error.toString() }`)
-            return await close()
-            
-            //redirect to error page
-        }
-
         res.statusCode = 200
         const users = db.collection('journal_app')
 
         let user: User | null
                 try {
-            user = await users.findOne<User>(req.body)  
+            user = await users.findOne<User>(req.body)
             console.log("login.tsx:")
             console.log("~~~ user ", user)
         }
         catch (error) {
+<<<<<<< HEAD
             //make sure close() is not called multiple times at once! wrapper function to do connection stuff before ANYTHING is called?
             await close()
+=======
+>>>>>>> 94fe3577b8a8ec80e881fbe307e725aa55e9bb02
             return res.send(500)
         }
-        await close()
-        return res.send(user) 
+
+        return res.send(user)
     }
+<<<<<<< HEAD
 }
 */
   
+=======
+})
+
+export default handler
+>>>>>>> 94fe3577b8a8ec80e881fbe307e725aa55e9bb02
