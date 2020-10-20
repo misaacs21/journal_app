@@ -3,11 +3,19 @@ import {AuthForm} from '../components/authForm'
 import Router from "next/router"
 import {User} from '../utils/user'
 
+
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
     const [submitFail,setSubmitFail] = useState(false)
     const [reg, setReg] = useState(false)
+
+    const switchStates = () => {
+        setUsername("")
+        setPassword("")
+        setSubmitFail(false)
+        setReg(!reg)
+    }
 
     const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
@@ -84,7 +92,7 @@ const Login = () => {
                 {submitFail && (
                     <p>Login failed! Try again.</p>
                 )}
-                <button onClick={() => {setReg(true); setPassword(""); setUsername("");}}>Don't have an account? Register now.</button>
+                <button onClick={switchStates}>Don't have an account? Register now.</button>
                 </>
             }
             
@@ -95,7 +103,7 @@ const Login = () => {
                 {submitFail && (
                     <p>Registration failed! Try again.</p>
                 )}
-                <button onClick={()=> {setReg(false); setPassword(""); setUsername("");}}>Already have an account? Login now.</button>
+                <button onClick={switchStates}>Already have an account? Login now.</button>
                 </>
             }
         </>

@@ -13,14 +13,14 @@ export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise
 
     try {
         user = await users.findOne<User>({username: userInfo.username})
-        console.log("user.ts:")
-        console.log("~~~ user ", user)
         if (user) {
             let passwordMatch: boolean = await compare(userInfo.password, user.password)
             if (!passwordMatch) {
                 user = null
             }
         }
+        console.log("user.ts:")
+        console.log("~~~ user ", user)
     }
     catch (error) {
         return Promise.reject('Database access error')
