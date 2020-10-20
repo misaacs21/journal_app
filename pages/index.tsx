@@ -1,67 +1,50 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { NextPageContext } from 'next'
+import {extractFromCookie} from '../utils/cookie'
+import Router from 'next/router'
 
-//preserved as a sample for future home page
-//greets user by name and has a logout button. this page will redirect you to login if you are not authorized
-export default function Home() {
+const Home = ({username}:any) => {
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+    <div>
+      <h1>Welcome back, {username}</h1> 
+      <button onClick={logout}>Logout</button>
     </div>
   )
 }
+
+const logout = async () => {
+  try {
+    return await fetch('/api/logout', {
+      method: 'DELETE',
+    }).then(response=> {
+      console.log(response)
+      Router.replace('/auth')
+    })
+  }
+  catch (error) {
+    console.log(error)
+    return
+  }
+}
+
+
+Home.getInitialProps = async (ctx: NextPageContext) => { //only activates server-side, but I have to route from login to here on client-side
+  let user: string|null = null
+  if (ctx.req) {
+    user = await extractFromCookie(ctx.req)
+  }
+  if (!user && !ctx.req) {
+    Router.replace('/auth')
+    return
+  }
+  else if (!user && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/auth'
+    })
+    ctx.res?.end()
+    return
+  }
+  console.log("USER: " + user)
+  return {username: user} //Why can't I just have this be "user" and the value passed in be just "username", no brackets?
+}
+
+export default Home

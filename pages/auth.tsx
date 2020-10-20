@@ -1,9 +1,8 @@
 import React, {useState}  from 'react'
 import {AuthForm} from '../components/authForm'
 import Router from "next/router"
-import {User} from '../utils/user'
 
-
+//redirect from here to / if logged in
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
@@ -25,7 +24,7 @@ const Login = () => {
             return
         }
         try {
-            const response = await fetch('/api/login', { //returns user with jwt field if successful
+            const response = await fetch('/api/login', { //response has a cookie with jwt in 'auth'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,8 +42,17 @@ const Login = () => {
                 setSubmitFail(true)
                 return
             }
-            console.log('username: ', JSON.parse(user).username) //this will be in jwt, don't worry, can easily get from jwt in home page
             Router.push('/')
+            /*const url = "http://localhost:3000/"
+            return await fetch('/api/reroute', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    url
+                })
+            })*/
         }
         catch (error) {
             console.log(error)
@@ -60,7 +68,7 @@ const Login = () => {
             return
         }
         try {
-            await fetch('/api/reg', { //returns token string if successful
+            await fetch('/api/reg', { //response has a cookie with jwt in 'auth'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

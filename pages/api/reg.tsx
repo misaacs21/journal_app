@@ -1,6 +1,6 @@
 import { useDb } from '../../utils/database'
 import { getUser, createUser } from '../../utils/user'
-import {sign} from 'jsonwebtoken'
+import {createCookie} from '../../utils/cookie'
 
 const reg = useDb(async (db, req, res) => {
     if (req.method == "POST") {
@@ -9,8 +9,7 @@ const reg = useDb(async (db, req, res) => {
         if (!user) {
            await createUser(req.body,db) //what happens if this is rejected?
         }
-        const jwt = sign({user:req.body.username},`${process.env.JWT_SECRET}`)
-        console.log(jwt)
+        res.setHeader('Set-Cookie', await createCookie(req.body.username) )
         return res.send(user)
     }
     res.statusCode = 405

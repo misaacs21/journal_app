@@ -1,14 +1,13 @@
 import { useDb } from '../../utils/database'
 import { getUser } from '../../utils/user'
-import {sign} from 'jsonwebtoken'
+import {createCookie} from '../../utils/cookie'
 
 const login = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         res.statusCode = 200
         let user = await getUser(req.body, db)
         if (user) {
-            const jwt = sign({user:user.username},`${process.env.JWT_SECRET}`)
-            console.log(jwt)    
+            res.setHeader('Set-Cookie', await createCookie(req.body.username) )
         }
 
         return res.send(user)
