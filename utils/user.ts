@@ -7,6 +7,7 @@ export interface User {
     password: string
 }
 
+//remove jwt stuff from here and put it in api instead so don't needlessly pass it around?
 export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise<User | null> => {
     const users = db.collection('users')
     let user: User | null
@@ -30,7 +31,7 @@ export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise
 
 export const createUser = async (userInfo: NextApiRequest["body"], db: Db): Promise<null | void> => {
     const users = db.collection('users')
-    
+    let jwt: string
     try {
         const hashed = await hash(userInfo.password, 10)
         userInfo.password = hashed

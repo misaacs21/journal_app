@@ -25,7 +25,7 @@ const Login = () => {
             return
         }
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api/login', { //returns user with jwt field if successful
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const Login = () => {
             return
         }
         try {
-            await fetch('/api/reg', {
+            await fetch('/api/reg', { //returns token string if successful
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

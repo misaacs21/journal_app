@@ -10,8 +10,9 @@ npm install
 echo DB_USER = [username] > .env.local
 echo DB_PASS = [password] >> .env.local
 echo DB_NAME = [database name] >> .env.local
+echo JWT_SECRET = [secret key] >> .env.local
 ```
-where \[username\], \[password\], and \[database name\] are for your own personal MongoDB database, which has "users" and "journal_entries" collections.
+where \[username\], \[password\], and \[database name\] are for your own personal MongoDB database, which has "users" and "journal_entries" collections, and [secret key] is any phrase to use for JWT encryption. 
 
 Run the development server:
 ```bash

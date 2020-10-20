@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 
 //preserved as a sample for future home page
+//greets user by name and has a logout button. this page will redirect you to login if you are not authorized
 export default function Home() {
   return (
     <div className={styles.container}>
