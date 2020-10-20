@@ -1,39 +1,65 @@
 import React, {useState}  from 'react'
 import {AuthForm} from '../components/authForm'
-import {checkAuthentication} from '../utils/user'
 import Router from "next/router"
+import {User} from '../utils/user'
 
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
-    const [attemptFail,setattemptFail] = useState(false)
+    const [loginFail,setLoginFail] = useState(false)
+    const [regFail, setRegFail] = useState(false)
 
     const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        setattemptFail(false)
+        setLoginFail(false)
         try {
-            const user = await checkAuthentication(username,password)
-    
-            if (user === null) {
-                setattemptFail(true)
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                }),
+            })
+            let user = await response.text()
+            console.log('~~~ response.text', user)
+        
+            if (!user)
+            {
+                setLoginFail(true)
                 return
             }
-            Router.replace('/')
+            console.log('username: ', JSON.parse(user).username) //this will be in jwt, don't worry, can easily get from jwt in home page
+            Router.push('/')
         }
         catch (error) {
             console.log(error)
         }
         return
     }
+
     const handleRegSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        setRegFail(false)
         try {
-            const user = await checkAuthentication(username,password)
+            const response = await fetch('/api/reg', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username,
+                    password
+                }),
+            })
+            let user = await response.text()
     
             if (user) {
-                //redirect to login somehow
+                setRegFail(true)
             }
-            //call user.ts create user function
+            Router.push('/') //jwt header will have username to draw from
         }
         catch (error) {
             console.log(error)
@@ -43,12 +69,16 @@ const Login = () => {
 
     return (
         <>
+            <h1>Login</h1>
             <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Login"/>
-            {attemptFail && (
-            <p>Login failed! Try again.</p>
+            {loginFail && (
+                <p>Login failed! Try again.</p>
             )}
-           <h1>Register (in split pane)</h1>
-           <h2>Don't have an account? Register now. [same page or separate page]?</h2>
+           <h1>Don't have an account? Register now.</h1>
+           <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Register"/>
+           {regFail && (
+               <p>User already exists! Login?</p>
+           )}
         </>
     )
 }

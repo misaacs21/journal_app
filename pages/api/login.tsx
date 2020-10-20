@@ -1,25 +1,13 @@
-import { useContext } from '../../utils/database'
-import { User } from '../../utils/user'
+import { useDb } from '../../utils/database'
+import { getUser } from '../../utils/user'
 
-const handler = useContext(async ({ db }, req, res) => {
-    //await promise, if resolves, return that, if rejects, throw error -> try catch
+const login = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         res.statusCode = 200
-        //do this stuff within user util?
-        const users = db.collection('journal_app')
-
-        let user: User | null
-                try {
-            user = await users.findOne<User>(req.body)
-            console.log("login.tsx:")
-            console.log("~~~ user ", user)
-        }
-        catch (error) {
-            return res.send(500)
-        }
-
+        let user = await getUser(req.body, db)
         return res.send(user)
     }
+    return res.status(405)
 })
 
-export default handler
+export default login

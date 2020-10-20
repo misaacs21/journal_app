@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/mongodb": "^3.5.27",
+    "dotenv": "^8.2.0",
     "mongo": "^0.1.0",
     "mongodb": "^3.6.2",
     "next": "9.5.3",
