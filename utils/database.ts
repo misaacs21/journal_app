@@ -1,18 +1,16 @@
 import { Db, MongoClient } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-const url = 'mongodb+srv://admin:admin@journal-app.hcmph.mongodb.net/journal_app?retryWrites=true&w=majority'
+require('dotenv').config()
+
+const url = `mongodb+srv://${ process.env.DB_USER }:${ process.env.DB_PASS }@journal-app.hcmph.mongodb.net/journal_app?retryWrites=true&w=majority`
 //put into env file, and make sure you erase from commit history as well!
 const dbName = 'users'
 
-interface AppContext {
-    db: Db
-}
-
-type NextMiddlewareWithDb = (context: AppContext, req: NextApiRequest, res: NextApiResponse) => Promise<void>
+type NextMiddlewareWithDb = (db: Db, req: NextApiRequest, res: NextApiResponse) => Promise<void | NextApiResponse<any>>
 type NextMiddleware = (req: NextApiRequest, res: NextApiResponse) => Promise<void>
 
-export const useContext = (middleware: NextMiddlewareWithDb): NextMiddleware => async (req, res): Promise<void> => {
+export const useDb = (middleware: NextMiddlewareWithDb): NextMiddleware => async (req, res): Promise<void> => {
     let client: MongoClient
 
     try {
@@ -27,12 +25,9 @@ export const useContext = (middleware: NextMiddlewareWithDb): NextMiddleware => 
     console.log('Connected to MongoDB datbase.')
 
     // You can expand this to manage all of the resources that you need for a request lifecycle
-    const appContext: AppContext = {
-        db,
-    }
 
     try {
-        await middleware(appContext, req, res)
+        await middleware(db, req, res)
     }
     catch (error) {
         console.error('Error while calling Next middleware', error)

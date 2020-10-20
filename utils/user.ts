@@ -1,29 +1,34 @@
+import { NextApiRequest } from 'next'
+import { Db } from 'mongodb'
+
 export interface User {
     username: String
     password: String
 }
 
-//What does this file even do now?
-export const checkAuthentication = async (username: string, password: string): Promise<User | null> => {
-    const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            username,
-            password
-        }),
-    })
-    let user: Promise<User | null>
-    let temp = await response.clone().text()
-    console.log('~~~ response.text', temp)
+export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise<User | null> => {
+    const users = db.collection('journal_app')
+    let user: User | null
 
-    if (!temp)
-    {
-        user = Promise.resolve(null)
-        return user
+    try {
+        user = await users.findOne<User>(userInfo)
+        console.log("user.ts:")
+        console.log("~~~ user ", user)
     }
-    user = response.json()
+    catch (error) {
+        return Promise.reject('Database access error')
+    }
     return user
+}
+
+export const createUser = async (userInfo: NextApiRequest["body"], db: Db): Promise<null | void> => {
+    const users = db.collection('journal_app')
+    
+    try {
+        await users.insertOne(userInfo)
+    }
+    catch (error){
+        return Promise.reject('Database access error')
+    }
+    return Promise.resolve()
 }

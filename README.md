@@ -13,3 +13,6 @@ Current relevant pages: /auth
 
 ## Remnants
 index.tsx is the default home page provided by create-next-app, saved for future reference. This will be replaced in the future.
+
+## Limitations
+This app will not run on Internet Explorer. Please use another browser.
