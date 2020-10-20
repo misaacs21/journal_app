@@ -27,6 +27,3 @@ index.tsx is the default home page provided by create-next-app, saved for future
 
 ## Limitations
 This app will not run on Internet Explorer. Please use another browser.
-
-## Known Bugs
-Login and Signup components do not distinguish states, so the most recent input from EITHER will be taken upon submit, regardless of which form is submitted.
