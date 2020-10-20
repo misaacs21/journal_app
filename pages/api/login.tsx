@@ -7,7 +7,8 @@ const login = useDb(async (db, req, res) => {
         let user = await getUser(req.body, db)
         return res.send(user)
     }
-    return res.status(405)
+    res.statusCode = 405
+    return res.send("Only POST messages are supported.")
 })
 
 export default login

@@ -2,7 +2,7 @@ import React from 'react'
 
 export const AuthForm = (props: { onSubmit: ((event: React.FormEvent<HTMLFormElement>) => void), 
     setUser: React.Dispatch<React.SetStateAction<string>>, 
-    setPass:React.Dispatch<React.SetStateAction<string>>,
+    setPass: React.Dispatch<React.SetStateAction<string>>,
     buttonText: string}) => {
 
     return (

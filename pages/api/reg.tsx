@@ -11,7 +11,8 @@ const reg = useDb(async (db, req, res) => {
         }
         return res.send(user)
     }
-    return res.status(405)
+    res.statusCode = 405
+    return res.send("Only POST messages are supported.")
 })
 
 export default reg
