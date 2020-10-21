@@ -32,7 +32,7 @@ const Home = (data:Display) => {
   }
 
   const submitJournal = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    //event.preventDefault()
     setSubmitFail(false)
     if (entry == '') {
       setSubmitFail(true)

@@ -8,7 +8,8 @@ export interface User {
     password: string
 }
 
-export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise<User | null> => {
+//why does: userInfo: NextApiRequest["body"] break everything :()
+export const getUser = async (userInfo: any, db: Db): Promise<User | null> => {
     console.log("USERNAME:" +  userInfo.username)
     console.log("PASS USER: " + userInfo.password)
     const users = db.collection('users')
@@ -33,28 +34,17 @@ export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise
 }
 
 //make it so that requests are in json format before sending to utils?
-export const createUser = async (userInfo: any, db: Db): Promise<null | void> => {
+export const createUser = async (userInfo: any, db: Db): Promise<null | void> => { //why on earth did changes in here to a passed req.body affect everything else?
     let temp = userInfo
-    console.log("temp : " + temp.password)
-    console.log("user info: " + userInfo.password)
     const users = db.collection('users')
     let jwt: string
     try {
         const hashed = await hash(temp.password, 10)
         temp.password = hashed
-        console.log("temp : " + temp.password)
-        console.log("user info: " + userInfo.password)
-    
         await users.insertOne(temp)
-        console.log("temp : " + temp.password)
-        console.log("user info: " + userInfo.password)
-    
     }
     catch (error){
         return Promise.reject('Database access error')
     }
-    console.log("temp : " + temp.password)
-    console.log("user info: " + userInfo.password)
-
     return null
 }

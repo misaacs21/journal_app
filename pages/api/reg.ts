@@ -13,7 +13,7 @@ const reg = useDb(async (db, req, res) => {
                 username: req.body.username,
                 password: req.body.password
             }
-           await createUser(newUser,db) //what happens if this is rejected?
+           await createUser(newUser,db) //what happens if this is rejected? //why is newUser changed within this function that's not how parameters work?? i thought???
            console.log("between: " + req.body.username + " " + req.body.password)
            user = await getUser(req.body, db)
         }
