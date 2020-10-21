@@ -4,8 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 require('dotenv').config()
 
 const url = `mongodb+srv://${ process.env.DB_USER }:${ process.env.DB_PASS }@journal-app.hcmph.mongodb.net/journal_app?retryWrites=true&w=majority`
-//put into env file, and make sure you erase from commit history as well!
-const dbName = 'users'
+const dbName = `${ process.env.DB_NAME }`
 
 type NextMiddlewareWithDb = (db: Db, req: NextApiRequest, res: NextApiResponse) => Promise<void | NextApiResponse<any>>
 type NextMiddleware = (req: NextApiRequest, res: NextApiResponse) => Promise<void>

@@ -1,66 +1,162 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { NextPageContext } from 'next'
+import {extractFromCookie, extractFromCookie2, extractFromCookie3} from '../utils/cookie'
+import Router, { withRouter } from 'next/router'
+import {useState} from 'react'
+import {Payload} from '../utils/cookie'
+import {journalEntry} from '../utils/journals'
 
-//preserved as a sample for future home page
-export default function Home() {
+interface Display {
+  user:Payload,
+  entries:journalEntry[]
+}
+//need error handling for journal entries, what to explain if no entries, etc...
+const Home = (data:Display) => {
+
+  const [entry,setEntry] = useState('')
+  const [submitFail, setSubmitFail] = useState(false)
+  const [showEntries,setShowEntries] = useState(false)
+
+  const logout = async () => {
+    try {
+      return await fetch('/api/logout', {
+        method: 'DELETE',
+      }).then(response=> {
+        Router.replace('/auth')
+      })
+    }
+    catch (error) {
+      console.log(error)
+      return
+    }
+  }
+
+  const submitJournal = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setSubmitFail(false)
+    if (entry == '') {
+      setSubmitFail(true)
+      return
+    }
+    try {
+      console.log("MORE ID: " + data.user._id)
+      const userID = data.user._id
+      return await fetch('/api/submitEntry', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            entry,
+            userID //don't need this
+        }),
+      })
+    }
+    catch (error) {
+      console.log(error)
+    }
+
+  }
+
+  //QUESTION: why can't I put anything in here?
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+    <div>
+      <h1>Welcome back, {data.user.username}   <button onClick={logout}>Logout</button></h1>
+      <p/>
+      <form onSubmit={submitJournal}>
+        <textarea onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
+        <br />
+        <button type="submit">Submit</button>
+        {submitFail && (
+          <p>Your journal entry should not be empty!</p>
+        )}
+      </form>
+      <button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>
+      {showEntries && (
+        <div>
+          {/*Final will have these each in their own calender square correlating to the date they were created -- ADD DATE TO DB. Open in a pop up? only one entry per day. import calender module? view mood trend graph?*/}
+          {data.entries.map((entry) => {
+            return (
+              <>
+              <pre white-space='pre-wrap' key={entry._id}>{entry.entry}</pre>
+              <p>=================</p>
+              {/*to edit entry: add a button that turns the entry display into a textarea w default value of what's already written, then have a 
+              save changes button to call an update api route, page must refresh after? also add delete entry w a little symbol too */}
+              </>
+            )
+          })}
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      )}
     </div>
   )
 }
+
+Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activates server-side, but I have to route from login to here on client-side
+  let user: Payload | null = null
+
+  if (ctx.query.user) {
+    user = JSON.parse(Array.isArray(ctx.query.user) ? ctx.query.user[ 0 ] : ctx.query.user)
+    console.log("CLIENT USER" + JSON.stringify(user))
+  }
+
+  console.log("HEADERS " + ctx.req?.headers.cookie)
+
+
+  if (ctx.req) {
+    console.log("COOKIE OUT" + ctx.req.headers.cookie)
+    user = await extractFromCookie3(ctx.req.headers.cookie!)
+    console.log("SERVER USER" + JSON.stringify(user))
+  }
+
+  if (!user && !ctx.req) {
+    Router.replace('/auth')
+    return {}
+  }
+  else if (!user && ctx.req) {
+    ctx.res?.writeHead(302, {
+      Location: 'http://localhost:3000/auth'
+    })
+    ctx.res?.end()
+    return {}
+  }
+  const userID = user?._id
+  let response: Response | null = null
+
+  if (ctx.req) {
+    try {
+      response = await fetch('http://localhost:3000/api/getEntries', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': ctx.req.headers.cookie as string
+        },
+        credentials: "same-origin"
+      })
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+  else {
+    try {
+      response = await fetch('http://localhost:3000/api/getEntries', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "same-origin"
+      })
+    }
+    catch (error) {
+      console.error(error)
+    }
+  }
+  
+
+  let entries = (response !== null) ? await response.json() : []
+
+  console.log(entries)
+  console.log("USER: " + user?.username + " " + user?._id)
+  return {user, entries}
+}
+
+export default Home
