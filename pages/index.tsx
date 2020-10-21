@@ -1,6 +1,6 @@
 import { NextPageContext } from 'next'
 import {extractFromCookie} from '../utils/cookie'
-import Router from 'next/router'
+import Router, { withRouter } from 'next/router'
 import {useState} from 'react'
 import {Payload} from '../utils/cookie'
 import {journalEntry} from '../utils/journals'
@@ -11,11 +11,11 @@ interface Display {
 }
 //need error handling for journal entries, what to explain if no entries, etc...
 const Home = (data:Display) => {
-  
+
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
   const [showEntries,setShowEntries] = useState(false)
-  
+
   const logout = async () => {
     try {
       return await fetch('/api/logout', {
@@ -41,7 +41,7 @@ const Home = (data:Display) => {
     try {
       console.log("MORE ID: " + data.user._id)
       const userID = data.user._id
-      return await fetch('/api/submitEntry', { 
+      return await fetch('/api/submitEntry', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -91,33 +91,50 @@ const Home = (data:Display) => {
 Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activates server-side, but I have to route from login to here on client-side
   let user: Payload | null = null
 
+  if (ctx.query.user) {
+    user = JSON.parse(Array.isArray(ctx.query.user) ? ctx.query.user[ 0 ] : ctx.query.user)
+  }
+
   if (ctx.req) {
     user = await extractFromCookie(ctx.req)
   }
+
   if (!user && !ctx.req) {
     Router.replace('/auth')
-    return
+    return {}
   }
   else if (!user && ctx.req) {
     ctx.res?.writeHead(302, {
       Location: 'http://localhost:3000/auth'
     })
     ctx.res?.end()
-    return
+    return {}
+  }
+  const userID = user?._id
+  let response: Response | null = null
+  try {
+    debugger
+
+    response = await fetch('http://localhost:3000/api/getEntries', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: "same-origin"
+    })
+
+    console.log({ body: await response.text()})
+
+  }
+  catch (error) {
+    console.error(error)
   }
 
-  const userID = user?._id
-  let entries = await fetch('http://localhost:3000/api/getEntries', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Cookie': ctx.req!.headers.cookie as string
-    }
-  })
-  entries = await entries.json()
-  console.log(entries)
+  // let entries = (response !== null) ? await response.json() : []
+
+  // console.log(entries)
   console.log("USER: " + user?.username + " " + user?._id)
-  return {user, entries} 
+  return {user, entries : []}
 }
 
 export default Home

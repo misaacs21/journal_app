@@ -25,6 +25,11 @@ export const extractFromCookie = async (req:IncomingMessage): Promise<Payload | 
     const token = theCookie.auth
     console.log("token " + token)
 
+    const { headers } = req
+
+
+    console.log({ headers })
+
     let user: Payload | null
     try {
         user = verify(token, `${process.env.JWT_SECRET}`) as Payload
@@ -36,7 +41,7 @@ export const extractFromCookie = async (req:IncomingMessage): Promise<Payload | 
     return user
 }
 
-export const destroyCookie = async (): Promise<string> => { 
+export const destroyCookie = async (): Promise<string> => {
     const theCookie = cookie.serialize('auth', '', {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',

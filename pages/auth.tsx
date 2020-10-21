@@ -36,13 +36,16 @@ const Login = () => {
             })
             let user = await response.text()
             console.log('~~~ response.text', user)
-        
+
             if (!user)
             {
                 setSubmitFail(true)
                 return
             }
-            Router.replace('/')
+            Router.push({
+                pathname: '/',
+                query: { user },
+            })
             /*const url = "http://localhost:3000/"
             return await fetch('/api/reroute', {
                 method: 'POST',
@@ -83,6 +86,7 @@ const Login = () => {
             if (user) {
                 setRegFail(true)
             }*/
+
             Router.push('/') //jwt header will have username to draw from
         }
         catch (error) {
@@ -93,7 +97,7 @@ const Login = () => {
 
     return (
         <>
-            {!reg && 
+            {!reg &&
                 <>
                 <h1>Login</h1>
                 <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Login"/>
@@ -103,8 +107,8 @@ const Login = () => {
                 <button onClick={switchStates}>Don't have an account? Register now.</button>
                 </>
             }
-            
-           {reg && 
+
+           {reg &&
                 <>
                 <h1>Register</h1>
                 <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Register"/>
