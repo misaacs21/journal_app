@@ -1,13 +1,13 @@
 import { NextApiRequest } from 'next'
-import { Db } from 'mongodb'
+import { Db, ObjectID } from 'mongodb'
 import { hash, compare } from 'bcrypt'
 
 export interface User {
-    username: string
+    _id: ObjectID,
+    username: string,
     password: string
 }
 
-//remove jwt stuff from here and put it in api instead so don't needlessly pass it around?
 export const getUser = async (userInfo: NextApiRequest["body"], db: Db): Promise<User | null> => {
     const users = db.collection('users')
     let user: User | null

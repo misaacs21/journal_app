@@ -1,9 +1,16 @@
 import {sign, verify} from 'jsonwebtoken'
 import cookie from 'cookie'
 import { IncomingMessage } from 'http'
+import {ObjectID} from 'mongodb'
 
-export const createCookie = async (username:string): Promise<string> => {
-    const jwt = sign({user:username},`${process.env.JWT_SECRET}`)
+export interface Payload {
+    _id: string,
+    username: string
+}
+export const createCookie = async (username:string, userID: ObjectID): Promise<string> => {
+    let _id = userID.toHexString()
+    console.log("ID: " + _id)
+    const jwt = sign({_id, username},`${process.env.JWT_SECRET}`)
     const auth = cookie.serialize('auth',jwt, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
@@ -13,15 +20,14 @@ export const createCookie = async (username:string): Promise<string> => {
     return auth
 }
 
-export const extractFromCookie = async (req:IncomingMessage): Promise<string | null> => {
+export const extractFromCookie = async (req:IncomingMessage): Promise<Payload | null> => {
     const theCookie = cookie.parse(req.headers.cookie || '')
     const token = theCookie.auth
     console.log("token " + token)
 
-    let user: any
+    let user: Payload | null
     try {
-        user= verify(token, `${process.env.JWT_SECRET}`)
-        user = user.user
+        user = verify(token, `${process.env.JWT_SECRET}`) as Payload
     }
     catch (error){
         console.log(error)

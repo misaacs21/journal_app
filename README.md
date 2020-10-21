@@ -21,7 +21,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-Current relevant pages: /auth
+Current relevant pages: /auth, /
 
 ## Limitations
 This app will not run on Internet Explorer. Please use another browser.

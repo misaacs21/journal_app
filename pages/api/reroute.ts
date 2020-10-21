@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
-import {destroyCookie} from '../../utils/cookie'
 
+//make this into the route for the auth'd page(s)...have a conditional for if having a valid jwt -> true or not having a valid jwt -> true
 const reroute = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "POST") {
         res.writeHead(302, {

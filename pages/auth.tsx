@@ -42,7 +42,7 @@ const Login = () => {
                 setSubmitFail(true)
                 return
             }
-            Router.push('/')
+            Router.replace('/')
             /*const url = "http://localhost:3000/"
             return await fetch('/api/reroute', {
                 method: 'POST',
