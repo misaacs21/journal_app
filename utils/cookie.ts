@@ -77,6 +77,7 @@ export const destroyCookie = async (): Promise<string> => {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',
         sameSite: true,
+        expires: new Date(98,1),
         path: '/'
     })
     return theCookie
