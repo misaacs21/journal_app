@@ -4,13 +4,20 @@ import {createCookie, extractFromCookie} from '../../utils/cookie'
 
 const reg = useDb(async (db, req, res) => {
     if (req.method == "POST") {
+        console.log(req.body.username + " " + req.body.password)
         res.statusCode = 200
         let user = await getUser(req.body, db)
-        let theCookie = await extractFromCookie(req)
+
         if (!user) {
-           await createUser(req.body,db) //what happens if this is rejected?
+            let newUser = {
+                username: req.body.username,
+                password: req.body.password
+            }
+           await createUser(newUser,db) //what happens if this is rejected?
+           console.log("between: " + req.body.username + " " + req.body.password)
            user = await getUser(req.body, db)
         }
+        let theCookie = await extractFromCookie(req)
         if (user && theCookie == null) {
             res.setHeader('Set-Cookie', await createCookie(user.username, user._id) )
         }

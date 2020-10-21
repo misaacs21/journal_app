@@ -72,6 +72,7 @@ const Login = () => {
             return
         }
         try {
+            console.log("PASSWORD: " + password)
             const response = await fetch('/api/reg', { //response has a cookie with jwt in 'auth'
                 method: 'POST',
                 headers: {
