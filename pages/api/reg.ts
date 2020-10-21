@@ -14,7 +14,7 @@ const reg = useDb(async (db, req, res) => {
         if (user && theCookie == null) {
             res.setHeader('Set-Cookie', await createCookie(user.username, user._id) )
         }
-        return res.send(user)
+        return res.send({_id: user?._id, username: user?.username})
     }
     res.statusCode = 405
     return res.send("Only POST messages are supported.")

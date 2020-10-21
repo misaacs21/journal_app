@@ -46,6 +46,7 @@ const Login = () => {
                 pathname: '/',
                 query: { user },
             })
+            /* Do this via a get home page api instead to make it less ugly?*/
             /*const url = "http://localhost:3000/"
             return await fetch('/api/reroute', {
                 method: 'POST',
@@ -71,7 +72,7 @@ const Login = () => {
             return
         }
         try {
-            await fetch('/api/reg', { //response has a cookie with jwt in 'auth'
+            const response = await fetch('/api/reg', { //response has a cookie with jwt in 'auth'
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -81,13 +82,13 @@ const Login = () => {
                     password
                 }),
             })
-            /*
+            
             let user = await response.text()
-            if (user) {
-                setRegFail(true)
-            }*/
 
-            Router.push('/') //jwt header will have username to draw from
+            Router.push({
+                pathname: '/',
+                query: { user },
+            }) //jwt header will have username to draw from
         }
         catch (error) {
             console.log(error)

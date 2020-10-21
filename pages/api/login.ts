@@ -11,7 +11,7 @@ const login = useDb(async (db, req, res) => {
             res.setHeader('Set-Cookie', await createCookie(user.username, user._id) )
         }
 
-        return res.send(user)
+        return res.send({_id: user?._id, username: user?.username}) //clean up how this stuff is passed around
     }
     res.statusCode = 405
     return res.send("Only POST messages are supported.")

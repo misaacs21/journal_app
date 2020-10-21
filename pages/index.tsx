@@ -1,5 +1,5 @@
 import { NextPageContext } from 'next'
-import {extractFromCookie} from '../utils/cookie'
+import {extractFromCookie, extractFromCookie2, extractFromCookie3} from '../utils/cookie'
 import Router, { withRouter } from 'next/router'
 import {useState} from 'react'
 import {Payload} from '../utils/cookie'
@@ -21,7 +21,6 @@ const Home = (data:Display) => {
       return await fetch('/api/logout', {
         method: 'DELETE',
       }).then(response=> {
-        console.log(response)
         Router.replace('/auth')
       })
     }
@@ -74,11 +73,14 @@ const Home = (data:Display) => {
       <button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>
       {showEntries && (
         <div>
+          {/*Final will have these each in their own calender square correlating to the date they were created -- ADD DATE TO DB. Open in a pop up? only one entry per day. import calender module? view mood trend graph?*/}
           {data.entries.map((entry) => {
             return (
               <>
               <pre white-space='pre-wrap' key={entry._id}>{entry.entry}</pre>
               <p>=================</p>
+              {/*to edit entry: add a button that turns the entry display into a textarea w default value of what's already written, then have a 
+              save changes button to call an update api route, page must refresh after? also add delete entry w a little symbol too */}
               </>
             )
           })}
@@ -93,10 +95,16 @@ Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activa
 
   if (ctx.query.user) {
     user = JSON.parse(Array.isArray(ctx.query.user) ? ctx.query.user[ 0 ] : ctx.query.user)
+    console.log("CLIENT USER" + JSON.stringify(user))
   }
 
+  console.log("HEADERS " + ctx.req?.headers.cookie)
+
+
   if (ctx.req) {
-    user = await extractFromCookie(ctx.req)
+    console.log("COOKIE OUT" + ctx.req.headers.cookie)
+    user = await extractFromCookie3(ctx.req.headers.cookie!)
+    console.log("SERVER USER" + JSON.stringify(user))
   }
 
   if (!user && !ctx.req) {
@@ -112,29 +120,43 @@ Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activa
   }
   const userID = user?._id
   let response: Response | null = null
-  try {
-    debugger
 
-    response = await fetch('http://localhost:3000/api/getEntries', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: "same-origin"
-    })
-
-    console.log({ body: await response.text()})
-
+  if (ctx.req) {
+    try {
+      response = await fetch('http://localhost:3000/api/getEntries', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Cookie': ctx.req.headers.cookie as string
+        },
+        credentials: "same-origin"
+      })
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
-  catch (error) {
-    console.error(error)
+  else {
+    try {
+      response = await fetch('http://localhost:3000/api/getEntries', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: "same-origin"
+      })
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
+  
 
-  // let entries = (response !== null) ? await response.json() : []
+  let entries = (response !== null) ? await response.json() : []
 
-  // console.log(entries)
+  console.log(entries)
   console.log("USER: " + user?.username + " " + user?._id)
-  return {user, entries : []}
+  return {user, entries}
 }
 
 export default Home
