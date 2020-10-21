@@ -10,7 +10,7 @@ interface Display {
   entries:journalEntry[]
 }
 //need error handling for journal entries, what to explain if no entries, etc...
-//SWITCH TO NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
+//ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
 const Home = (data:Display) => {
 
   const [entry,setEntry] = useState('')

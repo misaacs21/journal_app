@@ -56,13 +56,21 @@ export const extractFromCookie2 = async (req: IncomingMessage): Promise<Payload 
 
 export const extractFromCookie3 = async (cookies: string): Promise<Payload | null> => {
     console.log("COOKIE: " + cookies)
-    const theCookie = cookie.parse(cookies)
-    const token = theCookie.auth
+    let theCookie: {[key:string]:string}|null= null
+    try {
+        theCookie = cookie.parse(cookies)
+    }
+    catch (error) {
+        console.log(error)
+        let user = null
+        return user
+    }
+    const token = theCookie?.auth
     console.log("2 token " + token)
 
     let user: Payload | null
     try {
-        user = verify(token, `${process.env.JWT_SECRET}`) as Payload
+        user = verify(token!, `${process.env.JWT_SECRET}`) as Payload
     }
     catch (error){
         console.log(error)
