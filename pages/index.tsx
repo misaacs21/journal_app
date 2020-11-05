@@ -12,7 +12,7 @@ interface Display {
 //need error handling for journal entries, what to explain if no entries, etc...
 //ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
 const Home = (data:Display) => {
-
+  
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
   const [showEntries,setShowEntries] = useState(false)
@@ -35,7 +35,8 @@ const Home = (data:Display) => {
     //event.preventDefault()
     setSubmitFail(false)
     if (entry == '') {
-      setSubmitFail(true)
+      event.preventDefault()
+      setSubmitFail(true) //refreshes the page after this bc event.preventdefault()...
       return
     }
     try {
@@ -55,7 +56,9 @@ const Home = (data:Display) => {
     catch (error) {
       console.log(error)
     }
-
+    Router.replace('/')
+    //window.location.reload()
+    return
   }
 
   //QUESTION: why can't I put anything in here?

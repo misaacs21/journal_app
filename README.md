@@ -25,3 +25,6 @@ Current relevant pages: /auth, /
 
 ## Limitations
 This app will not run on Internet Explorer. Please use another browser.
+
+## Bug
+On first load of welcome page via client side routing, if a journal entry is submitted, the page will "refresh" but journal entries will not display until another refresh has been done. After that it's all fine.

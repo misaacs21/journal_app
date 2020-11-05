@@ -1,0 +1,27 @@
+$font: Georgia, sans-serif;
+$vib-yellow: #fff2cc;
+$pale-yellow: #fffdf7;
+$dark-blue: #647687;
+
+/*
+  why is this inheritance not working?
+*/
+.split {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+
+  .left {
+    @extend .split;
+    width: 50%;
+    left: 0;
+    background-color: $dark-blue;
+  }
+  .right {
+    @extend .splity;
+    width: 50%;
+    right: 0;
+    background: linear-gradient($pale-yellow, $vib-yellow);
+  }
+  
+}
