@@ -16,7 +16,7 @@ export const AuthForm = (props: { onSubmit: ((event: React.FormEvent<HTMLFormEle
                     <br/>
                     <label className={styles.h2}>Password</label>
                     <br/>
-                    <input className={styles.input} type="text" name="Password" placeholder="Password" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setPass(event.currentTarget.value)}}/>
+                    <input className={styles.input} type="password" name="Password" placeholder="Password" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setPass(event.currentTarget.value)}}/>
                     <br/>
                 </div>
                 <button className={styles.button} type="submit">
