@@ -106,27 +106,29 @@ const Login = () => {
                 <p>tagline</p>
             </div>
             <div className={style.right}>
-                {!reg &&
-                    <>
-                    <h1>Login</h1>
-                    <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Login"/>
-                    {submitFail && (
-                        <p>Login failed! Try again.</p>
-                    )}
-                    <button onClick={switchStates}>Don't have an account? Register now.</button>
-                    </>
-                }
+                <div className={style.box}>
+                    {!reg &&
+                        <>
+                        <h1>Login</h1>
+                        <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Login"/>
+                        {submitFail && (
+                            <p>Login failed! Try again.</p>
+                        )}
+                        <button onClick={switchStates}>Don't have an account? Register now.</button>
+                        </>
+                    }
 
-                {reg &&
-                    <>
-                    <h1>Register</h1>
-                    <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Register"/>
-                    {submitFail && (
-                        <p>Registration failed! Try again.</p>
-                    )}
-                    <button onClick={switchStates}>Already have an account? Login now.</button>
-                    </>
-                }
+                    {reg &&
+                        <>
+                        <h1>Register</h1>
+                        <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Register"/>
+                        {submitFail && (
+                            <p>Registration failed! Try again.</p>
+                        )}
+                        <button onClick={switchStates}>Already have an account? Login now.</button>
+                        </>
+                    }
+                </div>
             </div>
         </div>
     )
