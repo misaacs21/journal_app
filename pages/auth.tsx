@@ -2,7 +2,7 @@ import React, {useState}  from 'react'
 import {AuthForm} from '../components/authForm'
 import Router from "next/router"
 
-import style from '../styles/Auth.module.scss'
+import styles from '../styles/Auth.module.scss'
 
 //redirect from here to / if logged in
 const Login = () => {
@@ -100,32 +100,42 @@ const Login = () => {
     }
 
     return (
-        <div className={style.split}>
-            <div className={style.left}>
-                <p>Title</p>
-                <p>tagline</p>
+        <div className={styles.split}>
+            <div className={styles.left}>
+                <h1 className={styles.title}>MOOD FOR YOU</h1>
+                <h2 className={styles.subtitle}>~an automatic mood tracker and journaling application~</h2>
             </div>
-            <div className={style.right}>
-                <div className={style.box}>
+            <div className={styles.right}>
+                <div className={styles.box}>
                     {!reg &&
                         <>
-                        <h1>Login</h1>
-                        <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Login"/>
+                        <h1 className={styles.header}>
+                            <span className={styles.h1on}>Log In</span>
+                            <span className={styles.or}>or</span>
+                            <span>
+                                <button className={styles.h1off} onClick={switchStates}>Sign Up</button>
+                            </span>
+                        </h1>
+                        <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Log In"/>
                         {submitFail && (
                             <p>Login failed! Try again.</p>
                         )}
-                        <button onClick={switchStates}>Don't have an account? Register now.</button>
                         </>
                     }
 
                     {reg &&
                         <>
-                        <h1>Register</h1>
-                        <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Register"/>
+                        <h1 className={styles.header}>
+                            <span>
+                                <button className={styles.h1off} onClick={switchStates}>Log In</button>
+                            </span>
+                            <span className={styles.or}>or</span>
+                            <span className={styles.h1on}>Sign Up</span>
+                        </h1>                       
+                        <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Sign Up"/>
                         {submitFail && (
                             <p>Registration failed! Try again.</p>
                         )}
-                        <button onClick={switchStates}>Already have an account? Login now.</button>
                         </>
                     }
                 </div>

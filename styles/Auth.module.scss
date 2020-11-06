@@ -3,6 +3,8 @@ $vib-yellow: #fff2cc;
 $pale-yellow: #fffae6;
 $white-yellow: #fffdf7;
 $dark-blue: #647687;
+$light-blue: #c0cdd1;
+$light-gray: #eaebeb;
 
 .split {
   height: 100%;
@@ -14,25 +16,172 @@ $dark-blue: #647687;
     width: 50%;
     left: 0;
     background-color: $dark-blue;
+    padding: {
+      left: 5%;
+      right: 5%;
+      top: 15%;
+      bottom: 15%;
+    }
+    text-align: center;
   }
+
   .right {
     @extend .split;
     width: 50%;
     right: 0;
+    padding: {
+      bottom: 5%;
+      left: 7.5%;
+      right: 7.5%;
+      top: 5%;
+    }
     background: linear-gradient($white-yellow, $vib-yellow 40%);
   }
   
 }
 
+.title {
+  font: {
+    family: $font;
+    size: 4vw;
+  }
+  color: $light-gray;
+}
+
+.subtitle {
+  font: {
+    family: $font;
+    size: 1.55vw;
+    weight: lighter;
+  }
+  color: $light-gray;
+}
+//how to stop bottom from moving around in mobile
 .box {
   border-radius: 50px;
-  height: 80%;
-  margin: {
-    top: 10%;
+  height: 100%;
+
+  padding: {
     bottom: 10%;
-    left: 15%;
-    right: 15%;
+    top: 10%;
+    left: 5%;
+    right: 5%;
   }
-  position: relative;
   background-color: $pale-yellow;
+  text-align: center;
+
+  .header {
+    margin-bottom: 5%;
+
+    .h1on {
+      font: {
+        family: $font;
+        size: xx-large;
+      }
+      color: $dark-blue;
+      text-decoration: underline;
+    }
+  
+    .h1off {
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      font: {
+        family: $font;
+        size: xx-large;
+      }
+      color: $light-blue;
+      //how to make color change properly?
+      button:hover {
+        color: $dark-blue;
+      }
+    }
+
+    .or {
+      font: {
+        family: $font;
+        size: medium;
+      }
+      margin: {
+        left: 3%;
+        right: 3%;
+      }
+      color: $dark-blue;
+      display: inline-block;
+    }
+  
+  }
+
+  .form {
+    //how to make margin here actually work and align left
+    .h2 {
+      font: {
+        family: $font;
+        size: x-large;
+        weight: bold;
+      }
+      color: $dark-blue;
+      margin-bottom: 4%;
+      float: left;
+    } 
+
+    .input {
+      width: 100%;
+      height: 50px;
+      border: none;
+      background-color: transparent;
+      border-bottom: 3px solid $dark-blue;
+      //how to take in the line on the right so it's not going into the padding?
+      margin-left: 1%;
+      margin-bottom: 15%;
+      font: {
+        family: $font;
+        size: x-large;
+        weight: normal;
+      }
+      color: $dark-blue;
+
+      //how to get placeholder light blue
+      input::placeholder {
+        font: {
+          family: $font;
+          size: x-large;
+          weight: normal;
+        }
+        color: $light-blue;
+      }
+    }
+  }
+
+  //not enough space?
+  .button {
+    padding: 2%;
+    background-color: $dark-blue;
+    border-radius: 10px;
+    border-width: 0px;
+    margin-top: -50%;
+    cursor: pointer;
+
+    .h2 {
+      font: {
+        family: $font;
+        size: x-large;
+        //how to make font weight actually lighter
+        font-weight: lighter;
+      }
+      color: $light-gray;
+      margin: 0%;
+    }
+  }
+
+  .text {
+    font: {
+      family: $font;
+      size: medium;
+    }
+    margin: {
+      left: 3%;
+      right: 3%;
+    }
+  }
 }
