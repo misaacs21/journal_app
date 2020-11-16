@@ -10,18 +10,13 @@ export const AuthForm = (props: { onSubmit: ((event: React.FormEvent<HTMLFormEle
         <>
             <form onSubmit={props.onSubmit}>
                 <div className={styles.form}>
-                    <label className={styles.h2}>Username</label>
-                    <br/>
+                    <label>Username</label>
                     <input className={styles.input} type="text" name="Username" placeholder="Username" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setUser(event.currentTarget.value)}} />
-                    <br/>
-                    <label className={styles.h2}>Password</label>
-                    <br/>
+                    <label>Password</label>
                     <input className={styles.input} type="password" name="Password" placeholder="Password" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setPass(event.currentTarget.value)}}/>
-                    <br/>
+                    {/*Add eye icon that onclick replaces type */}
                 </div>
-                <button className={styles.button} type="submit">
-                    <h2 className={styles.h2}>{props.buttonText}</h2>
-                </button>
+                <button className={styles.button} type="submit">{props.buttonText}</button>
             </form>
         </>
     )
