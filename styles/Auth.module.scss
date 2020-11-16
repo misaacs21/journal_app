@@ -5,6 +5,7 @@ $white-yellow: #fffdf7;
 $dark-blue: #647687;
 $light-blue: #c0cdd1;
 $light-gray: #eaebeb;
+$vib-orange: #e38862;
 $x-large: 4vw;
 $large: 1.6vw;
 $medium: 1.15vw;
@@ -12,8 +13,7 @@ $small: 1.1vw;
 $input-margin: 10px;
 $form-margin: 80px;
 
-//margins fixed px
-//increase font sizes to fill space
+//How to change header margin + "highlight" boxes if login fails?
 .split {
   height: 100vh;
   width: 100vw;
@@ -142,7 +142,7 @@ $form-margin: 80px;
       width: 720px - $input-margin;
       height: 50px;
       border: none;
-      background-color: transparent;
+      background-color: $light-gray;
       border-bottom: 3px solid $dark-blue;
       margin-left: $input-margin;
       margin-bottom: 90px;
@@ -186,5 +186,20 @@ $form-margin: 80px;
     }
     color: $light-gray;
     display: block;
+  }
+
+  .error {
+    padding: .8em .7em;
+    background-color: $vib-orange;
+    border-radius: 10px;
+    border-width: 0px;
+    margin-bottom: $form-margin / 2;
+    font: {
+      family: $font;
+      size: $small;
+    }
+    color: $white-yellow;
+    display: block;
+    text-align: center;
   }
 }

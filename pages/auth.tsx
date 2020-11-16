@@ -120,10 +120,10 @@ const Login = () => {
                                 <button className={styles.h1off} onClick={switchStates}>Sign Up</button>
                             </span>
                         </h1>
-                        <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Log In"/>
                         {submitFail && (
-                            <p>Login failed! Try again.</p>
+                            <div className={styles.error}>Username-password combination doesn't match our records.</div>
                         )}
+                        <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Log In"/>
                         </>
                     }
 
@@ -135,11 +135,11 @@ const Login = () => {
                             </span>
                             <span className={styles.or}>or</span>
                             <span className={styles.h1on}>Sign Up</span>
-                        </h1>                       
-                        <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Sign Up"/>
+                        </h1>           
                         {submitFail && (
-                            <p>Registration failed! Try again.</p>
-                        )}
+                            <div className={styles.error}>Username-password combination is not valid.</div>
+                        )}            
+                        <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Sign Up"/>
                         </>
                     }
                 </div>

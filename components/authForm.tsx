@@ -6,14 +6,16 @@ export const AuthForm = (props: { onSubmit: ((event: React.FormEvent<HTMLFormEle
     setPass: React.Dispatch<React.SetStateAction<string>>,
     buttonText: string}) => {
 
+    let maxLength = 255
+
     return (
         <>
             <form onSubmit={props.onSubmit}>
                 <div className={styles.form}>
                     <label>Username</label>
-                    <input className={styles.input} type="text" name="Username" placeholder="Username" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setUser(event.currentTarget.value)}} />
+                    <input className={styles.input} type="text" name="Username" placeholder="Username" maxLength={maxLength} onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setUser(event.currentTarget.value)}} />
                     <label>Password</label>
-                    <input className={styles.input} type="password" name="Password" placeholder="Password" onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setPass(event.currentTarget.value)}}/>
+                    <input className={styles.input} type="password" name="Password" placeholder="Password" maxLength={maxLength} onChange={(event:React.ChangeEvent<HTMLInputElement>) => {props.setPass(event.currentTarget.value)}}/>
                     {/*Add eye icon that onclick replaces type */}
                 </div>
                 <button className={styles.button} type="submit">{props.buttonText}</button>
