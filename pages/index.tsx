@@ -20,9 +20,9 @@ const Home = (data:Display) => {
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
   const [showEntries,setShowEntries] = useState(false)
-  const [month, setMonth] = useState(0)
-  const [year, setYear] = useState(0)
-  const [startDay, setStartDay] = useState(0)
+  const [month, setMonth] = useState(new Date().getMonth())
+  const [year, setYear] = useState(new Date().getFullYear())
+  const [startDay, setStartDay] = useState(new Date(year,month,1).getDay())
   //journal entry state
 
   useEffect(() => {
@@ -49,19 +49,7 @@ const Home = (data:Display) => {
         welcome.className = 'goodbye'
       }
     }
-    let d = new Date()
-    let m = d.getMonth()
-    setMonth(m)
-    let y = d.getFullYear()
-    setYear(y)
-    initialSetStartDay()
-    console.log(startDay)
   }, []);
-
-  const initialSetStartDay = () => {
-    let start = new Date(year,month,1).getDay()
-    setStartDay(start)
-  }
 
   const logout = async () => {
     try {
