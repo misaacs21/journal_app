@@ -4,6 +4,8 @@ import Router, { withRouter } from 'next/router'
 import {useState} from 'react'
 import {Payload} from '../utils/cookie'
 import {journalEntry} from '../utils/journals'
+import styles from '../styles/Home.module.scss'
+import React, {useEffect} from 'react'
 
 interface Display {
   user:Payload,
@@ -12,7 +14,6 @@ interface Display {
 //need error handling for journal entries, what to explain if no entries, etc...
 //ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
 const Home = (data:Display) => {
-  
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
   const [showEntries,setShowEntries] = useState(false)
@@ -63,8 +64,8 @@ const Home = (data:Display) => {
 
   //QUESTION: why can't I put anything in here?
   return (
-    <div>
-      <h1>Welcome back, {data.user.username}   <button onClick={logout}>Logout</button></h1>
+    <>
+      <h1 className={styles.message}>Welcome back, {data.user.username}</h1>
       <p/>
       <form onSubmit={submitJournal}>
         <textarea onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
@@ -90,7 +91,8 @@ const Home = (data:Display) => {
           })}
         </div>
       )}
-    </div>
+      <button onClick={logout}>Logout</button>
+    </>
   )
 }
 
@@ -160,6 +162,7 @@ Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activa
 
   console.log(entries)
   console.log("USER: " + user?.username + " " + user?._id)
+
   return {user, entries}
 }
 
