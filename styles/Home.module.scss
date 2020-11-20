@@ -4,10 +4,10 @@
 //display flex can be used to display side by side then shift vertically
 //menu - open state close state that changes class on it, and then base styling on whether class on or not
 //white bar at top of screen why?
-//why is container bottom padding different?
+//why is container bottom padding different? calender isn't obeying it?
 //best way to bring in iconography? where do those go in file structure, size considerations, etc?
 //why these lines on mobile around days?
-//how to get the calender numbers float right?
+//how to get the calender numbers float right without using float?
 @keyframes fade {
     0% {
         opacity: 1;
@@ -72,7 +72,8 @@
     }
 }
 .calender {
-    height: 100%;
+    height: calc(100% - 65px);
+    top: 0;
     width: 100%;
     position: relative;
     display: grid;

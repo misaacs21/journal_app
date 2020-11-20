@@ -13,11 +13,11 @@ interface Display {
 }
 //need error handling for journal entries, what to explain if no entries, etc...
 //ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
-//do welcome ONLY if you've just logged in or if its ur first time today? how to accomplish? 
-//What is destructuring operator actually doing?
-//how to get days to start filling from correct day?
+
+//do welcome ONLY if you've just logged in or if its ur first time today? how to accomplish? sessionstorage? 
 //why on compile does my startdate change?
 //should journal entries be in a state variable or something? Access them month to month?
+//use effect--is it inappropriate to use this? why did putting my startday stuff in there result in weird re-compiling behavior (1 day off)?
 const Home = (data:Display) => {
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
@@ -27,27 +27,44 @@ const Home = (data:Display) => {
   const [startDay, setStartDay] = useState(0)
 
   useEffect(() => {
-    setTimeout(function() {
-      let screen = document.getElementById('removeFromDOM')
-      if (screen === null)
-      {
-        return
+    if (window.sessionStorage.length === 0) {
+      window.sessionStorage.setItem('welcome', 'true')
+    }
+    if (window.sessionStorage.getItem('welcome') === 'true') {
+      setTimeout(function() {
+        let screen = document.getElementById('removeFromDOM')
+        if (screen === null)
+        {
+          return
+        }
+        screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
+        screen!.className = 'goodbye'
+      }, 4000);
+      sessionStorage.setItem('welcome','false')
+    }
+    else {
+      let welcome = document.getElementById('removeFromDOM')
+      if (welcome !=null && welcome.childNodes[0] != null) {
+        welcome.removeChild(welcome.childNodes[0])
+        welcome.className = 'goodbye'
       }
-      screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
-      screen!.className = 'goodbye'
-    }, 4000);
+    }
     let d = new Date()
     let m = d.getMonth()
     setMonth(m)
     let y = d.getFullYear()
     setYear(y)
+    initialSetStartDay()
+    console.log(startDay)
+  }, []);
 
+  const initialSetStartDay = () => {
     let start: number = 0
     while (new Date(year,month,1).getDay() >= start) {
         start++
     }
     setStartDay(start)
-  }, []);
+  }
 
   const logout = async () => {
     try {
@@ -158,7 +175,6 @@ const Home = (data:Display) => {
 
 Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activates server-side, but I have to route from login to here on client-side
   let user: Payload | null = null
-
   if (ctx.query.user) {
     user = JSON.parse(Array.isArray(ctx.query.user) ? ctx.query.user[ 0 ] : ctx.query.user)
     console.log("CLIENT USER" + JSON.stringify(user))
