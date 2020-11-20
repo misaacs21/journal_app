@@ -6,17 +6,16 @@ $form-margin-desk: 100px;
 $form-margin-mobile: 7.4vh;
 
 /*TODO: 
-- Manual window size alteration causes horizontal scrollbar to appear - why?
 - Smooth scroll on mobile: https://www.w3schools.com/howto/howto_css_smooth_scroll.asp#section1.
 - General code refinement and streamlining.
 - Why does .header{} attributes not carry to all children (size, font)?
 */
+//user agent styles watch
 
 .left {
   background-color: $dark-blue;
   top: 0px;
   height: 100vh;
-  width: 100vw;
   padding: {
     top: 22vh;
     right: 50px;
@@ -28,7 +27,7 @@ $form-margin-mobile: 7.4vh;
 }
 @media (min-width: $desktop-breakpoint) {
   .left {
-    width: 50vw;
+    width: 50%;
     height: 100vh;
     left: 0px;
     padding: {
@@ -44,7 +43,6 @@ $form-margin-mobile: 7.4vh;
 .right {
   bottom: 0px;
   height: 100vh;
-  width: 100vw;
   padding: {
     top: 10vh;
     right: 10px;
@@ -56,7 +54,7 @@ $form-margin-mobile: 7.4vh;
 }
 @media (min-width: $desktop-breakpoint) {
   .right {
-    width: 50vw;
+    width: 50%;
     height: 100vh;
     right: 0px;
     padding: {
@@ -159,12 +157,13 @@ $form-margin-mobile: 7.4vh;
     left: auto;
   }
   text-align: center;
+  @include text_size('large');
+
 
   .h1on {
     font: {
       family: $font;
     }
-    @include text_size('large');
     color: $dark-blue;
     text-decoration: underline;
   }
@@ -177,7 +176,6 @@ $form-margin-mobile: 7.4vh;
       family: $font;
       weight: bold;
     }
-    @include text_size('large');
     color: $light-blue;
     &:hover {
       color: $dark-blue;

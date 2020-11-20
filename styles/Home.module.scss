@@ -1,13 +1,11 @@
 @use 'globalVars.module.scss' as *;
 
-//CSSgrid
-//display flex can be used to display side by side then shift vertically
 //menu - open state close state that changes class on it, and then base styling on whether class on or not
-//white bar at top of screen why?
-//why is container bottom padding different? calender isn't obeying it?
 //best way to bring in iconography? where do those go in file structure, size considerations, etc?
 //why these lines on mobile around days?
-//how to get the calender numbers float right without using float?
+    //instead of having cal background blue, use border around each cell instead
+$menu-width: 350px;
+$cal-header-height: 66px;
 @keyframes fade {
     0% {
         opacity: 1;
@@ -52,15 +50,18 @@
 
 .menu {
     height: 100vh;
-    width: 15vw;
+    width: $menu-width;
     top: 0;
     left: 0;
     background-color: $dark-blue;
 }
 
+.screen {
+    display: flex;
+}
 .container {
     height: 100vh;
-    width: 85vw;
+    width: calc(100% - #{$menu-width});
     left: 15vw;
     top: 0;
     position: absolute;
@@ -72,7 +73,7 @@
     }
 }
 .calender {
-    height: calc(100% - 65px);
+    height: calc(100% - #{$cal-header-height});
     top: 0;
     width: 100%;
     position: relative;
@@ -117,16 +118,15 @@
     @include text-size('large');
 }
 .cell {
-    padding: 10px;
+    position: relative; 
 }
 .dateNum {
-    //margin-top: 0;
-    //margin-right: 0;
-    //margin-left: auto;
-    float: right;
+    top: 10px;
+    right: 10px;
     font: {
         family: $font;
     }
     color: $dark-blue;
     @include text-size('medium');
+    position: absolute; //does not use padding
 }

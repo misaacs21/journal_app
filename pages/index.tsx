@@ -13,11 +13,9 @@ interface Display {
 }
 //need error handling for journal entries, what to explain if no entries, etc...
 //ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
+//why is startday1 after recompile, not 0?
 
-//do welcome ONLY if you've just logged in or if its ur first time today? how to accomplish? sessionstorage? 
-//why on compile does my startdate change?
 //should journal entries be in a state variable or something? Access them month to month?
-//use effect--is it inappropriate to use this? why did putting my startday stuff in there result in weird re-compiling behavior (1 day off)?
 const Home = (data:Display) => {
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
@@ -25,8 +23,10 @@ const Home = (data:Display) => {
   const [month, setMonth] = useState(0)
   const [year, setYear] = useState(0)
   const [startDay, setStartDay] = useState(0)
+  //journal entry state
 
   useEffect(() => {
+    //do journal entry call here
     if (window.sessionStorage.length === 0) {
       window.sessionStorage.setItem('welcome', 'true')
     }
@@ -59,10 +59,7 @@ const Home = (data:Display) => {
   }, []);
 
   const initialSetStartDay = () => {
-    let start: number = 0
-    while (new Date(year,month,1).getDay() >= start) {
-        start++
-    }
+    let start = new Date(year,month,1).getDay()
     setStartDay(start)
   }
 
@@ -115,6 +112,7 @@ const Home = (data:Display) => {
   return (
     <>
       <div id="removeFromDOM" className={styles.welcome}><div className={styles.message}>Welcome back, {data.user.username}</div></div>
+      <div className={styles.screen}>
       <div className={styles.menu}></div>
       <div className={styles.container}>
         <div className={styles.header}>
@@ -169,6 +167,7 @@ const Home = (data:Display) => {
         </div>
       )}
       {/*<button onClick={logout}>Logout</button>*/}
+      </div>
     </>
   )
 }

@@ -117,7 +117,7 @@ const Login = () => {
                             <span className={styles.h1on}>Log In</span>
                             <span className={styles.or}>or</span>
                             <span>
-                                <button className={styles.h1off} onClick={switchStates}>Sign Up</button>
+                                <a className={styles.h1off} onClick={switchStates}>Sign Up</a>
                             </span>
                         </h1>
                         {submitFail && (
@@ -131,7 +131,7 @@ const Login = () => {
                         <>
                         <h1 className={styles.header}>
                             <span>
-                                <button className={styles.h1off} onClick={switchStates}>Log In</button>
+                                <a className={styles.h1off} onClick={switchStates}>Log In</a>
                             </span>
                             <span className={styles.or}>or</span>
                             <span className={styles.h1on}>Sign Up</span>
