@@ -1,0 +1,51 @@
+@use 'globalVars.module.scss' as *;
+
+//CSSgrid
+//display flex can be used to display side by side then shift vertically
+//menu - open state close state that changes class on it, and then base styling on whether class on or not
+//white bar at top of screen why?
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+.welcome {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    background: linear-gradient($white-yellow, $vib-yellow 50%);
+    text-align: center;
+    padding: {
+        top: 40vh;
+        bottom: 25vh;
+        left: auto;
+        right: auto;
+    }
+    z-index: 10;
+    opacity: 1;
+    animation: fade 4s;
+    .message {
+        font: {
+            family: $font;
+            weight: bold;
+        }
+        color: $light-blue;
+        opacity: 1;
+        @include text_size('x-large');
+    }
+}
+.goodbye {
+    display: none;
+}
+
+.home {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+}

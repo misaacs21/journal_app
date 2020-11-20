@@ -13,7 +13,20 @@ interface Display {
 }
 //need error handling for journal entries, what to explain if no entries, etc...
 //ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
+//do welcome ONLY if you've just logged in or if its ur first time today? how to accomplish?
 const Home = (data:Display) => {
+  useEffect(() => {
+    setTimeout(function() {
+      let screen = document.getElementById('removeFromDOM')
+      if (screen === null)
+      {
+        return
+      }
+      screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
+      screen!.className = 'goodbye'
+    }, 4000);
+  }, []);
+
   const [entry,setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
   const [showEntries,setShowEntries] = useState(false)
@@ -65,8 +78,9 @@ const Home = (data:Display) => {
   //QUESTION: why can't I put anything in here?
   return (
     <>
-      <h1 className={styles.message}>Welcome back, {data.user.username}</h1>
+      <div id="removeFromDOM" className={styles.welcome}><div className={styles.message}>Welcome back, {data.user.username}</div></div>
       <p/>
+      <div className={styles.home}>
       <form onSubmit={submitJournal}>
         <textarea onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
         <br />
@@ -92,6 +106,7 @@ const Home = (data:Display) => {
         </div>
       )}
       <button onClick={logout}>Logout</button>
+    </div>
     </>
   )
 }
