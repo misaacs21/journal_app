@@ -1,0 +1,42 @@
+$vib-yellow: #fff2cc;
+$pale-yellow: #fffae6;
+$white-yellow: #fffdf7;
+$dark-blue: #647687;
+$light-blue: #c0cdd1;
+$light-gray: #eaebeb;
+$vib-orange: #e38862;
+
+$font: Georgia, sans-serif;
+
+@mixin text_size($size) {
+    @if $size=='small' {
+      font-size: 2.2vh;
+  
+      @media(min-width: $desktop-breakpoint) {
+        font-size: 1.1vw;
+      }
+    }
+    @else if $size=='medium' {
+      font-size: 2.30vh;
+  
+      @media(min-width: $desktop-breakpoint) {
+        font-size: 1.15vw;
+      }
+    }
+    @else if $size=='large' {
+      font-size: 3vh;
+  
+      @media(min-width: $desktop-breakpoint) {
+        font-size: 1.6vw;
+      }
+    }
+    @else {
+      font-size: 8vh;
+  
+      @media(min-width: $desktop-breakpoint) {
+        font-size: 4vw;
+      }
+    }
+  }
+
+$desktop-breakpoint: 1300px;

@@ -2,6 +2,7 @@ import { extractFromCookie, extractFromCookie2 } from '../../utils/cookie'
 import { useDb } from '../../utils/database'
 import { getJournals } from '../../utils/journals'
 
+//getEntries with overview separate, and get details aftere
 const getEntries = useDb(async (db, req, res) => {
     if (req.method == "GET") {
         res.statusCode = 200

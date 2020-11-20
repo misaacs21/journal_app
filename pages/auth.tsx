@@ -2,7 +2,13 @@ import React, {useState}  from 'react'
 import {AuthForm} from '../components/authForm'
 import Router from "next/router"
 
+import styles from '../styles/Auth.module.scss'
+
 //redirect from here to / if logged in
+//sign up - re-enter password, email that activates account and only then adds account
+    //user object indicates if active or not
+    //rando key for account must be given to activate->if matches, creates for real
+//cssgrid calender - journal view?
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
@@ -98,29 +104,25 @@ const Login = () => {
     }
 
     return (
-        <>
-            {!reg &&
-                <>
-                <h1>Login</h1>
-                <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Login"/>
-                {submitFail && (
-                    <p>Login failed! Try again.</p>
-                )}
-                <button onClick={switchStates}>Don't have an account? Register now.</button>
-                </>
-            }
-
-           {reg &&
-                <>
-                <h1>Register</h1>
-                <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Register"/>
-                {submitFail && (
-                    <p>Registration failed! Try again.</p>
-                )}
-                <button onClick={switchStates}>Already have an account? Login now.</button>
-                </>
-            }
-        </>
+        <div className={styles.split}>
+            <div className={styles.left}>
+                <h1 className={styles.title}>MOOD FOR YOU</h1>
+                <h2 className={styles.subtitle}>~an automatic mood tracker and journaling application~</h2>
+            </div>
+            <div className={styles.right}>
+                <div className={styles.box}>
+                    <h1 className={styles.header}>
+                        <span className={reg ? styles.h1off : styles.h1on} onClick={reg ? switchStates : undefined}>Log In</span>
+                        <span className={styles.or}>or</span>
+                        <span className={reg ? styles.h1on : styles.h1off} onClick={reg ? undefined : switchStates}>Sign Up</span>
+                    </h1>
+                    {submitFail && (
+                        <div className={styles.error}>Username-password combination doesn't match our records.</div>
+                    )}
+                    <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText={reg ? "Sign up" : "Log In"}/>
+                </div>
+            </div>
+        </div>
     )
 }
 
