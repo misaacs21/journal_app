@@ -111,6 +111,7 @@ const Login = () => {
             </div>
             <div className={styles.right}>
                 <div className={styles.box}>
+<<<<<<< Updated upstream
                     {!reg &&
                         <>
                         <h1 className={styles.header}>
@@ -142,6 +143,19 @@ const Login = () => {
                         <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Sign Up"/>
                         </>
                     }
+=======
+                    <h1 className={styles.header}>
+                        <span className={reg ? styles.h1off : styles.h1on} onClick={reg ? switchStates : undefined}>Log In</span>
+                        <span className={styles.or}>or</span>
+                        <span>
+                            <a className={reg ? styles.h1on : styles.h1off} onClick={reg ? undefined : switchStates}>Sign Up</a>
+                        </span>
+                    </h1>
+                    {submitFail && (
+                        <div className={styles.error}>Username-password combination doesn't match our records.</div>
+                    )}
+                    <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText={reg ? "Sign up" : "Log In"}/>
+>>>>>>> Stashed changes
                 </div>
             </div>
         </div>
