@@ -6,11 +6,11 @@ export interface journalEntry {
     entry: string
 }
 
-export const createJournal = async (entry: string, userID:string, db: Db): Promise<string | null> => {
+export const createJournal = async (entry: string, userID:string, date: Date, db: Db): Promise<string | null> => {
     console.log("EVEN MORE ID: " + userID)
     const entries = db.collection('journal_entries')
     try {
-        await entries.insertOne({userID, entry})
+        await entries.insertOne({userID, date, entry})
     }
     catch (error){
         return Promise.reject('Database access error')

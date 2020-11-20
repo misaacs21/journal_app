@@ -13,8 +13,19 @@ interface Display {
 }
 //need error handling for journal entries, what to explain if no entries, etc...
 //ADD NEXT COOKIE SO CAN EASILY GET THEM FROM THE CTX WITHOUT NEEDING A QUERY!
-//do welcome ONLY if you've just logged in or if its ur first time today? how to accomplish?
+//do welcome ONLY if you've just logged in or if its ur first time today? how to accomplish? 
+//What is destructuring operator actually doing?
+//how to get days to start filling from correct day?
+//why on compile does my startdate change?
+//should journal entries be in a state variable or something? Access them month to month?
 const Home = (data:Display) => {
+  const [entry,setEntry] = useState('')
+  const [submitFail, setSubmitFail] = useState(false)
+  const [showEntries,setShowEntries] = useState(false)
+  const [month, setMonth] = useState(0)
+  const [year, setYear] = useState(0)
+  const [startDay, setStartDay] = useState(0)
+
   useEffect(() => {
     setTimeout(function() {
       let screen = document.getElementById('removeFromDOM')
@@ -25,11 +36,18 @@ const Home = (data:Display) => {
       screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
       screen!.className = 'goodbye'
     }, 4000);
-  }, []);
+    let d = new Date()
+    let m = d.getMonth()
+    setMonth(m)
+    let y = d.getFullYear()
+    setYear(y)
 
-  const [entry,setEntry] = useState('')
-  const [submitFail, setSubmitFail] = useState(false)
-  const [showEntries,setShowEntries] = useState(false)
+    let start: number = 0
+    while (new Date(year,month,1).getDay() >= start) {
+        start++
+    }
+    setStartDay(start)
+  }, []);
 
   const logout = async () => {
     try {
@@ -56,6 +74,7 @@ const Home = (data:Display) => {
     try {
       console.log("MORE ID: " + data.user._id)
       const userID = data.user._id
+      let date = new Date()
       return await fetch('/api/submitEntry', {
         method: 'POST',
         headers: {
@@ -63,7 +82,8 @@ const Home = (data:Display) => {
         },
         body: JSON.stringify({
             entry,
-            userID //don't need this
+            userID,
+            date
         }),
       })
     }
@@ -75,21 +95,47 @@ const Home = (data:Display) => {
     return
   }
 
-  //QUESTION: why can't I put anything in here?
   return (
     <>
       <div id="removeFromDOM" className={styles.welcome}><div className={styles.message}>Welcome back, {data.user.username}</div></div>
-      <p/>
-      <div className={styles.home}>
-      <form onSubmit={submitJournal}>
-        <textarea onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
-        <br />
-        <button type="submit">Submit</button>
-        {submitFail && (
-          <p>Your journal entry should not be empty!</p>
-        )}
-      </form>
-      <button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>
+      <div className={styles.menu}></div>
+      <div className={styles.container}>
+        <div className={styles.header}>
+          {`${['January','February','March','April','May','June','July','August','September','October','November','December'][month]} ${year}`}
+        </div>
+        <div className={styles.calender}>
+          <div className={styles.daysContainer}>
+            {['Su','M','Tu','W','Th','F','Sa'].map((day) => {
+              return (
+                <span className={styles.daysWeek}>{day}</span>
+            )})}
+          </div>
+          {[...Array(35)].map((day, index) => {
+            if (index < startDay) {
+              return (
+                <div className={styles.cell}>
+                </div>
+              )
+            }
+            return (
+              /*today && the special style*/
+              <div className={styles.cell}>
+                {(index+1-startDay) < new Date(year, month, 0).getDate() && 
+                <div className={styles.dateNum}>{index+1-startDay}</div>}
+                {/*journal entry for index+1-startDay && dot */}
+              </div>
+          )})}
+          {/*<form onSubmit={submitJournal}>
+            <textarea onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
+            <br />
+            <button type="submit">Submit</button>
+            {submitFail && (
+              <p>Your journal entry should not be empty!</p>
+            )}
+            </form>*/}
+          {/*<button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>*/}
+        </div>
+      </div>
       {showEntries && (
         <div>
           {/*Final will have these each in their own calender square correlating to the date they were created -- ADD DATE TO DB. Open in a pop up? only one entry per day. import calender module? view mood trend graph?*/}
@@ -105,8 +151,7 @@ const Home = (data:Display) => {
           })}
         </div>
       )}
-      <button onClick={logout}>Logout</button>
-    </div>
+      {/*<button onClick={logout}>Logout</button>*/}
     </>
   )
 }
