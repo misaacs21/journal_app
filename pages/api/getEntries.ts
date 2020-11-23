@@ -9,7 +9,6 @@ const getEntries = useDb(async (db, req, res) => {
         console.log("TO STRING: " + JSON.stringify(req.cookies))
         const payload = await extractFromCookie2(req)
         console.log("PAYLOAD ID: " + payload!._id)
-        console.log("BODY: " + req.body.date)
         const response = await getJournals(payload!._id, req.body.date, db)
         return res.send(response)
     }

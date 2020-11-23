@@ -130,3 +130,12 @@ $cal-header-height: 66px;
     @include text-size('medium');
     position: absolute; //does not use padding
 }
+.circle {
+    height: 100px;
+    width: 100px;
+    left: auto;
+    right: auto;
+    top: 15px;
+    background-color: #bbb;
+    border-radius: 50%;
+}
