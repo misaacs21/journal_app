@@ -42,3 +42,20 @@ export const getJournals = async (id: string, date: string, db: Db): Promise<jou
     })
     return journalArray
 }
+
+export const getOneJournal = async (id: string, date: string, db: Db): Promise<journalEntry | null> => {
+    const entries = db.collection('journal_entries')
+    let journal: journalEntry | null
+    let inDate = new Date(date)
+    try {
+        console.log(date)
+        journal = JSON.parse(JSON.stringify(entries.findOne({userID:id, date: {
+            $gte: new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDay(), 0, 0, 0).toISOString(),
+            $lte: new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDay(), 23, 59, 59).toISOString()
+        }})))
+    }
+    catch (error) {
+        return Promise.reject('Database access error')
+    }
+    return journal
+}
