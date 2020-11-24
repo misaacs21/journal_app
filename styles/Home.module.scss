@@ -119,9 +119,10 @@ $cal-header-height: 66px;
 }
 .cell {
     position: relative; 
+    padding: 10px;
 }
 .dateNum {
-    top: 10px;
+    top: 0;
     right: 10px;
     font: {
         family: $font;
@@ -138,4 +139,66 @@ $cal-header-height: 66px;
     top: 15px;
     background-color: #bbb;
     border-radius: 50%;
+    border: solid 5px;
+    border-color: $dark-blue;
+    cursor: pointer;
+}
+.today {
+    background-color: $white;
+    padding: 10px;
+}
+
+.circleToday {
+    @extend .circle;
+    background-color: $vib-orange;
+    text-align: center;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $white;
+    @include text-size('xx-large');
+}
+
+.dateNumToday {
+    @extend .dateNum;
+    background-color: $dark-blue;
+    color: $light-gray;
+}
+.dim {
+    width: 100vw;
+    height:100vh;
+    background-color: #2f2f2f;
+    opacity: 30%;
+}
+.popUp {
+    width: 80%;
+    height: 80%;
+    top: 50px;
+    left: 120px;
+    right: auto;
+    position: absolute;
+    background-color: $light-gray;
+    border: solid 5px;
+    border-color: $dark-blue;
+    border-radius: 100px;
+    padding: 20px;
+}
+
+.submitBox {
+    width: 95%;
+    height: 350px;
+    left: 100px;
+    top: 200px;
+    background-color: $white;
+    border-radius: 80px;
+    border: none;
+    outline: none;
+    resize: none;
+    padding: 50px;
+    font: {
+        family: $font;
+    }
+    color: $dark-blue;
+    @include text-size('medium');
 }

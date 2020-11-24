@@ -20,8 +20,9 @@ interface Display {
 //only on recompilation (client side?): querySrv EREFUSED 
 //how to make sure welcome doesn't show on refresh?
 //how to fix getEntry situation
-//MORE EFFICIENT WAY OF GETTING THE JOURNAL ENTRY LIST AS CALENDER FORMAT?
 //best way to style circles to ensure they stay centered in cell
+//prevent reload opening/closing popups
+//why is side bar moving when popup opens
 
 //journal icon: <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnPjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTQ1MC45NSAzMWgtMTYuMjNjMi4yODcgMTIuMDYuOTMxIDE1LjUyNSAxLjMzIDc4LjIyN2wyOS45LTcuNTEzdi01NS43MTRjMC04LjI4NC02LjcxNi0xNS0xNS0xNXoiIGZpbGw9IiNjMGNkZDEiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD48cGF0aCBkPSJtNDM2LjA1IDE5OS4yMjcgMjkuOS03LjUxMnYtNTkuMDY4bC0yOS45IDcuNTEzeiIgZmlsbD0iI2MwY2RkMSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPjxwYXRoIGQ9Im00MzYuMDUgMjkwLjIxIDE4LjU1Ni00LjY2MmM2LjY2OS0xLjY3NiAxMS4zNDUtNy42NzEgMTEuMzQ1LTE0LjU0OHYtNDguMzUzbC0yOS45IDcuNTEzdjYwLjA1eiIgZmlsbD0iI2MwY2RkMSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPjxwYXRoIGQ9Im0xMzUuOTUgOTFoMTgwdjkwaC0xODB6IiBmaWxsPSIjYzBjZGQxIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BhdGg+PHBhdGggZD0ibTIyNiAzOTFjMC0zMy4wODQgMjYuOTE2LTYwIDYwLTYwaDEyMC4wNXYtMjg2YzAtMjQuODEzLTIwLjE4Ny00NS00NS00NWgtMzAwYy04LjI4NCAwLTE1IDYuNzE2LTE1IDE1djQ4MmMwIDguMjg0IDYuNzE2IDE1IDE1IDE1aDMwMGMyNC45ODIgMCA0NS0yMC4zNyA0NS00NC45NTV2LTE2LjA0NWgtMTIwLjA1Yy0zMy4wODQgMC02MC0yNi45MTYtNjAtNjB6bS0xMjAuMDUtMTk1di0xMjBjMC04LjI4NCA2LjcxNi0xNSAxNS0xNWgyMTBjOC4yODQgMCAxNSA2LjcxNiAxNSAxNXYxMjBjMCA4LjI4NC02LjcxNiAxNS0xNSAxNWgtMjEwYy04LjI4NCAwLTE1LTYuNzE2LTE1LTE1eiIgZmlsbD0iI2MwY2RkMSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPjxwYXRoIGQ9Im0yNTYgMzkxYzAgMTYuNTQyIDEzLjQ1OCAzMCAzMCAzMGgxNTAuMDV2LTYwaC0xNTAuMDVjLTE2LjU0MiAwLTMwIDEzLjQ1OC0zMCAzMHptNDUtLjA1YzAgOC4yODQtNi43MTYgMTUtMTUgMTVzLTE1LTYuNzE2LTE1LTE1IDYuNzE2LTE1IDE1LTE1IDE1IDYuNzE2IDE1IDE1eiIgZmlsbD0iI2MwY2RkMSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiIgY2xhc3M9IiI+PC9wYXRoPjwvZz48L2c+PC9zdmc+" />
 //chart icon: <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0ibTUxMS42MDkgNDkzLjY0MXYtMjk3LjY0MWMwLTguMjg0LTYuNzE2LTE1LTE1LTE1aC02MS4zMThjLTguMjg0IDAtMTUgNi43MTYtMTUgMTV2Mjg2aC0yOC42ODJ2LTIyNmMwLTguMjg0LTYuNzE2LTE1LTE1LTE1aC02MS4zMThjLTguMjg0IDAtMTUgNi43MTYtMTUgMTV2MjI2aC0yOC41ODJ2LTIyNmMwLTguMjg0LTYuNzE2LTE1LTE1LTE1aC02MS4zMThjLTguMjg0IDAtMTUgNi43MTYtMTUgMTV2MjI2aC0yOS4zNDF2LTEzNmMwLTguMjg0LTYuNzE2LTE1LTE1LTE1aC02MS4zMTdjLTguMjg0IDAtMTUgNi43MTYtMTUgMTV2MTM2aC0yOS43MzN2LTQ2N2MwLTguMjg0LTYuNzE2LTE1LTE1LTE1cy0xNSA2LjcxNi0xNSAxNXY0ODJjMCA4LjI4NCA2LjcxNiAxNSAxNSAxNWg0ODJjOS41MDcgMCAxNi43OTYtOC44MTYgMTQuNjA5LTE4LjM1OXoiIGZpbGw9IiNjMGNkZDEiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiPjwvcGF0aD48cGF0aCBkPSJtMTE0Ljk5OCAyNjguMDAyIDExNi4wNTEtODcuMDAyaDExNC45MDJjMy45NzggMCA3Ljc5My0xLjU4IDEwLjYwNi00LjM5NGw5NC4zOTQtOTQuMzk0djIzLjc4OGMwIDguMjg0IDYuNzE2IDE1IDE1IDE1czE1LTYuNzE2IDE1LTE1Yy0uMDAxLTE0LjIyNS4wMDItNTkuMDY4LS4wMDItNjAuMDQ0LS4wMjUtOC4xODktNi42ODMtMTQuOTU2LTE0Ljk5OC0xNC45NTZoLTU4LjljLTguMjg0IDAtMTUgNi43MTYtMTUgMTVzNi43MTYgMTUgMTUgMTVoMjIuNjg3bC05MCA5MGgtMTEzLjY4OGMtMy4yNDUgMC02LjQwMiAxLjA1Mi04Ljk5OCAyLjk5OGwtMTIwLjA1IDkwYy02LjYyOCA0Ljk3LTcuOTc0IDE0LjM3MS0zLjAwNCAyMSA0Ljk1MyA2LjYwNyAxNC4zNTIgNy45ODggMjEgMy4wMDR6IiBmaWxsPSIjYzBjZGQxIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIj48L3BhdGg+PC9nPjwvZz48L3N2Zz4=" />
@@ -29,13 +30,15 @@ interface Display {
 //right icon: <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDEyMy45NjQgMTIzLjk2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8cGF0aCBkPSJNMTIxLjcsNTcuNjgxTDgzLDI2Ljg4MWMtNC0zLjEtMTAtMC4zLTEwLDQuOHYxMC4zYzAsMy4zLTIuMiw2LjItNS41LDYuMkg2Yy0zLjMsMC02LDIuNC02LDUuOHYxNi4yYzAsMy4yLDIuNyw2LDYsNmg2MS41ICAgYzMuMywwLDUuNSwyLjYwMSw1LjUsNS45djEwLjNjMCw1LDYsNy44LDkuOSw0LjdsMzguNi0zMEMxMjQuNyw2NC43ODEsMTI0LjgsNjAuMDgxLDEyMS43LDU3LjY4MXoiIGZpbGw9IiNjMGNkZDEiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiPjwvcGF0aD4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8L2c+PC9zdmc+" />
 //left icon: <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDEyMy45NjQgMTIzLjk2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGcgdHJhbnNmb3JtPSJtYXRyaXgoLTEsMCwwLDEsMTIzLjk2MzgzNjY2OTkyMTg4LDApIj4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KCTxwYXRoIGQ9Ik0xMjEuNyw1Ny42ODFMODMsMjYuODgxYy00LTMuMS0xMC0wLjMtMTAsNC44djEwLjNjMCwzLjMtMi4yLDYuMi01LjUsNi4ySDZjLTMuMywwLTYsMi40LTYsNS44djE2LjJjMCwzLjIsMi43LDYsNiw2aDYxLjUgICBjMy4zLDAsNS41LDIuNjAxLDUuNSw1Ljl2MTAuM2MwLDUsNiw3LjgsOS45LDQuN2wzOC42LTMwQzEyNC43LDY0Ljc4MSwxMjQuOCw2MC4wODEsMTIxLjcsNTcuNjgxeiIgZmlsbD0iI2MwY2RkMSIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiI+PC9wYXRoPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjwvZz48L3N2Zz4=" />
 const Home = (data:Display) => {
-  const [entry,setEntry] = useState('')
+  const [today,setToday] = useState('')
+  const [entry, setEntry] = useState('')
   const [submitFail, setSubmitFail] = useState(false)
   const [showEntries,setShowEntries] = useState(false)
   const [month, setMonth] = useState(new Date().getMonth())
   const [year, setYear] = useState(new Date().getFullYear())
   const [startDay, setStartDay] = useState(new Date(year,month,1).getDay())
   const [entries, setEntries] = useState(data.entries)
+  const [submitWin, setSubmitWin] = useState(false)
   //journal entry state
 
   useEffect(() => {
@@ -161,12 +164,12 @@ const Home = (data:Display) => {
        // console.log("TESTING: " + testing)
         if (testing === undefined) {
           //console.log("returning null")
-          setEntry('')
+          setToday('')
           //console.log("ENTRY: " + entry)
           return
         }
         let ent = JSON.parse(JSON.stringify(testing)).entry
-        setEntry(ent)
+        setToday(ent)
         //console.log("ENTRY: " + entry)
       })
       /*
@@ -211,12 +214,16 @@ const Home = (data:Display) => {
                 </div>
               )
             }
-            else if (calNum === new Date().getDate()) { //probably will still display if you look at previous months
+            else if (calNum === new Date().getDate() && month===new Date().getMonth()) {
               getEntryDB(new Date())
-              if (entry=='') {
+              if (today=='') {
                 return (
-                  //MAKE THIS CLICKABLE TO CREATE NEW ENTRY
+                  //onClick change state so pop up with this entry, using calNum as index, since it's assumed in this section of code that month and year
+                  //will correspond to what's in data.entries
+                  //but how will this play with calender view ie a scroll of multiple months? or chart view
                   <div className={styles.today}>
+                    <div className={styles.dateNumToday}>{calNum}</div>
+                    <div className={styles.circleToday} onClick={() => {setSubmitWin(true)}}>?</div>
                   </div>
                 )
               }
@@ -231,17 +238,25 @@ const Home = (data:Display) => {
               </div>
               //DoES THIS LOGIC HOLD??? GETS LAST DAY OF PREVIOUS MONTH?
           )})}
-          {/*<form onSubmit={submitJournal}>
-            <textarea onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
-            <br />
-            <button type="submit">Submit</button>
-            {submitFail && (
-              <p>Your journal entry should not be empty!</p>
-            )}
-            </form>*/}
+         
           {/*<button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>*/}
         </div>
       </div>
+      {submitWin && (
+        <>
+        <div className={styles.dim} onClick={() => setSubmitWin(false)}/>
+        <div className={styles.popUp}>
+            <form onSubmit={submitJournal}>
+              <textarea className={styles.submitBox} onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
+              <br />
+              <button type="submit" className={styles.submitButton}>Submit</button>
+              {submitFail && (
+                <p>Your journal entry should not be empty!</p>
+              )}
+            </form>
+        </div>
+        </>
+      )}
       {showEntries && (
         <div>
           {/*Final will have these each in their own calender square correlating to the date they were created -- ADD DATE TO DB. Open in a pop up? only one entry per day. import calender module? view mood trend graph?*/}
