@@ -4,11 +4,9 @@ import Router from "next/router"
 
 import styles from '../styles/Auth.module.scss'
 
-//redirect from here to / if logged in
 //sign up - re-enter password, email that activates account and only then adds account
     //user object indicates if active or not
     //rando key for account must be given to activate->if matches, creates for real
-//cssgrid calender - journal view?
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')

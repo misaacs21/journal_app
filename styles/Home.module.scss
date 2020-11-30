@@ -1,11 +1,20 @@
 @use 'globalVars.module.scss' as *;
 
-//menu - open state close state that changes class on it, and then base styling on whether class on or not
-//best way to bring in iconography? where do those go in file structure, size considerations, etc?
-//why these lines on mobile around days?
-    //instead of having cal background blue, use border around each cell instead
+/* HELP:
+* Can't get square calender squares even with references:
+* https://stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css
+* https://stackoverflow.com/questions/20590239/maintain-aspect-ratio-of-div-but-fill-screen-width-and-height-in-css/36295495#20593342
+*/
+
+/* TODO:
+* Set max-width and max-height 100% so shrinks as grid shrinks
+* Mobile: grid in horizontal on left, popup on right, scroll in vertical with popup taking whole screen (back arrow in top left)
+* Ref: https://stackoverflow.com/questions/5735467/how-to-detect-the-device-orientation-using-css-media-queries
+*/
+
 $menu-width: 350px;
-$cal-header-height: 66px;
+$cal-header-height: 60px;
+$grid-line: 5px;
 @keyframes fade {
     0% {
         opacity: 1;
@@ -54,6 +63,7 @@ $cal-header-height: 66px;
     top: 0;
     left: 0;
     background-color: $dark-blue;
+    position: absolute;
 }
 
 .screen {
@@ -62,7 +72,7 @@ $cal-header-height: 66px;
 .container {
     height: 100vh;
     width: calc(100% - #{$menu-width});
-    left: 15vw;
+    left: $menu-width;
     top: 0;
     position: absolute;
     background-color: $vib-yellow;
@@ -70,21 +80,66 @@ $cal-header-height: 66px;
         top: 10px;
         bottom: 50px;
         right: 50px;
+        left: 50px;
     }
+    //overflow: hidden;
 }
 .calender {
-    height: calc(100% - #{$cal-header-height});
     top: 0;
-    width: 100%;
+    //width: 100%;
     position: relative;
     display: grid;
     background-color: $light-blue;
-    grid-gap: 5px;
+    grid-gap: $grid-line;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: 50px repeat(5, 1fr);
+    grid-template-rows: .2fr repeat(5, 1fr); //change 50px to smth more flexible, half a square?
+    height: calc(100% - #{$cal-header-height});
+    max-width: 100%;
 }
+
+.calender > .cell, .today {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
 .calender > .cell {
     background-color: $pale-yellow;
+    min-width: 0;
+    min-height: 0;
+}
+
+.calender > .today {
+    border: 5px solid $dark-blue;
+    margin: -$grid-line;
+}
+.calenderSpecial {
+    top: 0;
+    //width: 100%;
+    position: relative;
+    display: grid;
+    background-color: $light-blue;
+    grid-gap: $grid-line;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: .2fr repeat(6, 1fr);
+    height: calc(100% - #{$cal-header-height});
+    max-width: 100%;
+}
+.calenderSpecial > .cell, .today {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.calenderSpecial > .cell {
+    background-color: $pale-yellow;
+    min-width: 0;
+    min-height: 0;
+}
+
+.calenderSpecial > .today {
+    border: 5px solid $dark-blue;
+    margin: -$grid-line;
 }
 .header {
     @include text-size('x-large');
@@ -95,7 +150,7 @@ $cal-header-height: 66px;
     color: $light-blue;
     text-align: center;
     margin: {
-        bottom: 15px;
+        //bottom: 5px;
     }
 }
 .daysContainer {
@@ -104,7 +159,7 @@ $cal-header-height: 66px;
     grid-column-end: 8;
     display: grid;
     grid-template-columns: repeat(7,1fr);
-    margin-bottom: -5px;
+    margin-bottom: -$grid-line;
 }
 .daysWeek {
     text-align: center;
@@ -120,79 +175,127 @@ $cal-header-height: 66px;
 .cell {
     position: relative; 
     padding: 10px;
-}
-.dateNum {
-    top: 0;
-    right: 10px;
-    font: {
-        family: $font;
+
+    .dateNum {
+        top: 0;
+        right: 10px;
+        font: {
+            family: $font;
+        }
+        color: $dark-blue;
+        @include text-size('medium');
+        position: absolute; //does not use padding
     }
-    color: $dark-blue;
-    @include text-size('medium');
-    position: absolute; //does not use padding
 }
 .circle {
-    height: 100px;
-    width: 100px;
-    left: auto;
-    right: auto;
-    top: 15px;
-    background-color: #bbb;
-    border-radius: 50%;
-    border: solid 5px;
-    border-color: $dark-blue;
-    cursor: pointer;
+        height: 125px;
+        width: 125px;
+        left: auto;
+        right: auto;
+        top: 20px;
+        background-color: #bbb;
+        border-radius: 50%;
+        border: solid 5px;
+        border-color: $dark-blue;
+        cursor: pointer;
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
 }
 .today {
+    position: relative;
     background-color: $white;
     padding: 10px;
-}
 
-.circleToday {
-    @extend .circle;
-    background-color: $vib-orange;
-    text-align: center;
-    font: {
-        family: $font;
-        weight: bold;
+    
+    .circleToday {
+        height: 125px;
+        width: 125px;
+        left: auto;
+        right: auto;
+        top: 20px;
+        border-radius: 50%;
+        border: solid 5px;
+        border-color: $dark-blue;
+        cursor: pointer;
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        background-color: $vib-orange;
+        text-align: center;
+        font: {
+            family: $font;
+            weight: bold;
+        }
+        color: $white;
+        @include text-size('xx-large');
+        padding-top: .05em;
     }
-    color: $white;
-    @include text-size('xx-large');
+
+    .dateNumToday {
+        top: 0;
+        right: 0;
+        width: 1.75em;
+        height: 1.75em;
+        padding-top: .2em;
+        text-align: center;
+        font: {
+            family: $font;
+        }
+        @include text-size('medium');
+        background-color: $dark-blue;
+        color: $white;
+        display: block;
+        position: absolute;
+    }
 }
 
-.dateNumToday {
-    @extend .dateNum;
-    background-color: $dark-blue;
-    color: $light-gray;
-}
 .dim {
-    width: 100vw;
-    height:100vh;
     background-color: #2f2f2f;
     opacity: 30%;
+    position: fixed;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    padding: 20%;
 }
 .popUp {
-    width: 80%;
-    height: 80%;
-    top: 50px;
-    left: 120px;
+    width: 75%;
+    height: 90%;
+    top: 5%;
+    left: 12.5%;
     right: auto;
     position: absolute;
     background-color: $light-gray;
     border: solid 5px;
     border-color: $dark-blue;
     border-radius: 100px;
-    padding: 20px;
+    padding: 40px;
+}
+.submitHeader {
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $dark-blue;
+    @include text-size('xxx-large');
+    margin: {
+        top: .2em;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    text-align: center;
 }
 
 .submitBox {
-    width: 95%;
-    height: 350px;
-    left: 100px;
-    top: 200px;
+    width: 100%;
+    height: 100%;
     background-color: $white;
     border-radius: 80px;
-    border: none;
+    border: solid 4px;
+    border-color: $dark-blue;
     outline: none;
     resize: none;
     padding: 50px;
@@ -200,5 +303,126 @@ $cal-header-height: 66px;
         family: $font;
     }
     color: $dark-blue;
-    @include text-size('medium');
+    @include text-size('large');
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    line-height: 150%;
+}
+
+.formContainer {
+    height: 60%;
+    top: 8%;
+    position: relative;
+}
+.submitButton {
+    background-color: $vib-orange;
+    border: none;
+    border-radius: 30px;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $white-yellow;
+    @include text-size('large');
+    width: 5em;
+    height: 2em;
+    position: relative;
+    display: block;
+    margin: 1em auto;
+    cursor: pointer;
+}
+
+.exit {
+    background-color: $vib-orange;
+    display: block;
+    border: none;
+    border-radius: 50%;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $white-yellow;
+    @include text-size('xx-large');
+    position: absolute;
+    top: 3%;
+    left: calc(12.5% + 70%);
+    width: 1.3em;
+    height: 1.3em;
+    text-align: center;
+    padding: .1em;
+    z-index: 5;
+    cursor: pointer;
+}
+
+.journalLabel {
+    @include text-size('large');
+    font: {
+        family: $font;
+    }
+    color: $dark-blue;
+    background-color: $light-gray;
+    width: 30%;
+    height: 15%;
+    border: solid 4px;
+    border-radius: 15px;
+    top: 0;
+    position: absolute;
+    z-index: 1;
+    padding: .4em;
+}
+
+.readBox {
+    @extend .submitBox;
+    top: 8%;
+    z-index: 5;
+    height: 92%;
+}
+
+.navigation {
+    position: relative;
+    top: 0;
+    left: 10px;
+    width: 35%;
+    margin: 20px;
+    height: auto;
+    cursor: pointer;
+}
+.icon {
+    position: relative;
+    left: 25%;
+    width: 40%;
+    margin-top: 85%;
+    height: auto;
+    cursor: pointer;
+}
+.happy {
+    background-color: $vib-yellow;
+}
+.sad {
+    background-color: #8ea7bf;
+    color: $light-gray;
+}
+.chart {
+    width: 50%;
+    height: 50%;
+    left: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.chartHead {
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $dark-blue;
+    @include text-size('xx-large');
+    margin: {
+        top: .2em;
+        left: 0;
+        right: 0;
+        bottom: 1.5em;
+    }
+    text-align: center;
 }
