@@ -109,37 +109,15 @@ const Login = () => {
             </div>
             <div className={styles.right}>
                 <div className={styles.box}>
-                    {!reg &&
-                        <>
-                        <h1 className={styles.header}>
-                            <span className={styles.h1on}>Log In</span>
-                            <span className={styles.or}>or</span>
-                            <span>
-                                <a className={styles.h1off} onClick={switchStates}>Sign Up</a>
-                            </span>
-                        </h1>
-                        {submitFail && (
-                            <div className={styles.error}>Username-password combination doesn't match our records.</div>
-                        )}
-                        <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText="Log In"/>
-                        </>
-                    }
-
-                    {reg &&
-                        <>
-                        <h1 className={styles.header}>
-                            <span>
-                                <a className={styles.h1off} onClick={switchStates}>Log In</a>
-                            </span>
-                            <span className={styles.or}>or</span>
-                            <span className={styles.h1on}>Sign Up</span>
-                        </h1>           
-                        {submitFail && (
-                            <div className={styles.error}>Username-password combination is not valid.</div>
-                        )}            
-                        <AuthForm onSubmit={handleRegSubmit} setUser={setUsername} setPass={setPassword} buttonText="Sign Up"/>
-                        </>
-                    }
+                    <h1 className={styles.header}>
+                        <span className={reg ? styles.h1off : styles.h1on} onClick={reg ? switchStates : undefined}>Log In</span>
+                        <span className={styles.or}>or</span>
+                        <span className={reg ? styles.h1on : styles.h1off} onClick={reg ? undefined : switchStates}>Sign Up</span>
+                    </h1>
+                    {submitFail && (
+                        <div className={styles.error}>Username-password combination doesn't match our records.</div>
+                    )}
+                    <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText={reg ? "Sign up" : "Log In"}/>
                 </div>
             </div>
         </div>
