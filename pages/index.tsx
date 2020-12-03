@@ -370,6 +370,8 @@ const getChartData = (type:string):ChartData<any> => {
                 title:{
                   display:false,
                 },
+                responsive: true, 
+                maintainAspectRatio: true,
                 legend:{
                   display:true,
                   position:'bottom',
@@ -405,6 +407,8 @@ const getChartData = (type:string):ChartData<any> => {
                 title:{
                   display:false
                 },
+                responsive: true, 
+                maintainAspectRatio: true,
                 legend:{
                   display:true,
                   position:'bottom',

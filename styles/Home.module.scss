@@ -272,7 +272,7 @@ $menu-height-mobile: 25vh;
             weight: bold;
         }
         color: $white;
-        @include text-size('xx-large');
+        @include text-size('x-large');
         padding-top: .05em;
         text-align: center;
     }
@@ -550,11 +550,22 @@ $menu-height-mobile: 25vh;
     }
     text-align: center;
 }
+@media(max-width: $desktop-breakpoint) {
+    .chartHead {
+        @include text-size(x-large);
+    }
+}
 
 .toggle {
     text-align: center;
     @include text_size('x-large');
     width: 100%;
+}
+@media(max-width: $desktop-breakpoint) {
+    .toggle {
+        @include text-size(x-large);
+        text-align: center;
+    }
 }
 .h1on {
     font: {
