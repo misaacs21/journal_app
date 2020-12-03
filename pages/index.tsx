@@ -6,8 +6,7 @@ import {Payload} from '../utils/cookie'
 import {journalEntry} from '../utils/journals'
 import styles from '../styles/Home.module.scss'
 import React, {useEffect} from 'react'
-import {Line, Pie} from 'react-chartjs-2'
-import globals from '../styles/globalVars.modules.scss'
+import {Line, Pie, ChartData} from 'react-chartjs-2'
 
 interface Display {
   user:Payload,
@@ -16,6 +15,7 @@ interface Display {
 /* HELP:
 * Fix stuttery load (elements flashing--welcome, today styling, circles)
 * Deployment?
+* Fluid mood colors?
 */
 
 /* TODO:
@@ -66,12 +66,12 @@ const Home = (data:Display) => {
     }
   }, []);
 
-const getChartData = (type:string) => {
+const getChartData = (type:string):ChartData<any> => {
   let posCount:number = 0
   let negCount:number = 0
   let neutralCount:number = 0
-  let fluidMoods = []
-  let colorMoods = []
+  let fluidMoods:number[] = []
+  let colorMoods:(string | null)[] = []
   console.log("going into for each")
   entries.forEach(entry => {
     if (entry == null) {
@@ -144,7 +144,8 @@ const getChartData = (type:string) => {
     )
 }
   const getEntry = (event: React.MouseEvent) => {
-    let temp = entries[event.currentTarget.id]
+    let index:number = parseInt(event.currentTarget.id)
+    let temp = entries[index]
     setShowEntry(true)
     setEntry(temp.entry)
     if (temp.mood < -2) {
@@ -315,7 +316,7 @@ const getChartData = (type:string) => {
                 {(calNum) <= endDay && 
                   <div className={styles.dateNum}>{calNum}</div>}
                 {entries[index] != null &&
-                  <div id={index} className={circleStyle} onClick={getEntry}>
+                  <div id={`$index`} className={circleStyle} onClick={getEntry}>
                   </div>
                 }
               </div>
@@ -494,7 +495,7 @@ Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activa
   }
   let entries = (response !== null && response !== undefined) ? await response.json() : []
 
-  console.log(entries.filter(entry => entry != null))
+  console.log(entries.filter((entry:journalEntry) => entry != null))
   console.log("USER: " + user?.username + " " + user?._id)
 
   return {user, entries}
