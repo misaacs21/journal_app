@@ -262,7 +262,7 @@ $menu-height-mobile: 25vh;
 
 .today {
     @extend .cell;
-    background-color: $white;
+    background-color: $white !important;
     
     .circleToday {
         @extend .circle;
@@ -274,6 +274,7 @@ $menu-height-mobile: 25vh;
         color: $white;
         @include text-size('xx-large');
         padding-top: .05em;
+        text-align: center;
     }
 
     .dateNumToday {
@@ -528,11 +529,10 @@ $menu-height-mobile: 25vh;
     color: $light-gray;
 }
 .chart {
-    width: 50%;
-    height: 50%;
-    left: 0;
+    left: 15%;
+    height: 70%;
+    width: 70%;
     position: relative;
-    display: inline-block;
 }
 
 .chartHead {
@@ -546,10 +546,51 @@ $menu-height-mobile: 25vh;
         top: .2em;
         left: 0;
         right: 0;
-        bottom: 1.5em;
+        bottom: .5em;
     }
     text-align: center;
 }
+
+.toggle {
+    text-align: center;
+    @include text_size('x-large');
+    width: 100%;
+}
+.h1on {
+    font: {
+      family: $font;
+      weight: bold;
+    }
+    color: $dark-blue;
+    text-decoration: underline;
+}
+
+.h1off {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $light-blue;
+    &:hover {
+        color: $dark-blue;
+    }
+}
+.or {
+    font: {
+      family: $font;
+      weight: normal;
+    }
+    @include text_size('large');
+    margin: {
+      left: 30px;
+      right: 30px;
+    }
+    color: $dark-blue;
+    display: inline-block;
+  }
 /*
 .navigation {
     position: relative;
@@ -597,5 +638,12 @@ $menu-height-mobile: 25vh;
         bottom: 1.5em;
     }
     text-align: center;
+}
+.chart {
+    width: 50%;
+    height: 50%;
+    left: 0;
+    position: relative;
+    display: inline-block;
 }
 */

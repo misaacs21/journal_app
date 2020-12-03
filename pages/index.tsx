@@ -38,6 +38,7 @@ const Home = (data:Display) => {
   const [mood, setMood] = useState('')
   const [moodStyle,setMoodStyle] = useState('')
   const [showChart,setShowChart] = useState(false)
+  const [line, setLine] = useState(false)
   //journal entry state
 
   useEffect(() => {
@@ -103,7 +104,8 @@ const getChartData = (type:string):ChartData<any> => {
           {
             label: 'Mood Counts',
             backgroundColor: ['#fff2cc','#8ea7bf','#b8b9b9'],
-            data: [posCount,negCount,neutralCount]
+            data: [posCount,negCount,neutralCount],
+            borderColor: '#647687'
           }
         ]
       }
@@ -125,7 +127,8 @@ const getChartData = (type:string):ChartData<any> => {
             borderWidth: 2,
             data: fluidMoods,
             pointBackgroundColor: colorMoods,
-            pointBorderColor: colorMoods
+            pointBorderColor: '#647687',
+            pointRadius: 7
           },
           {
             label: "Positive",
@@ -360,7 +363,7 @@ const getChartData = (type:string):ChartData<any> => {
         <div className={styles.exit} onClick={()=> setShowChart(false)}>X</div>
         <div className={styles.popUp}>
           <h1 className={styles.chartHead}>Moods this Month</h1>
-          <div className={styles.chart}>
+          {line && (<div className={styles.chart}>
             <Line
               data={getChartData('line')}
               options={{
@@ -394,8 +397,8 @@ const getChartData = (type:string):ChartData<any> => {
                 }
               }}
             />
-          </div>
-          <div className={styles.chart}>
+          </div>)}
+          {!line && (<div className={styles.chart}>
             <Pie
               data={getChartData('pie')}
               options={{
@@ -415,6 +418,11 @@ const getChartData = (type:string):ChartData<any> => {
                 },
               }}
             />
+          </div>)}
+          <div className={styles.toggle}>
+            <span className={line ? styles.h1off : styles.h1on} onClick={() => setLine(false)}>Percentage</span>
+            <span className={styles.or}>or</span>
+            <span className={line ? styles.h1on : styles.h1off} onClick={() => setLine(true)}>Over Time</span>
           </div>
         </div>
         </>
