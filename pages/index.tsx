@@ -262,12 +262,10 @@ const getChartData = (type:string):ChartData<any> => {
       <div id="removeFromDOM" className={styles.welcome}><div className={styles.message}>Welcome back, {data.user.username}</div></div>
       <div className={styles.screen}>
       <div className={styles.menu}>
-        <span>
-          <img className={styles.navigation} onClick={()=>changeMonth(-1)} src="/static/images/straight-left-arrow.svg"/>
-          <img className={styles.navigation} onClick={()=>changeMonth(1)} src="/static/images/straight-right-arrow.svg"/>
-        </span>
-        <div><img className={styles.icon} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/></div>
-        <div><img className={styles.icon} onClick={logout} src="/static/images/on-off-button.svg" /></div>
+          <img className={styles.navigationLeft} onClick={()=>changeMonth(-1)} src="/static/images/straight-left-arrow.svg"/>
+          <img className={styles.navigationRight} onClick={()=>changeMonth(1)} src="/static/images/straight-right-arrow.svg"/>
+          <img className={styles.icon} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/>
+          <img className={styles.icon} onClick={logout} src="/static/images/on-off-button.svg" />
       </div>
       <div className={styles.container}>
         <div className={styles.header}>
@@ -314,9 +312,9 @@ const getChartData = (type:string):ChartData<any> => {
             return (
               <div className={styles.cell}> 
                 {(calNum) <= endDay && 
-                  <div className={styles.dateNum}>{calNum}</div>}
+                  <div className={styles.dateNum} onClick={getEntry}>{calNum}</div>}
                 {entries[index] != null &&
-                  <div id={`$index`} className={circleStyle} onClick={getEntry}>
+                  <div id={`${index}`} className={circleStyle} onClick={getEntry}>
                   </div>
                 }
               </div>

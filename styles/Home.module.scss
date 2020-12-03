@@ -12,9 +12,12 @@
 * Ref: https://stackoverflow.com/questions/5735467/how-to-detect-the-device-orientation-using-css-media-queries
 */
 
-$menu-width: 350px;
+$menu-width: 15.1vw;
 $cal-header-height: 60px;
 $grid-line: 5px;
+$grid-line-mobile: 3px;
+$menu-height-mobile: 25vh;
+
 @keyframes fade {
     0% {
         opacity: 1;
@@ -26,6 +29,7 @@ $grid-line: 5px;
         opacity: 0;
     }
 }
+
 .welcome {
     height: 100vh;
     width: 100vw;
@@ -58,89 +62,92 @@ $grid-line: 5px;
 }
 
 .menu {
-    height: 100vh;
-    width: $menu-width;
-    top: 0;
+    height: $menu-height-mobile;
+    width: 100vw;
+    bottom: 0;
     left: 0;
     background-color: $dark-blue;
     position: absolute;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+@media (min-width: $desktop-breakpoint) {
+    .menu {
+        height: 100vh;
+        width: $menu-width;
+        top: 0;
+        bottom: auto;
+        padding: 1vw;
+    }
 }
 
 .screen {
-    display: flex;
+    display:flex;
 }
+
 .container {
-    height: 100vh;
-    width: calc(100% - #{$menu-width});
-    left: $menu-width;
+    height: 100vh - $menu-height-mobile;
+    width: 100vw;
+    left: 0;
     top: 0;
     position: absolute;
     background-color: $vib-yellow;
     padding: {
-        top: 10px;
-        bottom: 50px;
-        right: 50px;
-        left: 50px;
+        top: 1vw;
+        bottom: 1vw;
+        right: 2.5vw;
+        left: 2.5vw;
     }
-    //overflow: hidden;
 }
+@media (min-width: $desktop-breakpoint) {
+    .container {
+        height: 100vh;
+        width: 100vw - $menu-width;
+        left: $menu-width;
+        padding: {
+            top: 1vh;
+            bottom: 5vh;
+            right: 5vh;
+            left: 5vh;
+        }
+    }
+}
+
 .calender {
     top: 0;
-    //width: 100%;
     position: relative;
     display: grid;
     background-color: $light-blue;
-    grid-gap: $grid-line;
+    grid-gap: $grid-line-mobile;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: .2fr repeat(5, 1fr); //change 50px to smth more flexible, half a square?
     height: calc(100% - #{$cal-header-height});
     max-width: 100%;
 }
-
 .calender > .cell, .today {
     align-items: center;
     display: flex;
     justify-content: center;
 }
-
 .calender > .cell {
     background-color: $pale-yellow;
     min-width: 0;
     min-height: 0;
 }
-
 .calender > .today {
-    border: 5px solid $dark-blue;
-    margin: -$grid-line;
+    border: $grid-line-mobile solid $dark-blue;
+    margin: -$grid-line-mobile;
 }
-.calenderSpecial {
-    top: 0;
-    //width: 100%;
-    position: relative;
-    display: grid;
-    background-color: $light-blue;
-    grid-gap: $grid-line;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: .2fr repeat(6, 1fr);
-    height: calc(100% - #{$cal-header-height});
-    max-width: 100%;
-}
-.calenderSpecial > .cell, .today {
-    align-items: center;
-    display: flex;
-    justify-content: center;
+@media (min-width: $desktop-breakpoint) {
+    .calender {
+        grid-gap: $grid-line;
+    }    
+    .calender > .today {
+        border: $grid-line solid $dark-blue;
+        margin: -$grid-line;
+    }
 }
 
-.calenderSpecial > .cell {
-    background-color: $pale-yellow;
-    min-width: 0;
-    min-height: 0;
-}
-
-.calenderSpecial > .today {
-    border: 5px solid $dark-blue;
-    margin: -$grid-line;
-}
 .header {
     @include text-size('x-large');
     font: {
@@ -149,18 +156,22 @@ $grid-line: 5px;
     }
     color: $light-blue;
     text-align: center;
-    margin: {
-        //bottom: 5px;
-    }
 }
+
 .daysContainer {
     background-color: $vib-yellow !important;
     grid-column-start: 1;
     grid-column-end: 8;
     display: grid;
     grid-template-columns: repeat(7,1fr);
-    margin-bottom: -$grid-line;
+    margin-bottom: -$grid-line-mobile;
 }
+@media (min-width: $desktop-breakpoint) {
+    .daysContainer {
+        margin-bottom: -$grid-line;
+    }
+}
+
 .daysWeek {
     text-align: center;
     color: $dark-blue;
@@ -172,57 +183,90 @@ $grid-line: 5px;
     padding-bottom: 5%;
     @include text-size('large');
 }
+
+.calenderSpecial {
+    @extend .calender;
+    grid-template-rows: .2fr repeat(6, 1fr);
+}
+.calenderSpecial > .cell, .today {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.calenderSpecial > .cell {
+    background-color: $pale-yellow;
+    min-width: 0;
+    min-height: 0;
+}
+.calenderSpecial > .today {
+    border: $grid-line-mobile solid $dark-blue;
+    margin: -$grid-line-mobile;
+}
+@media (min-width: $desktop-breakpoint) {
+    .calenderSpecial > .today {
+        border: $grid-line solid $dark-blue;
+        margin: -$grid-line;
+    }
+}
+
 .cell {
     position: relative; 
-    padding: 10px;
+    padding: 5px;
 
     .dateNum {
-        top: 0;
-        right: 10px;
         font: {
             family: $font;
         }
         color: $dark-blue;
         @include text-size('medium');
-        position: absolute; //does not use padding
+        z-index: 2;
+        pointer-events: none;
     }
 }
-.circle {
-        height: 125px;
-        width: 125px;
-        left: auto;
-        right: auto;
-        top: 20px;
-        background-color: #bbb;
-        border-radius: 50%;
-        border: solid 5px;
-        border-color: $dark-blue;
-        cursor: pointer;
-        max-width: 100%;
-        max-height: 100%;
-        position: absolute;
-}
-.today {
-    position: relative;
-    background-color: $white;
-    padding: 10px;
+@media (min-width: $desktop-breakpoint) {
+    .cell {
+        padding: 10px;
 
+        .dateNum {
+            top: 0;
+            right: 10px;
+            position: absolute;
+        }
+    }
+}
+
+.circle {
+    height: 6vh;
+    width: 6vh;
+    left: auto;
+    right: auto;
+    top: 3vh;
+    background-color: #bbb;
+    border-radius: 50%;
+    border: solid $grid-line-mobile;
+    border-color: $dark-blue;
+    cursor: pointer;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+}
+@media (min-width: $desktop-breakpoint) {
+    .circle {
+        height: 13vh;
+        width: 13vh;
+        top: 1.5vh;
+        border: solid $grid-line;
+        border-color: $dark-blue;
+    }
+}
+
+.today {
+    @extend .cell;
+    background-color: $white;
     
     .circleToday {
-        height: 125px;
-        width: 125px;
-        left: auto;
-        right: auto;
-        top: 20px;
-        border-radius: 50%;
-        border: solid 5px;
-        border-color: $dark-blue;
-        cursor: pointer;
-        max-width: 100%;
-        max-height: 100%;
-        position: absolute;
+        @extend .circle;
         background-color: $vib-orange;
-        text-align: center;
         font: {
             family: $font;
             weight: bold;
@@ -233,20 +277,27 @@ $grid-line: 5px;
     }
 
     .dateNumToday {
-        top: 0;
-        right: 0;
-        width: 1.75em;
-        height: 1.75em;
-        padding-top: .2em;
-        text-align: center;
-        font: {
-            family: $font;
+        display: none;
+    }
+}
+@media (min-width: $desktop-breakpoint) {
+    .today {    
+        .dateNumToday {
+            top: 0;
+            right: 0;
+            width: 1.75em;
+            height: 1.75em;
+            padding-top: .2em;
+            text-align: center;
+            font: {
+                family: $font;
+            }
+            @include text-size('medium');
+            background-color: $dark-blue;
+            color: $white;
+            display: block;
+            position: absolute;
         }
-        @include text-size('medium');
-        background-color: $dark-blue;
-        color: $white;
-        display: block;
-        position: absolute;
     }
 }
 
@@ -260,19 +311,29 @@ $grid-line: 5px;
     bottom: 0;
     padding: 20%;
 }
+
 .popUp {
-    width: 75%;
-    height: 90%;
-    top: 5%;
-    left: 12.5%;
-    right: auto;
+    width: 100%;
+    height: 100%;
     position: absolute;
     background-color: $light-gray;
-    border: solid 5px;
-    border-color: $dark-blue;
-    border-radius: 100px;
-    padding: 40px;
+    padding: 3vw;
+    z-index: 3;
 }
+@media(min-width: $desktop-breakpoint) {
+    .popUp {
+        width: 75%;
+        height: 90%;
+        top: 5%;
+        left: 12.5%;
+        right: auto;
+        border: solid 5px;
+        border-color: $dark-blue;
+        border-radius: 100px;
+        padding: 40px;
+    }
+}
+
 .submitHeader {
     font: {
         family: $font;
@@ -315,6 +376,7 @@ $grid-line: 5px;
     top: 8%;
     position: relative;
 }
+
 .submitButton {
     background-color: $vib-orange;
     border: none;
@@ -337,22 +399,37 @@ $grid-line: 5px;
     background-color: $vib-orange;
     display: block;
     border: none;
-    border-radius: 50%;
+    border-radius: 15%;
     font: {
         family: $font;
         weight: bold;
     }
     color: $white-yellow;
-    @include text-size('xx-large');
-    position: absolute;
-    top: 3%;
-    left: calc(12.5% + 70%);
+    @include text-size('x-large');
+    position: relative;
+    top: 0;
+    left: calc(100% - 6.5vh);
     width: 1.3em;
     height: 1.3em;
     text-align: center;
     padding: .1em;
     z-index: 5;
     cursor: pointer;
+}
+@media(min-width: $desktop-breakpoint) {
+    .exit {
+        border-radius: 50%;
+        @include text-size('xx-large');
+        position: absolute;
+        top: 3%;
+        left: calc(12.5% + 70%);
+        width: 1.3em;
+        height: 1.3em;
+        text-align: center;
+        padding: .1em;
+        z-index: 5;
+        cursor: pointer;
+    }
 }
 
 .journalLabel {
@@ -362,14 +439,22 @@ $grid-line: 5px;
     }
     color: $dark-blue;
     background-color: $light-gray;
-    width: 30%;
+    width: 95%;
     height: 15%;
-    border: solid 4px;
+    border: solid 3px;
     border-radius: 15px;
     top: 0;
     position: absolute;
     z-index: 1;
     padding: .4em;
+}
+@media(min-width: $desktop-breakpoint) {
+    .journalLabel {
+        width: 30%;
+        height: 15%;
+        border: solid 4px;
+        border-radius: 15px;
+    }
 }
 
 .readBox {
@@ -379,6 +464,93 @@ $grid-line: 5px;
     height: 92%;
 }
 
+.navigationLeft {
+    position: relative;
+    width: 30%;
+    margin: {
+        right: 4vh;
+        top: 0;
+    }
+    height: auto;
+    cursor: pointer;
+    display: inline-block;
+
+}
+.navigationRight {
+    position: relative;
+    width: 30%;
+    margin: {
+        left: 4vh;
+        top: 0;
+    }
+    height: auto;
+    cursor: pointer;
+    display: inline-block;
+
+}
+@media(min-width: $desktop-breakpoint) {
+    .navigationLeft {
+        left: 2%;
+        width: 40%;
+        margin-right: 6%;
+    }
+    .navigationRight {
+        left: 2%;
+        width: 40%;
+        margin-left: 6%;
+    }
+}
+
+.icon {
+    position: relative;
+    left: 20%;
+    width: 20%;
+    margin-right: 17%;
+    cursor: pointer;
+}
+@media(min-width: $desktop-breakpoint) {
+    .icon {
+        position: relative;
+        left: 25%;
+        width: 40%;
+        margin-top: 100%;
+        height: auto;
+        cursor: pointer;
+        display: block;
+    }
+}
+
+.happy {
+    background-color: $vib-yellow;
+}
+.sad {
+    background-color: #8ea7bf;
+    color: $light-gray;
+}
+.chart {
+    width: 50%;
+    height: 50%;
+    left: 0;
+    position: relative;
+    display: inline-block;
+}
+
+.chartHead {
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $dark-blue;
+    @include text-size('xx-large');
+    margin: {
+        top: .2em;
+        left: 0;
+        right: 0;
+        bottom: 1.5em;
+    }
+    text-align: center;
+}
+/*
 .navigation {
     position: relative;
     top: 0;
@@ -426,3 +598,4 @@ $grid-line: 5px;
     }
     text-align: center;
 }
+*/
