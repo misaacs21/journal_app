@@ -100,9 +100,9 @@ $menu-height-mobile: 25vh;
     background-color: $vib-yellow;
     padding: {
         top: 1vw;
-        bottom: 1vw;
-        right: 2.5vw;
-        left: 2.5vw;
+        bottom: 5vw;
+        right: 1vw;
+        left: 1vw;
     }
 }
 @media (min-width: $desktop-breakpoint) {
@@ -119,11 +119,12 @@ $menu-height-mobile: 25vh;
     }
 }
 
+/*
 .calContainer {
     position: relative;
     padding-bottom: 100%;
     height: calc(100% - #{$cal-header-height});
-}
+}*/
 .calender {
     top: 0;
     position: relative;
@@ -133,7 +134,9 @@ $menu-height-mobile: 25vh;
     grid-template-columns: repeat(7, minmax(0,1fr));
     grid-template-rows: .2fr repeat(5, minmax(0, 1fr));
     //height: calc(100% - #{$cal-header-height});
-    max-width: 100%;
+    max-width: calc(100vh - #{$cal-header-height} - 10vh);
+    margin-left: auto;
+    margin-right: auto;
     //max-height: calc(100% - #{$cal-header-height});
 }
 
@@ -154,6 +157,7 @@ $menu-height-mobile: 25vh;
 @media (min-width: $desktop-breakpoint) {
     .calender {
         grid-gap: $grid-line;
+        max-width: calc(100vh + #{$cal-header-height} + 13vh);
     }    
     .calender > .today {
         border: $grid-line solid $dark-blue;
@@ -200,6 +204,7 @@ $menu-height-mobile: 25vh;
 .calenderSpecial {
     @extend .calender;
     grid-template-rows: .2fr repeat(6, 1fr);
+    max-width: 70vh;
 }
 .calenderSpecial > .cell, .today {
     align-items: center;
@@ -216,6 +221,9 @@ $menu-height-mobile: 25vh;
     margin: -$grid-line-mobile;
 }
 @media (min-width: $desktop-breakpoint) {
+    .calenderSpecial {
+        max-width: 99vh;
+    }
     .calenderSpecial > .today {
         border: $grid-line solid $dark-blue;
         margin: -$grid-line;
@@ -284,6 +292,8 @@ $menu-height-mobile: 25vh;
         height: 13vh;
         width: 13vh;
         top: 1.5vh;
+        left: auto;
+        right: auto;
         border: solid $grid-line;
         border-color: $dark-blue;
     }
@@ -302,7 +312,6 @@ $menu-height-mobile: 25vh;
         }
         color: $white;
         @include text-size('x-large');
-        padding-top: .05em;
         text-align: center;
     }
 
@@ -350,7 +359,7 @@ $menu-height-mobile: 25vh;
     height: 100%;
     position: absolute;
     background-color: $light-gray;
-    padding: 3vw;
+    padding: 1vw;
     z-index: 3;
 }
 @media(min-width: $desktop-breakpoint) {
@@ -392,7 +401,7 @@ $menu-height-mobile: 25vh;
     border-color: $dark-blue;
     outline: none;
     resize: none;
-    padding: 50px;
+    padding: 30px;
     font: {
         family: $font;
     }
@@ -402,6 +411,12 @@ $menu-height-mobile: 25vh;
     overflow-y: auto;
     position: relative;
     line-height: 150%;
+}
+@media(min-width: $desktop-breakpoint) {
+    .submitBox {
+        padding: 50px;
+    }
+
 }
 
 .formContainer {
@@ -497,30 +512,6 @@ $menu-height-mobile: 25vh;
     height: 92%;
 }
 
-.navigationLeft {
-    position: relative;
-    width: 30%;
-    margin: {
-        right: 4vh;
-        top: 0;
-    }
-    height: auto;
-    cursor: pointer;
-    display: inline-block;
-
-}
-.navigationRight {
-    position: relative;
-    width: 30%;
-    margin: {
-        left: 4vh;
-        top: 0;
-    }
-    height: auto;
-    cursor: pointer;
-    display: inline-block;
-
-}
 @media(min-width: $desktop-breakpoint) {
     .navigationLeft {
         left: 2%;
@@ -534,23 +525,51 @@ $menu-height-mobile: 25vh;
     }
 }
 
-.icon {
-    position: relative;
-    left: 20%;
-    width: 20%;
-    margin-right: 17%;
-    cursor: pointer;
+.iconContainer {
+    display: grid;
+    max-width: 350px;
+    margin-right: auto;
+    margin-left: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    max-height: $menu-height-mobile;
+
+    @media(min-width: $desktop-breakpoint) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        max-height: 100vh;
+        max-width: $menu-width;
+        :nth-child(3) {
+            display: none;
+        }
+        :nth-child(4) {
+            display: none;
+        }
+    }
 }
-@media(min-width: $desktop-breakpoint) {
-    .icon {
-        position: relative;
-        left: 25%;
-        width: 40%;
-        margin-top: 100%;
-        height: auto;
+.iconCenter {
+    display: none;
+    @media(min-width: $desktop-breakpoint) {
         cursor: pointer;
         display: block;
+        width: 12vh;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 25vh;
     }
+
+}
+
+.iconLeft{
+    position: relative;
+    width: 12vh;
+    margin-left: 0;
+    cursor: pointer;
+}
+.iconRight{
+    @extend .iconLeft;
+    margin-left: auto;
+    margin-right: 0;
 }
 
 .happy {
@@ -566,6 +585,19 @@ $menu-height-mobile: 25vh;
     width: 70%;
     position: relative;
 }
+.chartLine {
+    width: 100%;
+    left: 0%;
+    height: 70%;
+    position: relative;
+    @media(min-width: $desktop-breakpoint)
+    {
+        width: 70%;
+        left: 15%;
+        height: 70%;
+        position: relative;
+    }
+}
 
 .chartHead {
     font: {
@@ -578,7 +610,7 @@ $menu-height-mobile: 25vh;
         top: .2em;
         left: 0;
         right: 0;
-        bottom: .5em;
+        bottom: .2em;
     }
     text-align: center;
 }
@@ -592,6 +624,8 @@ $menu-height-mobile: 25vh;
     text-align: center;
     @include text_size('x-large');
     width: 100%;
+    position: relative;
+    margin-top: .5em;
 }
 @media(max-width: $desktop-breakpoint) {
     .toggle {

@@ -67,6 +67,23 @@ const Home = (data:Display) => {
     }
   }, []);
 
+const getChartFontSize = ():number => {
+  if (screen.width >= 1300 ) {
+    return 40;
+  }
+  else {
+    return 20;
+  }
+
+}
+const getChartDotSize = ():number => {
+  if (screen.width >= 1300 ) {
+    return 7;
+  }
+  else {
+    return 3;
+  }
+}
 const getChartData = (type:string):ChartData<any> => {
   let posCount:number = 0
   let negCount:number = 0
@@ -128,7 +145,7 @@ const getChartData = (type:string):ChartData<any> => {
             data: fluidMoods,
             pointBackgroundColor: colorMoods,
             pointBorderColor: '#647687',
-            pointRadius: 7
+            pointRadius: getChartDotSize()
           },
           {
             label: "Positive",
@@ -167,34 +184,34 @@ const getChartData = (type:string):ChartData<any> => {
   
   const changeMonth = async (dir:number) => {
     let newDate
+    let newMonth
+    let newYear = year
     if (dir < 0)
     {
       if (month-1 < 0)
       {
-        setMonth(11)
-        setYear(year-1)
+        newMonth = 11
+        newYear = year-1
         newDate = new Date(year-1, 11, 1)
       }
       else {
-      setMonth(month-1)
-      newDate = new Date(year, month-1, 1)
+        newMonth = month-1
+        newDate = new Date(year, month-1, 1)
       }
     }
     else 
     {
       if (month+1 > 11)
       {
-        setMonth(0)
-        setYear(year+1)
+        newMonth = 0
+        newYear = year+1
         newDate = new Date(year+1, 0, 1)
       }
       else { 
-      setMonth(month+1)
-      newDate = new Date(year, month+1, 1)
+        newMonth = month+1
+        newDate = new Date(year, month+1, 1)
       }
     }
-    console.log("new date" + newDate)
-    setStartDay(newDate.getDay())
     let response
     try {
       response = await fetch('http://localhost:3000/api/getEntries', {
@@ -212,6 +229,9 @@ const getChartData = (type:string):ChartData<any> => {
     }
     let tempEntries = (response !== null && response !== undefined) ? await response.json() : []
     setEntries(tempEntries)
+    setStartDay(newDate.getDay())
+    setMonth(newMonth)
+    setYear(newYear)
     return
   }
 
@@ -265,16 +285,19 @@ const getChartData = (type:string):ChartData<any> => {
       <div id="removeFromDOM" className={styles.welcome}><div className={styles.message}>Welcome back, {data.user.username}</div></div>
       <div className={styles.screen}>
       <div className={styles.menu}>
-          <img className={styles.navigationLeft} onClick={()=>changeMonth(-1)} src="/static/images/straight-left-arrow.svg"/>
-          <img className={styles.navigationRight} onClick={()=>changeMonth(1)} src="/static/images/straight-right-arrow.svg"/>
-          <img className={styles.icon} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/>
-          <img className={styles.icon} onClick={logout} src="/static/images/on-off-button.svg" />
+        <div className = {styles.iconContainer}>
+          <img className={styles.iconLeft} onClick={()=>changeMonth(-1)} src="/static/images/straight-left-arrow.svg"/>
+          <img className={styles.iconRight} onClick={()=>changeMonth(1)} src="/static/images/straight-right-arrow.svg"/>
+          <img className={styles.iconLeft} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/>
+          <img className={styles.iconRight} onClick={logout} src="/static/images/on-off-button.svg" />
+        </div>
+        <img className={styles.iconCenter} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/>
+        <img className={styles.iconCenter} onClick={logout} src="/static/images/on-off-button.svg" />
       </div>
       <div className={styles.container}>
         <div className={styles.header}>
           {`${['January','February','March','April','May','June','July','August','September','October','November','December'][month]} ${year}`}
         </div>
-        <div className={styles.calContainer}>
         <div className={((startDay==5 && endDay>30) || (startDay==6 && endDay >=30)) ? styles.calenderSpecial : styles.calender}>
           <div className={styles.daysContainer}>
             {['Su','M','Tu','W','Th','F','Sa'].map((day) => {
@@ -330,7 +353,6 @@ const getChartData = (type:string):ChartData<any> => {
          
           {/*<button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>*/}
         </div>
-        </div>
       </div>
       {submitWin && (
         <>
@@ -368,7 +390,7 @@ const getChartData = (type:string):ChartData<any> => {
         <div className={styles.exit} onClick={()=> setShowChart(false)}>X</div>
         <div className={styles.popUp}>
           <h1 className={styles.chartHead}>Moods this Month</h1>
-          {line && (<div className={styles.chart}>
+          {line && (<div className={styles.chartLine}>
             <Line
               data={getChartData('line')}
               options={{
@@ -376,7 +398,7 @@ const getChartData = (type:string):ChartData<any> => {
                   display:false,
                 },
                 responsive: true, 
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 legend:{
                   display:true,
                   position:'bottom',
@@ -385,7 +407,7 @@ const getChartData = (type:string):ChartData<any> => {
                       if (label.text === 'mood') return false
                       return true
                     },
-                    fontSize:40,
+                    fontSize:getChartFontSize(),
                     fontFamily: 'Georgia, sans-serif',
                     fontColor: '#647687',
                     padding:20,
@@ -413,12 +435,12 @@ const getChartData = (type:string):ChartData<any> => {
                   display:false
                 },
                 responsive: true, 
-                maintainAspectRatio: true,
+                maintainAspectRatio: false,
                 legend:{
                   display:true,
                   position:'bottom',
                   labels: {
-                    fontSize:40,
+                    fontSize:getChartFontSize(),
                     fontFamily: 'Georgia, sans-serif',
                     fontColor: '#647687',
                     padding:20,
