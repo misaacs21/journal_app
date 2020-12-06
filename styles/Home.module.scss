@@ -120,6 +120,8 @@ $menu-height-mobile: 25vh;
 }
 
 .calContainer {
+    position: relative;
+    padding-bottom: 100%;
     height: calc(100% - #{$cal-header-height});
 }
 .calender {
@@ -134,6 +136,7 @@ $menu-height-mobile: 25vh;
     max-width: 100%;
     //max-height: calc(100% - #{$cal-header-height});
 }
+
 .calender > .cell, .today {
     align-items: center;
     display: flex;
