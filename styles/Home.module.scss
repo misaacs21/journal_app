@@ -7,9 +7,15 @@
 */
 
 /* TODO:
-* Set max-width and max-height 100% so shrinks as grid shrinks
-* Mobile: grid in horizontal on left, popup on right, scroll in vertical with popup taking whole screen (back arrow in top left)
+* Fix mobile menu
+* Fix mobile chart (require horizontal view?)
 * Ref: https://stackoverflow.com/questions/5735467/how-to-detect-the-device-orientation-using-css-media-queries
+* "loading" for month change
+* mobile - make entirely separate chart view -- show percentage in vertical, line graph in horizontal
+* mobile - make chart container different
+* set class on circle 
+* STRETCH : set specific intermediate values for circle colors -5 -4 -3 -2 -1 0 1 2 3 4 5
+* fix overflow on desktop calender
 */
 
 $menu-width: 15.1vw;
@@ -113,16 +119,20 @@ $menu-height-mobile: 25vh;
     }
 }
 
+.calContainer {
+    height: calc(100% - #{$cal-header-height});
+}
 .calender {
     top: 0;
     position: relative;
     display: grid;
     background-color: $light-blue;
     grid-gap: $grid-line-mobile;
-    grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: .2fr repeat(5, 1fr); //change 50px to smth more flexible, half a square?
-    height: calc(100% - #{$cal-header-height});
+    grid-template-columns: repeat(7, minmax(0,1fr));
+    grid-template-rows: .2fr repeat(5, minmax(0, 1fr));
+    //height: calc(100% - #{$cal-header-height});
     max-width: 100%;
+    //max-height: calc(100% - #{$cal-header-height});
 }
 .calender > .cell, .today {
     align-items: center;
@@ -208,6 +218,11 @@ $menu-height-mobile: 25vh;
         margin: -$grid-line;
     }
 }
+.circleContainer {
+    width: 50%;
+    padding-top: 100%;
+
+}
 
 .cell {
     position: relative; 
@@ -221,6 +236,10 @@ $menu-height-mobile: 25vh;
         @include text-size('medium');
         z-index: 2;
         pointer-events: none;
+    }
+    &:before {
+        content: ' ';
+        padding-top: 100%;
     }
 }
 @media (min-width: $desktop-breakpoint) {
@@ -236,11 +255,12 @@ $menu-height-mobile: 25vh;
 }
 
 .circle {
-    height: 6vh;
-    width: 6vh;
-    left: auto;
-    right: auto;
-    top: 3vh;
+    //height: 6vh;
+    //width: 6vh;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    //top: 3vh;
     background-color: #bbb;
     border-radius: 50%;
     border: solid $grid-line-mobile;
@@ -249,6 +269,12 @@ $menu-height-mobile: 25vh;
     max-width: 100%;
     max-height: 100%;
     position: absolute;
+    top: 5px;
+    &:before {
+        padding-top: 100%;
+        content: ' ';
+        float: left;
+    }
 }
 @media (min-width: $desktop-breakpoint) {
     .circle {
@@ -283,6 +309,9 @@ $menu-height-mobile: 25vh;
 }
 @media (min-width: $desktop-breakpoint) {
     .today {    
+        .circleToday {
+            @include text-size('xx-large');
+        }
         .dateNumToday {
             top: 0;
             right: 0;

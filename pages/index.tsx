@@ -274,6 +274,7 @@ const getChartData = (type:string):ChartData<any> => {
         <div className={styles.header}>
           {`${['January','February','March','April','May','June','July','August','September','October','November','December'][month]} ${year}`}
         </div>
+        <div className={styles.calContainer}>
         <div className={((startDay==5 && endDay>30) || (startDay==6 && endDay >=30)) ? styles.calenderSpecial : styles.calender}>
           <div className={styles.daysContainer}>
             {['Su','M','Tu','W','Th','F','Sa'].map((day) => {
@@ -314,17 +315,21 @@ const getChartData = (type:string):ChartData<any> => {
             
             return (
               <div className={styles.cell}> 
+              
                 {(calNum) <= endDay && 
                   <div className={styles.dateNum} onClick={getEntry}>{calNum}</div>}
                 {entries[index] != null &&
                   <div id={`${index}`} className={circleStyle} onClick={getEntry}>
                   </div>
                 }
+              
               </div>
+              
               //DoES THIS LOGIC HOLD??? GETS LAST DAY OF PREVIOUS MONTH?
           )})}
          
           {/*<button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>*/}
+        </div>
         </div>
       </div>
       {submitWin && (
