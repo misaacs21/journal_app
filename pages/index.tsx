@@ -13,15 +13,11 @@ interface Display {
   entries:journalEntry[]
 }
 /* HELP:
-* Fix stuttery load (elements flashing--welcome, today styling, circles)
-* Deployment?
-* Fluid mood colors?
+* Fix stuttery welcome screen
 */
 
 /* TODO:
 * Style submit fail
-* Dates in users timezone
-* Redirect to here from auth if user is logged in
 */
 
 const Home = (data:Display) => {
@@ -347,12 +343,8 @@ const getChartData = (type:string):ChartData<any> => {
                 }
               
               </div>
-              
-              //DoES THIS LOGIC HOLD??? GETS LAST DAY OF PREVIOUS MONTH?
           )})}
-         
-          {/*<button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>*/}
-        </div>
+      </div>
       </div>
       {submitWin && (
         <>
@@ -382,7 +374,6 @@ const getChartData = (type:string):ChartData<any> => {
           </div>
         </div>
         </>
-        //how do i put normal code in
       )}
       {showChart && (
         <>
@@ -458,8 +449,12 @@ const getChartData = (type:string):ChartData<any> => {
         </div>
         </>
       )}
-      {/*<button onClick={logout}>Logout</button>*/}
-      {/*<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/}
+      <div className={styles.creditSymbol}>
+          <img className={styles.copyright} src="/static/images/copyright.svg"/>
+          <div className={styles.credits}>
+            Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+          </div>
+      </div>
       </div>
     </>
   )

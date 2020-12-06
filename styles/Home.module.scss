@@ -1,21 +1,9 @@
 @use 'globalVars.module.scss' as *;
 
-/* HELP:
-* Can't get square calender squares even with references:
-* https://stackoverflow.com/questions/1495407/maintain-the-aspect-ratio-of-a-div-with-css
-* https://stackoverflow.com/questions/20590239/maintain-aspect-ratio-of-div-but-fill-screen-width-and-height-in-css/36295495#20593342
-*/
-
-/* TODO:
-* Fix mobile menu
-* Fix mobile chart (require horizontal view?)
-* Ref: https://stackoverflow.com/questions/5735467/how-to-detect-the-device-orientation-using-css-media-queries
-* "loading" for month change
-* mobile - make entirely separate chart view -- show percentage in vertical, line graph in horizontal
-* mobile - make chart container different
-* set class on circle 
+/*TODO:
+* Submit Fail styling
+* Fix copyright - https://medium.com/@mezoistvan/finally-a-css-only-solution-to-hover-on-touchscreens-c498af39c31c ?
 * STRETCH : set specific intermediate values for circle colors -5 -4 -3 -2 -1 0 1 2 3 4 5
-* fix overflow on desktop calender
 */
 
 $menu-width: 15.1vw;
@@ -157,7 +145,7 @@ $menu-height-mobile: 25vh;
 @media (min-width: $desktop-breakpoint) {
     .calender {
         grid-gap: $grid-line;
-        max-width: calc(100vh + #{$cal-header-height} + 13vh);
+        max-width: calc(100vh + #{$cal-header-height} + 11vh);
     }    
     .calender > .today {
         border: $grid-line solid $dark-blue;
@@ -668,59 +656,43 @@ $menu-height-mobile: 25vh;
     color: $dark-blue;
     display: inline-block;
   }
-/*
-.navigation {
-    position: relative;
-    top: 0;
-    left: 10px;
-    width: 35%;
-    margin: 20px;
-    height: auto;
-    cursor: pointer;
-}
-.icon {
-    position: relative;
-    left: 25%;
-    width: 40%;
-    margin-top: 85%;
-    height: auto;
-    cursor: pointer;
-}
-.happy {
-    background-color: $vib-yellow;
-}
-.sad {
-    background-color: #8ea7bf;
-    color: $light-gray;
-}
-.chart {
-    width: 50%;
-    height: 50%;
-    left: 0;
-    position: relative;
-    display: inline-block;
-}
 
-.chartHead {
-    font: {
-        family: $font;
-        weight: bold;
-    }
-    color: $dark-blue;
-    @include text-size('xx-large');
-    margin: {
-        top: .2em;
-        left: 0;
-        right: 0;
-        bottom: 1.5em;
-    }
+.creditSymbol {
+    position: absolute;
+    bottom: calc(20px + #{$menu-height-mobile});
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    transition: all .5s ease-in-out;
+    color: $pale-yellow;
+    border: 1px solid transparent;
+    border-radius: 50%;
     text-align: center;
+    cursor: pointer;
+    @media(min-width: $desktop-breakpoint)
+    {
+        bottom: 20px;
+    }
+    > .credits {
+        visibility: hidden;
+        bottom: calc(20px + 100px + $menu-height-mobile);
+        right: 100px;
+        width: 100px;
+        height: 100px;
+        position: relative;
+        @media(min-width: $desktop-breakpoint)
+        {
+            bottom: calc(20px + 100px);
+        }
+    }
+    :hover .credits {
+        visibility: visible;
+        display: block;
+        color: $light-blue;
+        
+    }
+    .copyright
+    {
+        width: 100%;
+    }
 }
-.chart {
-    width: 50%;
-    height: 50%;
-    left: 0;
-    position: relative;
-    display: inline-block;
-}
-*/
