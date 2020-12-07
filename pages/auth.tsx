@@ -43,7 +43,7 @@ const Login = () => {
             let user = await response.text()
             console.log('~~~ response.text', user)
 
-            if (!user)
+            if (user == null)
             {
                 setSubmitFail(true)
                 return
@@ -119,7 +119,7 @@ const Login = () => {
                     {submitFail && (
                         <div className={styles.error}>Username-password combination doesn't match our records.</div>
                     )}
-                    <AuthForm onSubmit={handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText={reg ? "Sign up" : "Log In"}/>
+                    <AuthForm onSubmit={reg ? handleRegSubmit : handleLoginSubmit} setUser={setUsername} setPass={setPassword} buttonText={reg ? "Sign up" : "Log In"}/>
                 </div>
             </div>
         </div>

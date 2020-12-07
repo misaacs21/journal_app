@@ -24,24 +24,24 @@ export const createCookie = async (username:string, userID: ObjectID): Promise<s
 export const extractFromCookie = async (req: NextApiRequest): Promise<Payload | null> => {
     //const theCookie = cookie.parse(req)
     const token = req.cookies.auth
-    console.log("1 token " + token)
+    //console.log("1 token " + token)
 
     let user: Payload | null
     try {
         user = verify(token, `${process.env.JWT_SECRET}`) as Payload
     }
     catch (error){
-        console.log(error)
+        //console.log(error)
         user = null
     }
     return user
 }
 
 export const extractFromCookie2 = async (req: IncomingMessage): Promise<Payload | null> => {
-    console.log("COOKIE 2: " + req.headers.cookie)
+    //console.log("COOKIE 2: " + req.headers.cookie)
     const theCookie = cookie.parse(req.headers.cookie!)
     const token = theCookie.auth
-    console.log("2 token " + token)
+    //console.log("2 token " + token)
 
     let user: Payload | null
     try {
@@ -55,7 +55,7 @@ export const extractFromCookie2 = async (req: IncomingMessage): Promise<Payload 
 }
 
 export const extractFromCookie3 = async (cookies: string): Promise<Payload | null> => {
-    console.log("COOKIE: " + cookies)
+    //console.log("COOKIE: " + cookies)
     let theCookie: {[key:string]:string}|null= null
     try {
         theCookie = cookie.parse(cookies)
@@ -66,7 +66,7 @@ export const extractFromCookie3 = async (cookies: string): Promise<Payload | nul
         return user
     }
     const token = theCookie?.auth
-    console.log("2 token " + token)
+    //console.log("2 token " + token)
 
     let user: Payload | null
     try {

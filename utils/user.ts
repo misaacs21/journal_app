@@ -17,7 +17,7 @@ export const getUser = async (userInfo: any, db: Db): Promise<User | null> => {
 
     try {
         user = await users.findOne<User>({username: userInfo.username})
-        if (user) {
+        if (user != null) {
             console.log("it is a user! " + userInfo.password + user.password)
             let passwordMatch: boolean = await compare(userInfo.password, user.password)
             if (!passwordMatch) {

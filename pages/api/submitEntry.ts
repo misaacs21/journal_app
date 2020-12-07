@@ -4,7 +4,7 @@ import { createJournal } from '../../utils/journals'
 const submitEntry = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         res.statusCode = 200
-        const response = await createJournal(req.body.entry, req.body.userID, db)
+        const response = await createJournal(req.body.entry, req.body.userID, req.body.date, db)
         return res.send(response)
     }
     res.statusCode = 405

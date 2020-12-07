@@ -2,22 +2,20 @@
 
 $input-margin-desk: 20px;
 $input-margin-mobile: 10px;
-$form-margin-desk: 100px;
+$form-margin-desk: 50px;
 $form-margin-mobile: 7.4vh;
 
 /*TODO: 
-- Manual window size alteration causes horizontal scrollbar to appear - why?
 - Smooth scroll on mobile: https://www.w3schools.com/howto/howto_css_smooth_scroll.asp#section1.
 - General code refinement and streamlining.
 - Why does .header{} attributes not carry to all children (size, font)?
-- Should I download jquery?
 */
+//user agent styles watch
 
 .left {
   background-color: $dark-blue;
   top: 0px;
   height: 100vh;
-  width: 100vw;
   padding: {
     top: 22vh;
     right: 50px;
@@ -29,13 +27,13 @@ $form-margin-mobile: 7.4vh;
 }
 @media (min-width: $desktop-breakpoint) {
   .left {
-    width: 50vw;
+    width: 50%;
     height: 100vh;
     left: 0px;
     padding: {
-      top: 350px;
+      top: 200px;
       right: 175px;
-      bottom: 300px;
+      bottom: 200px;
       left: 175px;
     }
     position: absolute;
@@ -45,7 +43,6 @@ $form-margin-mobile: 7.4vh;
 .right {
   bottom: 0px;
   height: 100vh;
-  width: 100vw;
   padding: {
     top: 10vh;
     right: 10px;
@@ -57,13 +54,13 @@ $form-margin-mobile: 7.4vh;
 }
 @media (min-width: $desktop-breakpoint) {
   .right {
-    width: 50vw;
+    width: 50%;
     height: 100vh;
     right: 0px;
     padding: {
-      top: 150px;
+      top: 100px;
       right: 7.5vw;
-      bottom: 150px;
+      bottom: 100px;
       left: 7.5vw;
     }
     position: absolute;
@@ -74,7 +71,7 @@ $form-margin-mobile: 7.4vh;
   font: {
     family: $font;
   }
-  @include text_size('x-large');
+  @include text_size('xx-large');
   color: $light-gray;
   margin: {
     left: auto;
@@ -113,9 +110,9 @@ $form-margin-mobile: 7.4vh;
     border-radius: 50px;
   
     padding: {
-      top: 75px;
+      top: 45px;
       right: 40px;
-      bottom: 75px;
+      bottom: 55px;
       left: 40px;
     }
   }
@@ -139,7 +136,6 @@ $form-margin-mobile: 7.4vh;
 @media (min-width: $desktop-breakpoint) {
   .error {
     border-radius: 10px;
-    margin-bottom: 36px;
   }
 }
 
@@ -160,12 +156,13 @@ $form-margin-mobile: 7.4vh;
     left: auto;
   }
   text-align: center;
+  @include text_size('large');
+
 
   .h1on {
     font: {
       family: $font;
     }
-    @include text_size('large');
     color: $dark-blue;
     text-decoration: underline;
   }
@@ -178,7 +175,6 @@ $form-margin-mobile: 7.4vh;
       family: $font;
       weight: bold;
     }
-    @include text_size('large');
     color: $light-blue;
     &:hover {
       color: $dark-blue;
@@ -234,6 +230,7 @@ $form-margin-mobile: 7.4vh;
     width: calc(100% - #{$input-margin-mobile});
     height: 50px;
     border: none;
+    padding: 10px;
     background-color: $light-gray;
     border-bottom: 1px solid $dark-blue;
     margin-left: $input-margin-mobile;
@@ -270,7 +267,7 @@ $form-margin-mobile: 7.4vh;
       height: 50px;
       border-bottom: 3px solid $dark-blue;
       margin-left: $input-margin-desk;
-      margin-bottom: 90px;
+      margin-bottom: $form-margin-desk;
     }
   }
 }
@@ -297,7 +294,7 @@ $form-margin-mobile: 7.4vh;
   .button {
     border-radius: 10px;
     margin: {
-      top: $form-margin-desk - 30;
+      top: calc(#{$form-margin-desk} - 10px);
       right: auto;
       bottom: 0;
       left: auto;

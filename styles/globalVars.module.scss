@@ -5,6 +5,7 @@ $dark-blue: #647687;
 $light-blue: #c0cdd1;
 $light-gray: #eaebeb;
 $vib-orange: #e38862;
+$white: #ffffff;
 
 $font: Georgia, sans-serif;
 
@@ -30,11 +31,24 @@ $font: Georgia, sans-serif;
         font-size: 1.6vw;
       }
     }
-    @else {
+    @else if $size=='x-large' {
+        font-size: 5vh;
+
+        @media(min-width: $desktop-breakpoint) {
+            font-size: 2.5vw;
+        }
+    }
+    @else if $size=='xx-large' {
       font-size: 8vh;
-  
       @media(min-width: $desktop-breakpoint) {
         font-size: 4vw;
+      }
+    }
+    @else {
+      font-size: 9vh;
+  
+      @media(min-width: $desktop-breakpoint) {
+        font-size: 5vw;
       }
     }
   }
