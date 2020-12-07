@@ -2,7 +2,7 @@
 
 $input-margin-desk: 20px;
 $input-margin-mobile: 10px;
-$form-margin-desk: 100px;
+$form-margin-desk: 50px;
 $form-margin-mobile: 7.4vh;
 
 /*TODO: 
@@ -31,9 +31,9 @@ $form-margin-mobile: 7.4vh;
     height: 100vh;
     left: 0px;
     padding: {
-      top: 350px;
+      top: 200px;
       right: 175px;
-      bottom: 300px;
+      bottom: 200px;
       left: 175px;
     }
     position: absolute;
@@ -58,9 +58,9 @@ $form-margin-mobile: 7.4vh;
     height: 100vh;
     right: 0px;
     padding: {
-      top: 150px;
+      top: 100px;
       right: 7.5vw;
-      bottom: 150px;
+      bottom: 100px;
       left: 7.5vw;
     }
     position: absolute;
@@ -110,9 +110,9 @@ $form-margin-mobile: 7.4vh;
     border-radius: 50px;
   
     padding: {
-      top: 75px;
+      top: 45px;
       right: 40px;
-      bottom: 75px;
+      bottom: 55px;
       left: 40px;
     }
   }
@@ -136,7 +136,6 @@ $form-margin-mobile: 7.4vh;
 @media (min-width: $desktop-breakpoint) {
   .error {
     border-radius: 10px;
-    margin-bottom: 36px;
   }
 }
 
@@ -231,6 +230,7 @@ $form-margin-mobile: 7.4vh;
     width: calc(100% - #{$input-margin-mobile});
     height: 50px;
     border: none;
+    padding: 10px;
     background-color: $light-gray;
     border-bottom: 1px solid $dark-blue;
     margin-left: $input-margin-mobile;
@@ -267,7 +267,7 @@ $form-margin-mobile: 7.4vh;
       height: 50px;
       border-bottom: 3px solid $dark-blue;
       margin-left: $input-margin-desk;
-      margin-bottom: 90px;
+      margin-bottom: $form-margin-desk;
     }
   }
 }
@@ -294,7 +294,7 @@ $form-margin-mobile: 7.4vh;
   .button {
     border-radius: 10px;
     margin: {
-      top: $form-margin-desk - 30;
+      top: calc(#{$form-margin-desk} - 10px);
       right: auto;
       bottom: 0;
       left: auto;
