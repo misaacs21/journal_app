@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next"
 
-//make this into the route for the auth'd page(s)...have a conditional for if having a valid jwt -> true or not having a valid jwt -> true
+//Dummy code preserved for possible future rerouting overhaul
 const reroute = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method == "POST") {
         res.writeHead(302, {

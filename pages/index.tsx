@@ -1,48 +1,47 @@
 import { NextPageContext } from 'next'
-import {extractFromCookie, extractFromCookie2, extractFromCookie3} from '../utils/cookie'
-import Router, { withRouter } from 'next/router'
+import Router from 'next/router'
 import {useState} from 'react'
-import {Payload} from '../utils/cookie'
-import {journalEntry} from '../utils/journals'
-import styles from '../styles/Home.module.scss'
 import React, {useEffect} from 'react'
 import {Line, Pie, ChartData} from 'react-chartjs-2'
+
+import styles from '../styles/Home.module.scss'
+import {journalEntry} from '../utils/journals'
+import {Payload} from '../utils/cookie'
+
+/* HELP:
+* Fix stuttery welcome screen
+* Why the many console.logs when verifying user?
+*/
+
+/* TODO:
+* Style submit fail
+*/
 
 interface Display {
   user:Payload,
   entries:journalEntry[]
 }
-/* HELP:
-* Fix stuttery load (elements flashing--welcome, today styling, circles)
-* Deployment?
-* Fluid mood colors?
-*/
-
-/* TODO:
-* Style submit fail
-* Dates in users timezone
-* Redirect to here from auth if user is logged in
-*/
 
 const Home = (data:Display) => {
-  const [today,setToday] = useState('')
+  //States for calender and journal management.
   const [entry, setEntry] = useState('')
-  const [submitFail, setSubmitFail] = useState(false)
-  const [showEntry,setShowEntry] = useState(false)
+  const [entries, setEntries] = useState(data.entries)
   const [month, setMonth] = useState(new Date().getMonth())
   const [year, setYear] = useState(new Date().getFullYear())
   const [startDay, setStartDay] = useState(new Date(year,month,1).getDay())
   const [endDay, setEndDay] = useState(new Date(year, month, 0).getDate())
-  const [entries, setEntries] = useState(data.entries)
-  const [submitWin, setSubmitWin] = useState(false)
   const [mood, setMood] = useState('')
   const [moodStyle,setMoodStyle] = useState('')
+
+  //States for general DOM manipulation.
+  const [submitFail, setSubmitFail] = useState(false)
+  const [showEntry,setShowEntry] = useState(false)
+  const [submitWin, setSubmitWin] = useState(false)
   const [showChart,setShowChart] = useState(false)
   const [line, setLine] = useState(false)
-  //journal entry state
 
+  //If the user has opened a new tab with this application, display a welcome screen before removing it from DOM.
   useEffect(() => {
-    //do journal entry call here
     if (window.sessionStorage.length === 0) {
       window.sessionStorage.setItem('welcome', 'true')
     }
@@ -67,102 +66,108 @@ const Home = (data:Display) => {
     }
   }, []);
 
-const getChartFontSize = ():number => {
-  if (screen.width >= 1300 ) {
-    return 40;
-  }
-  else {
-    return 20;
-  }
-
-}
-const getChartDotSize = ():number => {
-  if (screen.width >= 1300 ) {
-    return 7;
-  }
-  else {
-    return 3;
-  }
-}
-const getChartData = (type:string):ChartData<any> => {
-  let posCount:number = 0
-  let negCount:number = 0
-  let neutralCount:number = 0
-  let fluidMoods:number[] = []
-  let colorMoods:(string | null)[] = []
-  console.log("going into for each")
-  entries.forEach(entry => {
-    if (entry == null) {
-      fluidMoods.push(Number.NaN)
-      colorMoods.push(null)
+  //Adjust chart font size according to screen size
+  const getChartFontSize = ():number => {
+    if (screen.width >= 1300 ) {
+      return 40;
     }
     else {
-      if (entry.mood < -2){
-        negCount++
-        colorMoods.push('#8ea7bf')
-      }
-      else if (entry.mood > 2) {
-        posCount++
-        colorMoods.push('#fff2cc')
+      return 20;
+    }
+
+  }
+
+  //Adjust line chart point size according to screen size
+  const getChartDotSize = ():number => {
+    if (screen.width >= 1300 ) {
+      return 7;
+    }
+    else {
+      return 3;
+    }
+  }
+
+  //Fill out line and pie charts
+  const getChartData = (type:string):ChartData<any> => {
+    let posCount:number = 0
+    let negCount:number = 0
+    let neutralCount:number = 0
+    let fluidMoods:number[] = []
+    let colorMoods:(string | null)[] = []
+    entries.forEach(entry => {
+      if (entry == null) {
+        fluidMoods.push(Number.NaN)
+        colorMoods.push(null)
       }
       else {
-        neutralCount++
-        colorMoods.push('#b8b9b9')
+        if (entry.mood < -2){
+          negCount++
+          colorMoods.push('#8ea7bf')
+        }
+        else if (entry.mood > 2) {
+          posCount++
+          colorMoods.push('#fff2cc')
+        }
+        else {
+          neutralCount++
+          colorMoods.push('#b8b9b9')
+        }
+        fluidMoods.push(entry.mood)
       }
-      fluidMoods.push(entry.mood)
+    })
+    if (type == 'pie')
+    {
+      return (
+        {
+          labels: ['Positive','Negative','Neutral'],
+          datasets: [
+            {
+              label: 'Mood Counts',
+              backgroundColor: ['#fff2cc','#8ea7bf','#b8b9b9'],
+              data: [posCount,negCount,neutralCount],
+              borderColor: '#647687'
+            }
+          ]
+        }
+      )
     }
-  })
-  if (type == 'pie')
-  {
+    let labelList:string[] = []
+    for (let i = 1; i<=endDay; i ++) {
+      labelList.push(`${i}`)
+    }
     return (
-      {
-        labels: ['Positive','Negative','Neutral'],
-        datasets: [
-          {
-            label: 'Mood Counts',
-            backgroundColor: ['#fff2cc','#8ea7bf','#b8b9b9'],
-            data: [posCount,negCount,neutralCount],
-            borderColor: '#647687'
-          }
-        ]
-      }
-    )
+        {
+          labels: labelList,
+          datasets: [
+            {
+              label: 'mood',
+              fill: false,
+              lineTension: .5,
+              borderColor: '#647687',
+              borderWidth: 2,
+              data: fluidMoods,
+              pointBackgroundColor: colorMoods,
+              pointBorderColor: '#647687',
+              pointRadius: getChartDotSize()
+            },
+            {
+              label: "Positive",
+              backgroundColor: '#fff2cc'
+            },
+            {
+              label: "Neutral",
+              backgroundColor: '#b8b9b9'
+            },
+            {
+              label: "Negative",
+              backgroundColor: '#8ea7bf'
+            }
+          ]
+        }
+      )
   }
-  let labelList:string[] = []
-  for (let i = 1; i<=endDay; i ++) {
-    labelList.push(`${i}`)
-  }
-  return (
-      {
-        labels: labelList,
-        datasets: [
-          {
-            label: 'mood',
-            fill: false,
-            lineTension: .5,
-            borderColor: '#647687',
-            borderWidth: 2,
-            data: fluidMoods,
-            pointBackgroundColor: colorMoods,
-            pointBorderColor: '#647687',
-            pointRadius: getChartDotSize()
-          },
-          {
-            label: "Positive",
-            backgroundColor: '#fff2cc'
-          },
-          {
-            label: "Neutral",
-            backgroundColor: '#b8b9b9'
-          },
-          {
-            label: "Negative",
-            backgroundColor: '#8ea7bf'
-          }
-        ]
-      }
-    )
-}
+
+  //Load the journal entry upon clicking its circle indicator and assign it a mood.
   const getEntry = (event: React.MouseEvent) => {
     let index:number = parseInt(event.currentTarget.id)
     let temp = entries[index]
@@ -181,7 +186,8 @@ const getChartData = (type:string):ChartData<any> => {
       setMoodStyle('')
     }
   }
-  
+
+  //Change the month upon pressing the arrows on screen and retrieve that months' entries from the database.
   const changeMonth = async (dir:number) => {
     let newDate
     let newMonth
@@ -235,6 +241,7 @@ const getChartData = (type:string):ChartData<any> => {
     return
   }
 
+  //Logout and destroy cookie
   const logout = async () => {
     try {
       return await fetch('/api/logout', {
@@ -249,6 +256,7 @@ const getChartData = (type:string):ChartData<any> => {
     }
   }
 
+  //Submit a new journal entry
   const submitJournal = async (event: React.FormEvent<HTMLFormElement>) => {
     //event.preventDefault()
     setSubmitFail(false)
@@ -275,8 +283,7 @@ const getChartData = (type:string):ChartData<any> => {
     catch (error) {
       console.log(error)
     }
-    Router.replace('/')
-    //window.location.reload()
+    Router.replace('/') //Refresh to show changes
     return
   }
 
@@ -291,6 +298,7 @@ const getChartData = (type:string):ChartData<any> => {
           <img className={styles.iconLeft} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/>
           <img className={styles.iconRight} onClick={logout} src="/static/images/on-off-button.svg" />
         </div>
+        {/*Desktop icon styling*/}
         <img className={styles.iconCenter} onClick={()=>setShowChart(true)} src="/static/images/pie-chart.svg"/>
         <img className={styles.iconCenter} onClick={logout} src="/static/images/on-off-button.svg" />
       </div>
@@ -298,6 +306,7 @@ const getChartData = (type:string):ChartData<any> => {
         <div className={styles.header}>
           {`${['January','February','March','April','May','June','July','August','September','October','November','December'][month]} ${year}`}
         </div>
+        {/*Adjust number of rows in calender for any months that start later in the week*/}
         <div className={((startDay==5 && endDay>30) || (startDay==6 && endDay >=30)) ? styles.calenderSpecial : styles.calender}>
           <div className={styles.daysContainer}>
             {['Su','M','Tu','W','Th','F','Sa'].map((day) => {
@@ -306,36 +315,39 @@ const getChartData = (type:string):ChartData<any> => {
             )})}
           </div>
           {[...Array(42)].map((day, index) => {
+            //For each cell of the calender...
             let calNum = index+1 - startDay
+            //If the current index is before the month has started, leave the cell blank.
             if (index < startDay) {
               return (
                 <div className={styles.cell}>
                 </div>
               )
             }
-            else if (calNum === new Date().getDate() && month===new Date().getMonth()) {
+            //If this cell is "today"
+            if (calNum === new Date().getDate() && month===new Date().getMonth() && year==new Date().getFullYear()) {
+              //Check if the corresponding journal entry empty. If it is, prompt the user to add a new entry by changing the style
               let today:string = entries[index] !== null ? entries[index].entry : ''
-              if (today=='') { //no today, check month/year and get from array
+              if (today=='') {
                 return (
-                  //onClick change state so pop up with this entry, using calNum as index, since it's assumed in this section of code that month and year
-                  //will correspond to what's in data.entries
-                  //but how will this play with calender view ie a scroll of multiple months? or chart view
                   <div className={styles.today}>
                     <div className={styles.dateNumToday}>{calNum}</div>
                     <div className={styles.circleToday} onClick={() => {setSubmitWin(true)}}>?</div>
-                    
                   </div>
                 )
               }
-            } //calc END DAY to avoid having to do this new Date() calc constantly?
+            } 
+            //Do not populate the extra rows for long months at all if it's not a long month.
             if (!((startDay==5 && endDay>30) || (startDay==6 && endDay >=30)) && index>=35) return null
             let circleStyle
+            //Assign circle style according to mood of given entry
             if (entries[index] != null) {
               if (entries[index].mood < -2) circleStyle = `${styles.circle} ${styles.sad}`
               else if (entries[index].mood > 2) circleStyle = `${styles.circle} ${styles.happy}`
               else circleStyle = styles.circle
             }
             
+            //Standard calender cell styling
             return (
               <div className={styles.cell}> 
               
@@ -347,12 +359,8 @@ const getChartData = (type:string):ChartData<any> => {
                 }
               
               </div>
-              
-              //DoES THIS LOGIC HOLD??? GETS LAST DAY OF PREVIOUS MONTH?
           )})}
-         
-          {/*<button onClick={()=>setShowEntries(!showEntries)}>Show/hide journal entries</button>*/}
-        </div>
+      </div>
       </div>
       {submitWin && (
         <>
@@ -382,7 +390,6 @@ const getChartData = (type:string):ChartData<any> => {
           </div>
         </div>
         </>
-        //how do i put normal code in
       )}
       {showChart && (
         <>
@@ -458,46 +465,24 @@ const getChartData = (type:string):ChartData<any> => {
         </div>
         </>
       )}
-      {/*<button onClick={logout}>Logout</button>*/}
-      {/*<div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>*/}
+      <div className={styles.creditSymbol}>
+          <img className={styles.copyright} src="/static/images/copyright.svg"/>
+          <div className={styles.credits}>
+            Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+          </div>
+      </div>
       </div>
     </>
   )
 }
 
-Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activates server-side, but I have to route from login to here on client-side
-  //console.log("in initial props")
-  let user: Payload | null = null
-  if (ctx.query.user) {
-    user = JSON.parse(Array.isArray(ctx.query.user) ? ctx.query.user[ 0 ] : ctx.query.user)
-    //console.log("CLIENT USER" + JSON.stringify(user))
-  }
- // console.log("HEADERS " + ctx.req?.headers.cookie)
-
-
-  if (ctx.req) {
-    //console.log("COOKIE OUT" + ctx.req.headers.cookie)
-    user = await extractFromCookie3(ctx.req.headers.cookie!)
-    //console.log("SERVER USER" + JSON.stringify(user))
-  }
-
-  if (!user && !ctx.req) {
-    Router.replace('/auth')
-    return {}
-  }
-  else if (!user && ctx.req) {
-    ctx.res?.writeHead(302, {
-      Location: 'http://localhost:3000/auth'
-    })
-    ctx.res?.end()
-    return {}
-  }
-  const userID = user?._id
-  let response: Response | null = null
-
-  if (ctx.req) {
-    try {
-      response = await fetch('http://localhost:3000/api/getEntries', {
+//Retrieves the journal entries for the month on initial load/reload, the processes of which also authenticates the user by necessity.
+//Redirect to /auth if the user is not logged in, but otherwise load up the username, user id, and user's journal entries for the current month.
+Home.getInitialProps = async (ctx: NextPageContext) => { 
+  let infoObject: Display | null = null
+  if (ctx.req)
+  {
+    await fetch('http://localhost:3000/api/getEntries', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -508,33 +493,49 @@ Home.getInitialProps = async (ctx: NextPageContext) => { //QUESTION: only activa
         }),
         credentials: "same-origin"
       })
-    }
-    catch (error) {
+    .then (response => {
+      if (response == null || response == undefined || !response.ok) throw "getEntries fetch returned null"
+      return response.json()
+    }).then((json) => {
+      infoObject = json
+    }).catch ((error) => {
       console.error(error)
-    }
+      ctx.res?.writeHead(302, {
+        Location: 'http://localhost:3000/auth'
+      })
+      ctx.res?.end()
+      return {}
+    })
   }
   else {
-    try {
-      response = await fetch('http://localhost:3000/api/getEntries', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          date: new Date()
-        }),
-        credentials: "same-origin"
-      })
-    }
-    catch (error) {
+    await fetch('http://localhost:3000/api/getEntries', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        date: new Date()
+      }),
+      credentials: "same-origin"
+    })
+    .then (response => {
+    if (response == null || response == undefined || !response.ok) throw "getEntries fetch returned null"
+    return response.json()
+    })
+    .then((json) => {
+      infoObject = json
+    })
+    .catch ((error) => {
       console.error(error)
-    }
+      Router.replace('/auth')
+      return {}
+    })
   }
-  let entries = (response !== null && response !== undefined) ? await response.json() : []
-
+  if(infoObject == null) return {}
+  let entries = infoObject!.entries
+  let user = infoObject!.user
   console.log(entries.filter((entry:journalEntry) => entry != null))
-  console.log("USER: " + user?.username + " " + user?._id)
-
+  
   return {user, entries}
 }
 

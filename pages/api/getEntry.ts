@@ -1,7 +1,7 @@
 import { useDb } from '../../utils/database'
 import { getOneJournal } from '../../utils/journals'
 
-//Can't do a GET and still pass date, so is POST accurate? 
+//Get journal entry for a given day
 const getEntry = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         res.statusCode = 200

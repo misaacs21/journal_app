@@ -23,7 +23,6 @@
     "mongo": "^0.1.0",
     "mongodb": "^3.6.2",
     "next": "^9.5.5",
-    "next-cookies": "^2.0.3",
     "react": "16.13.1",
     "react-chartjs-2": "^2.11.1",
     "react-dom": "16.13.1",
