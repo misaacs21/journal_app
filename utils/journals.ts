@@ -1,8 +1,6 @@
 import { Db, Cursor} from 'mongodb'
-import * as Sentiment from 'sentiment'
+import Sentiment from 'sentiment'
 import * as contractions from 'contractions'
-import * as spelling from 'spelling'
-import * as dictionary from 'spelling/dictionaries/en_US.js'
 import * as sw from 'stopword'
 
 export interface journalEntry {
@@ -13,12 +11,12 @@ export interface journalEntry {
     mood: number
 }
 
+//Create a journal and assign it a mood using natural language processing.
 export const createJournal = async (entry: string, userID:string, date: Date, db: Db): Promise<string | null> => {
     const entries = db.collection('journal_entries')
     let expanded = contractions.expand(entry)
     let trimmed = expanded.match(/\b[\w']+\b/g)
     let stripped = sw.removeStopwords(trimmed)
-    console.log("stripped: " + stripped)
     let senti = new Sentiment()
     let analyzed = senti.analyze(stripped.join(" "))
     let mood = analyzed.score / analyzed.words.length
@@ -31,6 +29,7 @@ export const createJournal = async (entry: string, userID:string, date: Date, db
     return null
 }
 
+//Get journals for a given month of the year
 export const getJournals = async (id: string, date: string, db: Db): Promise<(journalEntry|null)[] | null> => {
     const entries = db.collection('journal_entries')
     let allJournals: Cursor | null
@@ -73,12 +72,12 @@ export const getJournals = async (id: string, date: string, db: Db): Promise<(jo
     return journalCalArray
 }
 
+//Get a single journal for a given day
 export const getOneJournal = async (id: string, date: string, db: Db): Promise<journalEntry | null> => {
     const entries = db.collection('journal_entries')
     let journal: journalEntry | null = null
     let inDate = new Date(date)
     try {
-        console.log(date)
         journal = JSON.parse(JSON.stringify(entries.findOne({userID:id, date: {
             $gte: new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDay(), 0, 0, 0).toISOString(),
             $lte: new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDay(), 23, 59, 59).toISOString()

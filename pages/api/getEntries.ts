@@ -1,14 +1,24 @@
-import { extractFromCookie, extractFromCookie2 } from '../../utils/cookie'
+import { extractFromCookieIncomingMsg } from '../../utils/cookie'
 import { useDb } from '../../utils/database'
 import { getJournals } from '../../utils/journals'
 
-//Can't do a GET and still pass date, so is POST accurate? 
+//Get journal entries in a given month
 const getEntries = useDb(async (db, req, res) => {
     if (req.method == "POST") {
-        res.statusCode = 200
-        const payload = await extractFromCookie2(req)
-        const response = await getJournals(payload!._id, req.body.date, db)
-        return res.send(response)
+        try {
+            res.statusCode = 200
+            const payload = await extractFromCookieIncomingMsg(req)
+            console.log(JSON.stringify(payload));
+            const response = await getJournals(payload!._id, req.body.date, db)
+            const packagedResponse = {
+                user: payload,
+                entries: response
+            }
+            return res.send(packagedResponse)
+        }       
+        catch (error){
+            throw error
+        } 
     }
     res.statusCode = 405
     return res.send("Only POST messages are supported.")

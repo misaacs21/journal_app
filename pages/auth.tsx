@@ -3,18 +3,15 @@ import {AuthForm} from '../components/authForm'
 import Router from "next/router"
 
 import styles from '../styles/Auth.module.scss'
+import { NextPageContext } from 'next'
 
-//redirect from here to / if logged in
-//sign up - re-enter password, email that activates account and only then adds account
-    //user object indicates if active or not
-    //rando key for account must be given to activate->if matches, creates for real
-//cssgrid calender - journal view?
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
     const [submitFail,setSubmitFail] = useState(false)
     const [reg, setReg] = useState(false)
 
+    //Reset form elements and page after a failed submission
     const switchStates = () => {
         setUsername("")
         setPassword("")
@@ -22,6 +19,7 @@ const Login = () => {
         setReg(!reg)
     }
 
+    //Log in the user, and notify them of a failed login. If they succeed, reroute them to the home page.
     const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setSubmitFail(false)
@@ -48,28 +46,29 @@ const Login = () => {
                 setSubmitFail(true)
                 return
             }
-            Router.push({
-                pathname: '/',
-                query: { user },
-            })
-            /* Do this via a get home page api instead to make it less ugly?*/
-            /*const url = "http://localhost:3000/"
-            return await fetch('/api/reroute', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    url
+
+            /* Dummy code for possible future rerouting overhaul.
+                const url = "http://localhost:3000/"
+                return await fetch('/api/reroute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        url
+                    })
                 })
-            })*/
+            */
         }
         catch (error) {
             console.log(error)
         }
+        Router.push('/')
+
         return
     }
 
+    //Register the user, and notify them if they're missing any fields. If it's a success, log them in and send them to the home page.
     const handleRegSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         setSubmitFail(false)
@@ -89,13 +88,7 @@ const Login = () => {
                     password
                 }),
             })
-            
-            let user = await response.text()
-
-            Router.push({
-                pathname: '/',
-                query: { user },
-            }) //jwt header will have username to draw from
+            Router.push('/') //jwt header will have username to draw from
         }
         catch (error) {
             console.log(error)
@@ -124,6 +117,51 @@ const Login = () => {
             </div>
         </div>
     )
+}
+
+//Determines if the user is logged in. If they are, redirect to the home page. If not, remain here.
+Login.getInitialProps = async (ctx: NextPageContext) => {
+    if (ctx.req)
+        {
+            await fetch('http://localhost:3000/api/validate', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': ctx.req.headers.cookie as string
+                },
+                credentials: "same-origin"
+                })
+            .then (response => {
+                if (response == null || response == undefined || !response.ok) throw "not validated"
+                else {
+                    ctx.res?.writeHead(302, {
+                    Location: 'http://localhost:3000/'
+                    })
+                    ctx.res?.end()
+                }
+            }).catch ((error) => {
+                console.error(error)
+            })
+        }
+    else {
+        await fetch('http://localhost:3000/api/validate', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'same-origin'
+        })
+        .then (response => {
+            if (response == null || response == undefined || !response.ok) throw "not validated"
+            else {
+                Router.replace('/')
+            }
+        })
+        .catch ((error) => {
+            console.error(error)
+        })
+    }
+    return {}
 }
 
 export default Login

@@ -1,7 +1,8 @@
 import { useDb } from '../../utils/database'
 import { getUser, createUser } from '../../utils/user'
-import {createCookie, extractFromCookie} from '../../utils/cookie'
+import {createCookie, extractFromCookieRequest} from '../../utils/cookie'
 
+//Register user -- add them to the database given a username and password, as well as create a cookie for their session.
 const reg = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         console.log(req.body.username + " " + req.body.password)
@@ -17,7 +18,7 @@ const reg = useDb(async (db, req, res) => {
            console.log("between: " + req.body.username + " " + req.body.password)
            user = await getUser(req.body, db)
         }
-        let theCookie = await extractFromCookie(req)
+        let theCookie = await extractFromCookieRequest(req)
         if (user && theCookie == null) {
             res.setHeader('Set-Cookie', await createCookie(user.username, user._id) )
         }
