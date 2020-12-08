@@ -27,6 +27,8 @@ $menu-height-mobile: 25vh;
 }
 
 .welcome {
+    opacity: 1;
+    visibility: hidden;
     height: 100vh;
     width: 100vw;
     position: absolute;
@@ -42,7 +44,20 @@ $menu-height-mobile: 25vh;
     left: 0px;
     z-index: 10;
     opacity: 1;
-    animation: fade 4s;
+    @keyframes fadein {
+        0% {
+            opacity: 1;
+            visibility: "visible";
+        }
+        60% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            visibility: "hidden";
+        }
+    }
+    animation: fadein 5s;
     .message {
         font: {
             family: $font;
@@ -52,9 +67,6 @@ $menu-height-mobile: 25vh;
         opacity: 1;
         @include text_size('xx-large');
     }
-}
-.goodbye {
-    display: none;
 }
 
 .menu {

@@ -8,11 +8,6 @@ import styles from '../styles/Home.module.scss'
 import {journalEntry} from '../utils/journals'
 import {Payload} from '../utils/cookie'
 
-/* HELP:
-* Fix stuttery welcome screen
-* DEFAULT STYLE OF WELCOME DISPLAY NONE -> and if need to show it, show it. add new class that overrides display none
-*/
-
 /* TODO:
 * Style submit fail
 * Better define "magic numbers" and weird 42 math
@@ -49,23 +44,28 @@ const Home = (data:Display) => {
       window.sessionStorage.setItem('welcome', 'true')
     }
     if (window.sessionStorage.getItem('welcome') === 'true') {
+      let screen = document.getElementById('removeFromDOM')
+      if (screen === null) return
+      screen!.style.visibility="visible"
+      //screen!.style.visibility="hidden"
+      
       setTimeout(function() {
-        let screen = document.getElementById('removeFromDOM')
-        if (screen === null)
-        {
-          return
-        }
-        screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
-        screen!.className = 'goodbye'
+        //screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
+        screen!.style.visibility="hidden"
       }, 4000);
       sessionStorage.setItem('welcome','false')
     }
     else {
+      /*
       let welcome = document.getElementById('removeFromDOM')
+      if(welcome === null) return
+      welcome.style.display ="none"
+      */
+      /*
       if (welcome !=null && welcome.childNodes[0] != null) {
         welcome.removeChild(welcome.childNodes[0])
         welcome.className = 'goodbye'
-      }
+      }*/
     }
   }, []);
 
