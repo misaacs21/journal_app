@@ -2,8 +2,10 @@
 
 /*TODO:
 * Submit Fail styling
-* Fix copyright - https://medium.com/@mezoistvan/finally-a-css-only-solution-to-hover-on-touchscreens-c498af39c31c ?
+* Fix copyright! make sure mobile "hover" works - https://medium.com/@mezoistvan/finally-a-css-only-solution-to-hover-on-touchscreens-c498af39c31c ?
 * STRETCH : set specific intermediate values for circle colors -5 -4 -3 -2 -1 0 1 2 3 4 5
+* - Can group attributes for cleanilness by positioning, border, etc etc
+* - can name blocks in css grid
 */
 
 $menu-width: 15.1vw;
@@ -675,7 +677,7 @@ $menu-height-mobile: 25vh;
     }
     > .credits {
         visibility: hidden;
-        bottom: calc(20px + 100px + $menu-height-mobile);
+        bottom: calc(20px + 100px + #{$menu-height-mobile});
         right: 100px;
         width: 100px;
         height: 100px;
@@ -685,7 +687,7 @@ $menu-height-mobile: 25vh;
             bottom: calc(20px + 100px);
         }
     }
-    :hover .credits {
+    &:hover .credits {
         visibility: visible;
         display: block;
         color: $light-blue;

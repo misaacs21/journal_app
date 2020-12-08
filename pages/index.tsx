@@ -10,11 +10,14 @@ import {Payload} from '../utils/cookie'
 
 /* HELP:
 * Fix stuttery welcome screen
-* Why the many console.logs when verifying user?
+* DEFAULT STYLE OF WELCOME DISPLAY NONE -> and if need to show it, show it. add new class that overrides display none
 */
 
 /* TODO:
 * Style submit fail
+* Better define "magic numbers" and weird 42 math
+* Throw errors with new Error(string)
+* await fetch can be done in try catch with response = await promise...if promise rejects, doesn't throw an error until u await it
 */
 
 interface Display {
@@ -29,7 +32,7 @@ const Home = (data:Display) => {
   const [month, setMonth] = useState(new Date().getMonth())
   const [year, setYear] = useState(new Date().getFullYear())
   const [startDay, setStartDay] = useState(new Date(year,month,1).getDay())
-  const [endDay, setEndDay] = useState(new Date(year, month, 0).getDate())
+  const [endDay, setEndDay] = useState(new Date(year, month+1, 0).getDate())
   const [mood, setMood] = useState('')
   const [moodStyle,setMoodStyle] = useState('')
 
@@ -233,9 +236,11 @@ const Home = (data:Display) => {
     catch (error) {
       console.error(error)
     }
-    let tempEntries = (response !== null && response !== undefined) ? await response.json() : []
-    setEntries(tempEntries)
+    let tempEntries = await response?.json() ?? []
+    console.log("NEW ENTRIES: " , tempEntries)
+    setEntries(tempEntries.entries)
     setStartDay(newDate.getDay())
+    setEndDay(new Date(newYear,newMonth+1,0).getDate())
     setMonth(newMonth)
     setYear(newYear)
     return
@@ -311,7 +316,7 @@ const Home = (data:Display) => {
           <div className={styles.daysContainer}>
             {['Su','M','Tu','W','Th','F','Sa'].map((day) => {
               return (
-                <span className={styles.daysWeek}>{day}</span>
+                <span key={day} className={styles.daysWeek}>{day}</span>
             )})}
           </div>
           {[...Array(42)].map((day, index) => {
@@ -320,17 +325,18 @@ const Home = (data:Display) => {
             //If the current index is before the month has started, leave the cell blank.
             if (index < startDay) {
               return (
-                <div className={styles.cell}>
+                <div key={index} className={styles.cell}>
                 </div>
               )
             }
             //If this cell is "today"
             if (calNum === new Date().getDate() && month===new Date().getMonth() && year==new Date().getFullYear()) {
+              console.log('index: ' + index)
               //Check if the corresponding journal entry empty. If it is, prompt the user to add a new entry by changing the style
-              let today:string = entries[index] !== null ? entries[index].entry : ''
-              if (today=='') {
+              let today:string = entries?.[index]?.entry ?? ''
+              if (today==='') {
                 return (
-                  <div className={styles.today}>
+                  <div key={index} className={styles.today}>
                     <div className={styles.dateNumToday}>{calNum}</div>
                     <div className={styles.circleToday} onClick={() => {setSubmitWin(true)}}>?</div>
                   </div>
@@ -349,7 +355,7 @@ const Home = (data:Display) => {
             
             //Standard calender cell styling
             return (
-              <div className={styles.cell}> 
+              <div key={index} className={styles.cell}> 
               
                 {(calNum) <= endDay && 
                   <div className={styles.dateNum} onClick={getEntry}>{calNum}</div>}
@@ -479,9 +485,11 @@ const Home = (data:Display) => {
 //Retrieves the journal entries for the month on initial load/reload, the processes of which also authenticates the user by necessity.
 //Redirect to /auth if the user is not logged in, but otherwise load up the username, user id, and user's journal entries for the current month.
 Home.getInitialProps = async (ctx: NextPageContext) => { 
+  console.log("in initial props")
   let infoObject: Display | null = null
   if (ctx.req)
   {
+    console.log("in server side")
     await fetch('http://localhost:3000/api/getEntries', {
         method: 'POST',
         headers: {
@@ -508,6 +516,7 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
     })
   }
   else {
+    console.log("in else")
     await fetch('http://localhost:3000/api/getEntries', {
       method: 'POST',
       headers: {
@@ -534,7 +543,8 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
   if(infoObject == null) return {}
   let entries = infoObject!.entries
   let user = infoObject!.user
-  console.log(entries.filter((entry:journalEntry) => entry != null))
+  console.log(entries)
+  //console.log(entries.filter((entry:journalEntry) => entry != null))
   
   return {user, entries}
 }
