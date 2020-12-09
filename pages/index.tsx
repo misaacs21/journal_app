@@ -102,11 +102,11 @@ const Home = (data:Display) => {
         colorMoods.push(null)
       }
       else {
-        if (entry.mood < -2){
+        if (entry.mood <= -2){
           negCount++
           colorMoods.push('#8ea7bf')
         }
-        else if (entry.mood > 2) {
+        else if (entry.mood >= 2) {
           posCount++
           colorMoods.push('#fff2cc')
         }
@@ -287,7 +287,7 @@ const Home = (data:Display) => {
     catch (error) {
       console.log(error)
     }
-    Router.replace('/') //Refresh to show changes
+    Router.push('/') //Refresh to show changes
     return
   }
 
@@ -347,8 +347,8 @@ const Home = (data:Display) => {
             let circleStyle
             //Assign circle style according to mood of given entry
             if (entries[index] != null) {
-              if (entries[index].mood < -2) circleStyle = `${styles.circle} ${styles.sad}`
-              else if (entries[index].mood > 2) circleStyle = `${styles.circle} ${styles.happy}`
+              if (entries[index].mood <= -2) circleStyle = `${styles.circle} ${styles.sad}`
+              else if (entries[index].mood >= 2) circleStyle = `${styles.circle} ${styles.happy}`
               else circleStyle = styles.circle
             }
             
