@@ -3,6 +3,7 @@ import { useDb } from '../../utils/database'
 import { getJournals } from '../../utils/journals'
 
 //Get journal entries in a given month
+//Could be a GET by sending argument in url or query
 const getEntries = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         try {

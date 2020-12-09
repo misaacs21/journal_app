@@ -78,6 +78,7 @@ export const getOneJournal = async (id: string, date: string, db: Db): Promise<j
     let journal: journalEntry | null = null
     let inDate = new Date(date)
     try {
+        //TODO: Get it back in plain Javascript format wo JSON.parse/stringify
         journal = JSON.parse(JSON.stringify(entries.findOne({userID:id, date: {
             $gte: new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDay(), 0, 0, 0).toISOString(),
             $lte: new Date(inDate.getFullYear(), inDate.getMonth(), inDate.getDay(), 23, 59, 59).toISOString()

@@ -8,13 +8,10 @@ import styles from '../styles/Home.module.scss'
 import {journalEntry} from '../utils/journals'
 import {Payload} from '../utils/cookie'
 
-/* HELP:
-* Fix stuttery welcome screen
-* Why the many console.logs when verifying user?
-*/
-
 /* TODO:
-* Style submit fail
+* Better define "magic numbers" and weird 42 math
+* Throw errors with new Error(string)
+* await fetch can be done in try catch with response = await promise...if promise rejects, doesn't throw an error until u await it
 */
 
 interface Display {
@@ -29,7 +26,7 @@ const Home = (data:Display) => {
   const [month, setMonth] = useState(new Date().getMonth())
   const [year, setYear] = useState(new Date().getFullYear())
   const [startDay, setStartDay] = useState(new Date(year,month,1).getDay())
-  const [endDay, setEndDay] = useState(new Date(year, month, 0).getDate())
+  const [endDay, setEndDay] = useState(new Date(year, month+1, 0).getDate())
   const [mood, setMood] = useState('')
   const [moodStyle,setMoodStyle] = useState('')
 
@@ -46,23 +43,28 @@ const Home = (data:Display) => {
       window.sessionStorage.setItem('welcome', 'true')
     }
     if (window.sessionStorage.getItem('welcome') === 'true') {
+      let screen = document.getElementById('removeFromDOM')
+      if (screen === null) return
+      screen!.style.visibility="visible"
+      //screen!.style.visibility="hidden"
+      
       setTimeout(function() {
-        let screen = document.getElementById('removeFromDOM')
-        if (screen === null)
-        {
-          return
-        }
-        screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
-        screen!.className = 'goodbye'
+        //screen.childNodes[0] != null && screen.removeChild(screen.childNodes[0])
+        screen!.style.visibility="hidden"
       }, 4000);
       sessionStorage.setItem('welcome','false')
     }
     else {
+      /*
       let welcome = document.getElementById('removeFromDOM')
+      if(welcome === null) return
+      welcome.style.display ="none"
+      */
+      /*
       if (welcome !=null && welcome.childNodes[0] != null) {
         welcome.removeChild(welcome.childNodes[0])
         welcome.className = 'goodbye'
-      }
+      }*/
     }
   }, []);
 
@@ -233,9 +235,11 @@ const Home = (data:Display) => {
     catch (error) {
       console.error(error)
     }
-    let tempEntries = (response !== null && response !== undefined) ? await response.json() : []
-    setEntries(tempEntries)
+    let tempEntries = await response?.json() ?? []
+    console.log("NEW ENTRIES: " , tempEntries)
+    setEntries(tempEntries.entries)
     setStartDay(newDate.getDay())
+    setEndDay(new Date(newYear,newMonth+1,0).getDate())
     setMonth(newMonth)
     setYear(newYear)
     return
@@ -311,7 +315,7 @@ const Home = (data:Display) => {
           <div className={styles.daysContainer}>
             {['Su','M','Tu','W','Th','F','Sa'].map((day) => {
               return (
-                <span className={styles.daysWeek}>{day}</span>
+                <span key={day} className={styles.daysWeek}>{day}</span>
             )})}
           </div>
           {[...Array(42)].map((day, index) => {
@@ -320,17 +324,18 @@ const Home = (data:Display) => {
             //If the current index is before the month has started, leave the cell blank.
             if (index < startDay) {
               return (
-                <div className={styles.cell}>
+                <div key={index} className={styles.cell}>
                 </div>
               )
             }
             //If this cell is "today"
             if (calNum === new Date().getDate() && month===new Date().getMonth() && year==new Date().getFullYear()) {
+              console.log('index: ' + index)
               //Check if the corresponding journal entry empty. If it is, prompt the user to add a new entry by changing the style
-              let today:string = entries[index] !== null ? entries[index].entry : ''
-              if (today=='') {
+              let today:string = entries?.[index]?.entry ?? ''
+              if (today==='') {
                 return (
-                  <div className={styles.today}>
+                  <div key={index} className={styles.today}>
                     <div className={styles.dateNumToday}>{calNum}</div>
                     <div className={styles.circleToday} onClick={() => {setSubmitWin(true)}}>?</div>
                   </div>
@@ -349,7 +354,7 @@ const Home = (data:Display) => {
             
             //Standard calender cell styling
             return (
-              <div className={styles.cell}> 
+              <div key={index} className={styles.cell}> 
               
                 {(calNum) <= endDay && 
                   <div className={styles.dateNum} onClick={getEntry}>{calNum}</div>}
@@ -368,13 +373,13 @@ const Home = (data:Display) => {
         <div className={styles.exit} onClick={()=> setSubmitWin(false)}>X</div>
         <div className={styles.popUp}>
             <h1 className={styles.submitHeader}>How are you?</h1>
+            {submitFail && (
+                <div className={styles.failed}>Your journal entry should not be empty!</div>
+              )}
             <form className={styles.formContainer} onSubmit={submitJournal}>
               <textarea className={styles.submitBox} onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
               <br />
               <button type="submit" className={styles.submitButton}>Submit</button>
-              {submitFail && (
-                <p>Your journal entry should not be empty!</p>
-              )}
             </form>
         </div>
         </>
@@ -468,7 +473,7 @@ const Home = (data:Display) => {
       <div className={styles.creditSymbol}>
           <img className={styles.copyright} src="/static/images/copyright.svg"/>
           <div className={styles.credits}>
-            Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+            <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></span>
           </div>
       </div>
       </div>
@@ -479,9 +484,11 @@ const Home = (data:Display) => {
 //Retrieves the journal entries for the month on initial load/reload, the processes of which also authenticates the user by necessity.
 //Redirect to /auth if the user is not logged in, but otherwise load up the username, user id, and user's journal entries for the current month.
 Home.getInitialProps = async (ctx: NextPageContext) => { 
+  console.log("in initial props")
   let infoObject: Display | null = null
   if (ctx.req)
   {
+    console.log("in server side")
     await fetch('http://localhost:3000/api/getEntries', {
         method: 'POST',
         headers: {
@@ -508,6 +515,7 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
     })
   }
   else {
+    console.log("in else")
     await fetch('http://localhost:3000/api/getEntries', {
       method: 'POST',
       headers: {
@@ -534,7 +542,8 @@ Home.getInitialProps = async (ctx: NextPageContext) => {
   if(infoObject == null) return {}
   let entries = infoObject!.entries
   let user = infoObject!.user
-  console.log(entries.filter((entry:journalEntry) => entry != null))
+  console.log(entries)
+  //console.log(entries.filter((entry:journalEntry) => entry != null))
   
   return {user, entries}
 }

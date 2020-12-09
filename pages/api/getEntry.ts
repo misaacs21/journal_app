@@ -2,6 +2,7 @@ import { useDb } from '../../utils/database'
 import { getOneJournal } from '../../utils/journals'
 
 //Get journal entry for a given day
+//Could be a GET by sending argument in url or query
 const getEntry = useDb(async (db, req, res) => {
     if (req.method == "POST") {
         res.statusCode = 200
