@@ -41,7 +41,7 @@ const Login = () => {
             let user = await response.text()
             console.log('~~~ response.text', user)
 
-            if (user == null)
+            if (!user)
             {
                 setSubmitFail(true)
                 return
