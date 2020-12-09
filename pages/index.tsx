@@ -9,7 +9,6 @@ import {journalEntry} from '../utils/journals'
 import {Payload} from '../utils/cookie'
 
 /* TODO:
-* Style submit fail
 * Better define "magic numbers" and weird 42 math
 * Throw errors with new Error(string)
 * await fetch can be done in try catch with response = await promise...if promise rejects, doesn't throw an error until u await it
@@ -374,13 +373,13 @@ const Home = (data:Display) => {
         <div className={styles.exit} onClick={()=> setSubmitWin(false)}>X</div>
         <div className={styles.popUp}>
             <h1 className={styles.submitHeader}>How are you?</h1>
+            {submitFail && (
+                <div className={styles.failed}>Your journal entry should not be empty!</div>
+              )}
             <form className={styles.formContainer} onSubmit={submitJournal}>
               <textarea className={styles.submitBox} onChange={(event:React.ChangeEvent<HTMLTextAreaElement>) => {setEntry(event.currentTarget.value)}}/>
               <br />
               <button type="submit" className={styles.submitButton}>Submit</button>
-              {submitFail && (
-                <p>Your journal entry should not be empty!</p>
-              )}
             </form>
         </div>
         </>
@@ -474,7 +473,7 @@ const Home = (data:Display) => {
       <div className={styles.creditSymbol}>
           <img className={styles.copyright} src="/static/images/copyright.svg"/>
           <div className={styles.credits}>
-            Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+            <span>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></span>
           </div>
       </div>
       </div>

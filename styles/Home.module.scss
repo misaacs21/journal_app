@@ -1,11 +1,9 @@
 @use 'globalVars.module.scss' as *;
 
 /*TODO:
-* Submit Fail styling
-* Fix copyright! make sure mobile "hover" works - https://medium.com/@mezoistvan/finally-a-css-only-solution-to-hover-on-touchscreens-c498af39c31c ?
 * STRETCH : set specific intermediate values for circle colors -5 -4 -3 -2 -1 0 1 2 3 4 5
 * - Can group attributes for cleanilness by positioning, border, etc etc
-* - can name blocks in css grid
+* - can name blocks in css grid to do special styling on them in media queries etc
 */
 
 $menu-width: 15.1vw;
@@ -389,10 +387,53 @@ $menu-height-mobile: 25vh;
         top: .2em;
         left: 0;
         right: 0;
-        bottom: 0;
+        bottom: -.5em;
     }
     text-align: center;
+    @media(min-width: $desktop-breakpoint)
+    {
+        bottom: 0;
+    }
 }
+.failed {
+    padding: .4em .35em;
+    background-color: $vib-orange;
+    border-radius: 5px;
+    border-width: 0px;
+    top: 15vh;
+    font: {
+      family: $font;
+    }
+    @include text_size('small');
+  
+    color: $white-yellow;
+    display: block;
+    text-align: center;
+    width: 20em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    margin-bottom: -3em;
+  }
+  @media (min-width: $desktop-breakpoint) {
+    .failed {
+      padding: .8em .7em;
+      margin-top: 2.5em;
+      margin-bottom: -2em;
+      border-radius: 10px;
+      width: 30em;
+    }
+  }
+  
+  .submitHeader + .error {
+    margin-top: calc(10px);
+  }
+  @media (min-width: $desktop-breakpoint) {
+    .submitHeader + .error {
+      margin-top: 20px;
+    }
+  }
+  
 
 .submitBox {
     width: 100%;
@@ -689,22 +730,25 @@ $menu-height-mobile: 25vh;
     }
     > .credits {
         visibility: hidden;
-        bottom: calc(20px + 100px + #{$menu-height-mobile});
-        right: 100px;
-        width: 100px;
-        height: 100px;
+        bottom: 35px;
+        right: calc(215px + 2px);
+        width: 215px;
+        height: 40px;
         position: relative;
+        color: $light-blue;
+        background-color: $dark-blue;
+        font-family: $font;
+
         @media(min-width: $desktop-breakpoint)
         {
-            bottom: calc(20px + 100px);
+            bottom: 35px;
         }
     }
     &:hover .credits {
         visibility: visible;
         display: block;
-        color: $light-blue;
-        
     }
+
     .copyright
     {
         width: 100%;
