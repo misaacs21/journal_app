@@ -1,0 +1,305 @@
+@use 'globalVars.module.scss' as *;
+
+$input-margin-desk: 20px;
+$input-margin-mobile: 10px;
+$form-margin-desk: 50px;
+$form-margin-mobile: 7.4vh;
+
+/*TODO: 
+- Smooth scroll on mobile: https://www.w3schools.com/howto/howto_css_smooth_scroll.asp#section1.
+- General code refinement and streamlining.
+- Why does .header{} attributes not carry to all children (size, font)?
+- Can group attributes for cleanilness by positioning, border, etc etc
+*/
+//user agent styles watch
+
+.left {
+  background-color: $dark-blue;
+  top: 0px;
+  height: 100vh;
+  padding: {
+    top: 22vh;
+    right: 50px;
+    bottom: 22vh;
+    left: 50px;
+  }
+  text-align: center;
+  position: relative;
+}
+@media (min-width: $desktop-breakpoint) {
+  .left {
+    width: 50%;
+    height: 100vh;
+    left: 0px;
+    padding: {
+      top: 200px;
+      right: 175px;
+      bottom: 200px;
+      left: 175px;
+    }
+    position: absolute;
+  }
+}
+
+.right {
+  bottom: 0px;
+  height: 100vh;
+  padding: {
+    top: 10vh;
+    right: 10px;
+    bottom: 10vh;
+    left: 10px;
+  }
+  background: linear-gradient($white-yellow, $vib-yellow 50%);
+  position: relative;
+}
+@media (min-width: $desktop-breakpoint) {
+  .right {
+    width: 50%;
+    height: 100vh;
+    right: 0px;
+    padding: {
+      top: 100px;
+      right: 7.5vw;
+      bottom: 100px;
+      left: 7.5vw;
+    }
+    position: absolute;
+  }
+}
+
+.title {
+  font: {
+    family: $font;
+  }
+  @include text_size('xx-large');
+  color: $light-gray;
+  margin: {
+    left: auto;
+    right: auto;
+  }
+  display: block;
+}
+
+.subtitle {
+  font: {
+    family: $font;
+    weight: lighter;
+  }
+  @include text_size('large');
+
+  color: $light-gray;
+}
+
+.box {
+  border-radius: 25px;
+  height: 100%;
+
+  padding: {
+    top: 3.6vh;
+    right: 15px;
+    bottom: 3.6vh;
+    left: 15px;
+  }
+  margin-right: auto;
+  margin-left: auto;
+
+  background-color: $pale-yellow;
+}
+@media (min-width: $desktop-breakpoint) {
+  .box {
+    border-radius: 50px;
+  
+    padding: {
+      top: 45px;
+      right: 40px;
+      bottom: 55px;
+      left: 40px;
+    }
+  }
+}
+
+.error {
+  padding: .8em .7em;
+  background-color: $vib-orange;
+  border-radius: 5px;
+  border-width: 0px;
+  margin-bottom: 10px;
+  font: {
+    family: $font;
+  }
+  @include text_size('small');
+
+  color: $white-yellow;
+  display: block;
+  text-align: center;
+}
+@media (min-width: $desktop-breakpoint) {
+  .error {
+    border-radius: 10px;
+  }
+}
+
+.header + .error {
+  margin-top: calc(10px - #{$form-margin-mobile});
+}
+@media (min-width: $desktop-breakpoint) {
+  .header + .error {
+    margin-top: 20 - $form-margin-desk;
+  }
+}
+
+.header {
+  margin: {
+    top: $form-margin-mobile;
+    right: auto;
+    bottom: $form-margin-mobile;
+    left: auto;
+  }
+  text-align: center;
+  @include text_size('large');
+
+
+  .h1on {
+    font: {
+      family: $font;
+    }
+    color: $dark-blue;
+    text-decoration: underline;
+  }
+
+  .h1off {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font: {
+      family: $font;
+      weight: bold;
+    }
+    color: $light-blue;
+    &:hover {
+      color: $dark-blue;
+    }
+  }
+
+  .or {
+    font: {
+      family: $font;
+      weight: normal;
+    }
+    @include text_size('small');
+    margin: {
+      left: 15px;
+      right: 15px;
+    }
+    color: $dark-blue;
+    display: inline-block;
+  }
+
+}
+@media (min-width: $desktop-breakpoint) {
+  .header {
+    margin: {
+      top: 0px;
+      right: auto;
+      bottom: $form-margin-desk;
+      left: auto;
+    }
+
+    .or {
+      margin: {
+        left: 30px;
+        right: 30px;
+      }
+    }
+  }
+}
+
+.form {
+  label {
+    font: {
+      family: $font;
+      weight: bold;
+    }
+    @include text_size('medium');
+    color: $dark-blue;
+    margin-bottom: 15px;
+    display: block;
+  }
+
+  .input {
+    width: calc(100% - #{$input-margin-mobile});
+    height: 50px;
+    border: none;
+    padding: 10px;
+    background-color: $light-gray;
+    border-bottom: 1px solid $dark-blue;
+    margin-left: $input-margin-mobile;
+    margin-bottom: $form-margin-mobile;
+    font: {
+      family: $font;
+      weight: normal;
+    }
+    @include text_size('small');
+    color: $dark-blue;
+    position: relative;
+
+    &::placeholder {
+      font: {
+        family: $font;
+        weight: normal;
+      }
+      @include text_size('small');
+      color: $light-blue;
+    }
+    &:last-child {
+      margin-bottom: 0px;
+    }
+  }
+}
+@media (min-width: $desktop-breakpoint) {
+  .form {
+    label {
+      margin-bottom: 25px;
+    }
+
+    .input {
+      width: calc(100% - #{$input-margin-desk});
+      height: 50px;
+      border-bottom: 3px solid $dark-blue;
+      margin-left: $input-margin-desk;
+      margin-bottom: $form-margin-desk;
+    }
+  }
+}
+
+.button {
+  padding: .7em .8em;
+  background-color: $dark-blue;
+  border-radius: 5px;
+  border-width: 0px;
+  margin: {
+    top: $form-margin-mobile;
+    right: auto;
+    bottom: 0;
+    left: auto;
+  }
+  font: {
+    family: $font;
+  }
+  @include text_size('medium');
+  color: $light-gray;
+  display: block;
+}
+@media (min-width: $desktop-breakpoint) {
+  .button {
+    border-radius: 10px;
+    margin: {
+      top: calc(#{$form-margin-desk} - 10px);
+      right: auto;
+      bottom: 0;
+      left: auto;
+    }
+    cursor: pointer;
+  }
+}

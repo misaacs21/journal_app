@@ -1,18 +1,28 @@
-import { extractFromCookie, extractFromCookie2 } from '../../utils/cookie'
+import { extractFromCookieIncomingMsg } from '../../utils/cookie'
 import { useDb } from '../../utils/database'
 import { getJournals } from '../../utils/journals'
 
+//Get journal entries in a given month
+//Could be a GET by sending argument in url or query
 const getEntries = useDb(async (db, req, res) => {
-    if (req.method == "GET") {
-        res.statusCode = 200
-        console.log("TO STRING: " + JSON.stringify(req.cookies))
-        const payload = await extractFromCookie2(req)
-        console.log("PAYLOAD ID: " + payload!._id)
-        const response = await getJournals(payload!._id, db)
-        return res.send(response)
+    if (req.method == "POST") {
+        try {
+            res.statusCode = 200
+            const payload = await extractFromCookieIncomingMsg(req)
+            console.log(JSON.stringify(payload));
+            const response = await getJournals(payload!._id, req.body.date, db)
+            const packagedResponse = {
+                user: payload,
+                entries: response
+            }
+            return res.send(packagedResponse)
+        }       
+        catch (error){
+            throw error
+        } 
     }
     res.statusCode = 405
-    return res.send("Only GET messages are supported.")
+    return res.send("Only POST messages are supported.")
 })
 
 export default getEntries

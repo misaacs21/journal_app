@@ -9,6 +9,7 @@ const dbName = `${ process.env.DB_NAME }`
 type NextMiddlewareWithDb = (db: Db, req: NextApiRequest, res: NextApiResponse) => Promise<void | NextApiResponse<any>>
 type NextMiddleware = (req: NextApiRequest, res: NextApiResponse) => Promise<void>
 
+//Middleware so that any database-accessing API performs database connection centrally in this code.
 export const useDb = (middleware: NextMiddlewareWithDb): NextMiddleware => async (req, res): Promise<void> => {
     let client: MongoClient
 
@@ -22,8 +23,6 @@ export const useDb = (middleware: NextMiddlewareWithDb): NextMiddleware => async
 
     const db = client.db(dbName)
     console.log('Connected to MongoDB datbase.')
-
-    // You can expand this to manage all of the resources that you need for a request lifecycle
 
     try {
         await middleware(db, req, res)

@@ -8,6 +8,8 @@ export interface Payload {
     _id: string,
     username: string
 }
+
+//Create a cookie with JWT inside.
 export const createCookie = async (username:string, userID: ObjectID): Promise<string> => {
     let _id = userID.toHexString()
     console.log("ID: " + _id)
@@ -21,65 +23,36 @@ export const createCookie = async (username:string, userID: ObjectID): Promise<s
     return auth
 }
 
-export const extractFromCookie = async (req: NextApiRequest): Promise<Payload | null> => {
-    //const theCookie = cookie.parse(req)
+//Extract payload from the cookie server-side.
+export const extractFromCookieRequest = async (req: NextApiRequest): Promise<Payload | null> => {
     const token = req.cookies.auth
-    console.log("1 token " + token)
 
     let user: Payload | null
     try {
         user = verify(token, `${process.env.JWT_SECRET}`) as Payload
     }
     catch (error){
-        console.log(error)
         user = null
     }
     return user
 }
 
-export const extractFromCookie2 = async (req: IncomingMessage): Promise<Payload | null> => {
-    console.log("COOKIE 2: " + req.headers.cookie)
+//Extract payload from the cookie client-side.
+export const extractFromCookieIncomingMsg = async (req: IncomingMessage): Promise<Payload | null> => {
     const theCookie = cookie.parse(req.headers.cookie!)
     const token = theCookie.auth
-    console.log("2 token " + token)
 
     let user: Payload | null
     try {
         user = verify(token, `${process.env.JWT_SECRET}`) as Payload
     }
     catch (error){
-        console.log(error)
-        user = null
+        throw "unverified"
     }
     return user
 }
 
-export const extractFromCookie3 = async (cookies: string): Promise<Payload | null> => {
-    console.log("COOKIE: " + cookies)
-    let theCookie: {[key:string]:string}|null= null
-    try {
-        theCookie = cookie.parse(cookies)
-    }
-    catch (error) {
-        console.log(error)
-        let user = null
-        return user
-    }
-    const token = theCookie?.auth
-    console.log("2 token " + token)
-
-    let user: Payload | null
-    try {
-        user = verify(token!, `${process.env.JWT_SECRET}`) as Payload
-    }
-    catch (error){
-        console.log(error)
-        user = null
-    }
-    return user
-}
-
-
+//Delete the cookie on log out.
 export const destroyCookie = async (): Promise<string> => {
     const theCookie = cookie.serialize('auth', '', {
         httpOnly: true,

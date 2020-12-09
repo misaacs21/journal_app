@@ -1,0 +1,756 @@
+@use 'globalVars.module.scss' as *;
+
+/*TODO:
+* STRETCH : set specific intermediate values for circle colors -5 -4 -3 -2 -1 0 1 2 3 4 5
+* - Can group attributes for cleanilness by positioning, border, etc etc
+* - can name blocks in css grid to do special styling on them in media queries etc
+*/
+
+$menu-width: 15.1vw;
+$cal-header-height: 60px;
+$grid-line: 5px;
+$grid-line-mobile: 3px;
+$menu-height-mobile: 25vh;
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.welcome {
+    opacity: 1;
+    visibility: hidden;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    background: linear-gradient($white-yellow, $vib-yellow 50%);
+    text-align: center;
+    padding: {
+        top: 40vh;
+        bottom: 25vh;
+        left: auto;
+        right: auto;
+    }
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    opacity: 1;
+    @keyframes fadein {
+        0% {
+            opacity: 1;
+            visibility: "visible";
+        }
+        60% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            visibility: "hidden";
+        }
+    }
+    animation: fadein 5s;
+    .message {
+        font: {
+            family: $font;
+            weight: bold;
+        }
+        color: $light-blue;
+        opacity: 1;
+        @include text_size('xx-large');
+    }
+}
+
+.menu {
+    height: $menu-height-mobile;
+    width: 100vw;
+    bottom: 0;
+    left: 0;
+    background-color: $dark-blue;
+    position: absolute;
+    padding-left: 20%;
+    padding-right: 20%;
+}
+@media (min-width: $desktop-breakpoint) {
+    .menu {
+        height: 100vh;
+        width: $menu-width;
+        top: 0;
+        bottom: auto;
+        padding: 1vw;
+    }
+}
+
+.screen {
+    display:flex;
+}
+
+.container {
+    height: 100vh - $menu-height-mobile;
+    width: 100vw;
+    left: 0;
+    top: 0;
+    position: absolute;
+    background-color: $vib-yellow;
+    padding: {
+        top: 1vw;
+        bottom: 5vw;
+        right: 1vw;
+        left: 1vw;
+    }
+}
+@media (min-width: $desktop-breakpoint) {
+    .container {
+        height: 100vh;
+        width: 100vw - $menu-width;
+        left: $menu-width;
+        padding: {
+            top: 1vh;
+            bottom: 5vh;
+            right: 5vh;
+            left: 5vh;
+        }
+    }
+}
+
+/*
+.calContainer {
+    position: relative;
+    padding-bottom: 100%;
+    height: calc(100% - #{$cal-header-height});
+}*/
+.calender {
+    top: 0;
+    position: relative;
+    display: grid;
+    background-color: $light-blue;
+    grid-gap: $grid-line-mobile;
+    grid-template-columns: repeat(7, minmax(0,1fr));
+    grid-template-rows: .2fr repeat(5, minmax(0, 1fr));
+    //height: calc(100% - #{$cal-header-height});
+    max-width: calc(100vh - #{$cal-header-height} - 10vh);
+    margin-left: auto;
+    margin-right: auto;
+    //max-height: calc(100% - #{$cal-header-height});
+}
+
+.calender > .cell, .today {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.calender > .cell {
+    background-color: $pale-yellow;
+    min-width: 0;
+    min-height: 0;
+}
+.calender > .today {
+    border: $grid-line-mobile solid $dark-blue;
+    margin: -$grid-line-mobile;
+}
+@media (min-width: $desktop-breakpoint) {
+    .calender {
+        grid-gap: $grid-line;
+        max-width: calc(100vh + #{$cal-header-height} + 11vh);
+    }    
+    .calender > .today {
+        border: $grid-line solid $dark-blue;
+        margin: -$grid-line;
+    }
+}
+
+.header {
+    @include text-size('x-large');
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $light-blue;
+    text-align: center;
+}
+
+.daysContainer {
+    background-color: $vib-yellow !important;
+    grid-column-start: 1;
+    grid-column-end: 8;
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    margin-bottom: -$grid-line-mobile;
+}
+@media (min-width: $desktop-breakpoint) {
+    .daysContainer {
+        margin-bottom: -$grid-line;
+    }
+}
+
+.daysWeek {
+    text-align: center;
+    color: $dark-blue;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    padding-top: 5%;
+    padding-bottom: 5%;
+    @include text-size('large');
+}
+
+.calenderSpecial {
+    @extend .calender;
+    grid-template-rows: .2fr repeat(6, 1fr);
+    max-width: 70vh;
+}
+.calenderSpecial > .cell, .today {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.calenderSpecial > .cell {
+    background-color: $pale-yellow;
+    min-width: 0;
+    min-height: 0;
+}
+.calenderSpecial > .today {
+    border: $grid-line-mobile solid $dark-blue;
+    margin: -$grid-line-mobile;
+}
+@media (min-width: $desktop-breakpoint) {
+    .calenderSpecial {
+        max-width: 99vh;
+    }
+    .calenderSpecial > .today {
+        border: $grid-line solid $dark-blue;
+        margin: -$grid-line;
+    }
+}
+.circleContainer {
+    width: 50%;
+    padding-top: 100%;
+
+}
+
+.cell {
+    position: relative; 
+    padding: 5px;
+
+    .dateNum {
+        font: {
+            family: $font;
+        }
+        color: $dark-blue;
+        @include text-size('medium');
+        z-index: 2;
+        pointer-events: none;
+    }
+    &:before {
+        content: ' ';
+        padding-top: 100%;
+    }
+}
+@media (min-width: $desktop-breakpoint) {
+    .cell {
+        padding: 10px;
+
+        .dateNum {
+            top: 0;
+            right: 10px;
+            position: absolute;
+        }
+    }
+}
+
+.circle {
+    //height: 6vh;
+    //width: 6vh;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    //top: 3vh;
+    background-color: #bbb;
+    border-radius: 50%;
+    border: solid $grid-line-mobile;
+    border-color: $dark-blue;
+    cursor: pointer;
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    top: 5px;
+    &:before {
+        padding-top: 100%;
+        content: ' ';
+        float: left;
+    }
+}
+@media (min-width: $desktop-breakpoint) {
+    .circle {
+        height: 13vh;
+        width: 13vh;
+        top: 1.5vh;
+        left: auto;
+        right: auto;
+        border: solid $grid-line;
+        border-color: $dark-blue;
+    }
+}
+
+.today {
+    @extend .cell;
+    background-color: $white !important;
+    
+    .circleToday {
+        @extend .circle;
+        background-color: $vib-orange;
+        font: {
+            family: $font;
+            weight: bold;
+        }
+        color: $white;
+        @include text-size('x-large');
+        text-align: center;
+    }
+
+    .dateNumToday {
+        display: none;
+    }
+}
+@media (min-width: $desktop-breakpoint) {
+    .today {    
+        .circleToday {
+            @include text-size('xx-large');
+        }
+        .dateNumToday {
+            top: 0;
+            right: 0;
+            width: 1.75em;
+            height: 1.75em;
+            padding-top: .2em;
+            text-align: center;
+            font: {
+                family: $font;
+            }
+            @include text-size('medium');
+            background-color: $dark-blue;
+            color: $white;
+            display: block;
+            position: absolute;
+        }
+    }
+}
+
+.dim {
+    background-color: #2f2f2f;
+    opacity: 30%;
+    position: fixed;
+    top: 0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    padding: 20%;
+}
+
+.popUp {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: $light-gray;
+    padding: 1vw;
+    z-index: 3;
+}
+@media(min-width: $desktop-breakpoint) {
+    .popUp {
+        width: 75%;
+        height: 90%;
+        top: 5%;
+        left: 12.5%;
+        right: auto;
+        border: solid 5px;
+        border-color: $dark-blue;
+        border-radius: 100px;
+        padding: 40px;
+    }
+}
+
+.submitHeader {
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $dark-blue;
+    @include text-size('xxx-large');
+    margin: {
+        top: .2em;
+        left: 0;
+        right: 0;
+        bottom: -.5em;
+    }
+    text-align: center;
+    @media(min-width: $desktop-breakpoint)
+    {
+        bottom: 0;
+    }
+}
+.failed {
+    padding: .4em .35em;
+    background-color: $vib-orange;
+    border-radius: 5px;
+    border-width: 0px;
+    top: 15vh;
+    font: {
+      family: $font;
+    }
+    @include text_size('small');
+  
+    color: $white-yellow;
+    display: block;
+    text-align: center;
+    width: 20em;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    margin-bottom: -3em;
+  }
+  @media (min-width: $desktop-breakpoint) {
+    .failed {
+      padding: .8em .7em;
+      margin-top: 2.5em;
+      margin-bottom: -2em;
+      border-radius: 10px;
+      width: 30em;
+    }
+  }
+  
+  .submitHeader + .error {
+    margin-top: calc(10px);
+  }
+  @media (min-width: $desktop-breakpoint) {
+    .submitHeader + .error {
+      margin-top: 20px;
+    }
+  }
+  
+
+.submitBox {
+    width: 100%;
+    height: 100%;
+    background-color: $white;
+    border-radius: 80px;
+    border: solid 4px;
+    border-color: $dark-blue;
+    outline: none;
+    resize: none;
+    padding: 30px;
+    font: {
+        family: $font;
+    }
+    color: $dark-blue;
+    @include text-size('large');
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    line-height: 150%;
+}
+@media(min-width: $desktop-breakpoint) {
+    .submitBox {
+        padding: 50px;
+    }
+
+}
+
+.formContainer {
+    height: 60%;
+    top: 8%;
+    position: relative;
+}
+
+.submitButton {
+    background-color: $vib-orange;
+    border: none;
+    border-radius: 30px;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $white-yellow;
+    @include text-size('large');
+    width: 5em;
+    height: 2em;
+    position: relative;
+    display: block;
+    margin: 1em auto;
+    cursor: pointer;
+}
+
+.exit {
+    background-color: $vib-orange;
+    display: block;
+    border: none;
+    border-radius: 15%;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $white-yellow;
+    @include text-size('x-large');
+    position: relative;
+    top: 0;
+    left: calc(100% - 6.5vh);
+    width: 1.3em;
+    height: 1.3em;
+    text-align: center;
+    padding: .1em;
+    z-index: 5;
+    cursor: pointer;
+}
+@media(min-width: $desktop-breakpoint) {
+    .exit {
+        border-radius: 50%;
+        @include text-size('xx-large');
+        position: absolute;
+        top: 3%;
+        left: calc(12.5% + 70%);
+        width: 1.3em;
+        height: 1.3em;
+        text-align: center;
+        padding: .1em;
+        z-index: 5;
+        cursor: pointer;
+    }
+}
+
+.journalLabel {
+    @include text-size('large');
+    font: {
+        family: $font;
+    }
+    color: $dark-blue;
+    background-color: $light-gray;
+    width: 95%;
+    height: 15%;
+    border: solid 3px;
+    border-radius: 15px;
+    top: 0;
+    position: absolute;
+    z-index: 1;
+    padding: .4em;
+}
+@media(min-width: $desktop-breakpoint) {
+    .journalLabel {
+        width: 30%;
+        height: 15%;
+        border: solid 4px;
+        border-radius: 15px;
+    }
+}
+
+.readBox {
+    @extend .submitBox;
+    top: 8%;
+    z-index: 5;
+    height: 92%;
+}
+
+@media(min-width: $desktop-breakpoint) {
+    .navigationLeft {
+        left: 2%;
+        width: 40%;
+        margin-right: 6%;
+    }
+    .navigationRight {
+        left: 2%;
+        width: 40%;
+        margin-left: 6%;
+    }
+}
+
+.iconContainer {
+    display: grid;
+    max-width: 350px;
+    margin-right: auto;
+    margin-left: auto;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    max-height: $menu-height-mobile;
+
+    @media(min-width: $desktop-breakpoint) {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        max-height: 100vh;
+        max-width: $menu-width;
+        :nth-child(3) {
+            display: none;
+        }
+        :nth-child(4) {
+            display: none;
+        }
+    }
+}
+.iconCenter {
+    display: none;
+    @media(min-width: $desktop-breakpoint) {
+        cursor: pointer;
+        display: block;
+        width: 12vh;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 25vh;
+    }
+
+}
+
+.iconLeft{
+    position: relative;
+    width: 12vh;
+    margin-left: 0;
+    cursor: pointer;
+}
+.iconRight{
+    @extend .iconLeft;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.happy {
+    background-color: $vib-yellow;
+}
+.sad {
+    background-color: #8ea7bf;
+    color: $light-gray;
+}
+.chart {
+    left: 15%;
+    height: 70%;
+    width: 70%;
+    position: relative;
+}
+.chartLine {
+    width: 100%;
+    left: 0%;
+    height: 70%;
+    position: relative;
+    @media(min-width: $desktop-breakpoint)
+    {
+        width: 70%;
+        left: 15%;
+        height: 70%;
+        position: relative;
+    }
+}
+
+.chartHead {
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $dark-blue;
+    @include text-size('xx-large');
+    margin: {
+        top: .2em;
+        left: 0;
+        right: 0;
+        bottom: .2em;
+    }
+    text-align: center;
+}
+@media(max-width: $desktop-breakpoint) {
+    .chartHead {
+        @include text-size(x-large);
+    }
+}
+
+.toggle {
+    text-align: center;
+    @include text_size('x-large');
+    width: 100%;
+    position: relative;
+    margin-top: .5em;
+}
+@media(max-width: $desktop-breakpoint) {
+    .toggle {
+        @include text-size(x-large);
+        text-align: center;
+    }
+}
+.h1on {
+    font: {
+      family: $font;
+      weight: bold;
+    }
+    color: $dark-blue;
+    text-decoration: underline;
+}
+
+.h1off {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font: {
+        family: $font;
+        weight: bold;
+    }
+    color: $light-blue;
+    &:hover {
+        color: $dark-blue;
+    }
+}
+.or {
+    font: {
+      family: $font;
+      weight: normal;
+    }
+    @include text_size('large');
+    margin: {
+      left: 30px;
+      right: 30px;
+    }
+    color: $dark-blue;
+    display: inline-block;
+  }
+
+.creditSymbol {
+    position: absolute;
+    bottom: calc(20px + #{$menu-height-mobile});
+    right: 20px;
+    width: 20px;
+    height: 20px;
+    transition: all .5s ease-in-out;
+    color: $pale-yellow;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    text-align: center;
+    cursor: pointer;
+    @media(min-width: $desktop-breakpoint)
+    {
+        bottom: 20px;
+    }
+    > .credits {
+        visibility: hidden;
+        bottom: 35px;
+        right: calc(215px + 2px);
+        width: 215px;
+        height: 40px;
+        position: relative;
+        color: $light-blue;
+        background-color: $dark-blue;
+        font-family: $font;
+
+        @media(min-width: $desktop-breakpoint)
+        {
+            bottom: 35px;
+        }
+    }
+    &:hover .credits {
+        visibility: visible;
+        display: block;
+    }
+
+    .copyright
+    {
+        width: 100%;
+    }
+}

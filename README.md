@@ -1,5 +1,7 @@
 # WiCSE Shadow Journaling App with Sentiment Analysis
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) created by Michaela Isaacs and advised by Jason Kleinberg. This project was made for the University of Florida WiCSE Shadowing Program, specifically their partnership with Infotech. 
+
+A daily journaling application which automatically tracks your mood for you using natural language processing. Mobile-friendly with secure user authentication.
 
 ## Execution
 In the root project directory:
@@ -21,7 +23,4 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to see the result.
 
-Current relevant pages: /auth, /
-
-## Limitations
-This app will not run on Internet Explorer. Please use another browser.
+Relevant pages: /auth, /
