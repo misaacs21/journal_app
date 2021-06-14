@@ -3,6 +3,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 A daily journaling application which automatically tracks your mood for you using natural language processing. Mobile-friendly with secure user authentication.
 
+## Presentation and Demo
+Want to see what it's all about? Please see the presentation here, which includes a demo at the end!
+
+[Presentation and Demo](https://docs.google.com/presentation/d/1wrxuSknPnrIvFBBu1HfeAv2o_luua2t85RPhLOBccKU/edit?usp=sharing)
+
 ## Execution
 In the root project directory:
 ```bash
